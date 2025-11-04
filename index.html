@@ -477,7 +477,7 @@
             gap: 10px;
         }
 
-        /* Carrinho */
+        /* Carrinho - MELHORIAS ADICIONADAS */
         .cart-overlay {
             position: fixed;
             top: 0;
@@ -489,8 +489,7 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 30px;
-            margin-top: 30px;
+            padding: 15px;
         }
 
         .cart-modal {
@@ -525,16 +524,19 @@
             color: var(--dark-gray);
         }
 
+        /* ADIÇÃO: Estilo para aumentar a altura da seção do carrinho */
         .cart-body {
-            padding: 15px;
-            flex-grow: 1;
+            min-height: 400px; /* Aumentei consideravelmente a altura mínima */
+            max-height: 60vh;  /* Mantive um limite máximo */
             overflow-y: auto;
+            padding: 20px;
         }
 
+        /* ADIÇÃO: Melhorar a visualização dos itens do carrinho */
         .cart-item {
-            display: flex;
-            padding: 10px 0;
+            padding: 15px 0;
             border-bottom: 1px solid var(--gray);
+            margin-bottom: 15px;
         }
 
         .cart-item-image {
@@ -551,24 +553,31 @@
             background-position: center;
         }
 
+        /* ADIÇÃO: Dar mais destaque aos itens */
         .cart-item-details {
             flex-grow: 1;
+            margin-right: 15px;
         }
 
         .cart-item-name {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
         }
 
         .cart-item-options {
             font-size: 0.9rem;
             color: var(--dark-gray);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            background-color: var(--light-gray);
+            padding: 8px;
+            border-radius: 5px;
         }
 
         .cart-item-price {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary);
+            font-size: 1.2rem;
         }
 
         .cart-item-controls {
@@ -604,6 +613,20 @@
             border: none;
             color: var(--dark-gray);
             cursor: pointer;
+        }
+
+        /* ADIÇÃO: Mensagem quando o carrinho está vazio */
+        .empty-cart-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+        }
+
+        .empty-cart-message i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--gray);
         }
 
         .cart-summary {
@@ -1969,12 +1992,18 @@
             cartModal.classList.add('hidden');
         }
 
-        // Renderizar itens do carrinho
+        // Renderizar itens do carrinho - ATUALIZADA COM MELHORIAS
         function renderCartItems() {
             cartBody.innerHTML = '';
             
             if (cart.length === 0) {
-                cartBody.innerHTML = '<p style="text-align: center; padding: 20px;">Seu carrinho está vazio</p>';
+                cartBody.innerHTML = `
+                    <div class="empty-cart-message">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p>Seu carrinho está vazio</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Adicione alguns produtos deliciosos!</p>
+                    </div>
+                `;
                 subtotalElement.textContent = 'R$ 0,00';
                 totalElement.textContent = 'R$ 0,00';
                 return;
