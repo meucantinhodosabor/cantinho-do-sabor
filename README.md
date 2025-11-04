@@ -490,6 +490,7 @@
             justify-content: center;
             z-index: 1000;
             padding: 30px;
+            margin-top: 30px;
         }
 
         .cart-modal {
@@ -628,7 +629,6 @@
         .cart-form {
             padding: 15px;
             border-top: 1px solid var(--gray);
-            margin-top: 30px;
         }
 
         .form-group {
