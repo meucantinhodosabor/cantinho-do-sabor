@@ -1431,15 +1431,15 @@
                     id: 16,
                     name: "Mini Pastéis Doces",
                     description: "Seleção de mini pastéis doces variados.",
-                    price: 27.47,
+                    price: 15.90,
                     image: "https://i.ytimg.com/vi/zAvOWk1K9fs/maxresdefault.jpg",
                     category: "sobremesas",
                     hasRecheios: false,
                     options: {
                         sizes: [
-                            { name: "6 unidades", price: 27.47 },
-                            { name: "12 unidades", price: 44.33 },
-                            { name: "18 unidades", price: 61.21 }
+                            { name: "6 unidades", price: 15.90 },
+                            { name: "12 unidades", price: 23.90 },
+                            { name: "18 unidades", price: 32.90 }
                         ]
                     }
                 }
