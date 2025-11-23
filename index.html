@@ -422,15 +422,6 @@
             border-left: 4px solid var(--primary);
         }
 
-        .premium-title {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
         .selected-fillings {
             background-color: rgba(76, 175, 80, 0.1);
             border-radius: 8px;
@@ -883,6 +874,13 @@
                 </div>
                 
                 <!-- Opções do produto -->
+                <div class="option-group hidden" id="fillingOptionsGroup">
+                    <h4 class="option-title" id="fillingOptionsTitle">Escolha o recheio (obrigatório)</h4>
+                    <div class="option-list" id="fillingOptions">
+                        <!-- Opções de recheio serão carregadas dinamicamente -->
+                    </div>
+                </div>
+                
                 <div class="option-group" id="sizeOptionsGroup">
                     <h4 class="option-title" id="sizeOptionsTitle">Escolha o número de recheios (obrigatório)</h4>
                     <div class="option-list" id="sizeOptions">
@@ -892,7 +890,7 @@
                 
                 <div class="option-group hidden" id="traditionalFillingsGroup">
                     <h4 class="option-title">Opções de recheios tradicionais</h4>
-                    <div class="option-list" id="fillingOptions">
+                    <div class="option-list" id="traditionalFillingOptions">
                         <!-- Opções de recheio serão carregadas dinamicamente -->
                     </div>
                 </div>
@@ -1434,8 +1432,13 @@
                     price: 15.90,
                     image: "https://i.ytimg.com/vi/zAvOWk1K9fs/maxresdefault.jpg",
                     category: "sobremesas",
-                    hasRecheios: false,
+                    hasRecheios: true,
+                    isMiniPastel: true,
                     options: {
+                        fillings: [
+                            { name: "Doce de Leite", price: 0 },
+                            { name: "Pernambucano (Carne com Açúcar e Canela Polvilhado)", price: 0 }
+                        ],
                         sizes: [
                             { name: "6 unidades", price: 15.90 },
                             { name: "12 unidades", price: 23.90 },
@@ -1507,6 +1510,8 @@
         const sizeOptionsTitle = document.getElementById('sizeOptionsTitle');
         const selectedFillingsSection = document.getElementById('selectedFillingsSection');
         const selectedFillingsList = document.getElementById('selectedFillingsList');
+        const fillingOptionsGroup = document.getElementById('fillingOptionsGroup');
+        const fillingOptionsTitle = document.getElementById('fillingOptionsTitle');
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
@@ -1623,8 +1628,9 @@
             
             // Limpar opções anteriores
             document.getElementById('sizeOptions').innerHTML = '';
-            document.getElementById('fillingOptions').innerHTML = '';
+            document.getElementById('traditionalFillingOptions').innerHTML = '';
             document.getElementById('premiumFillingOptions').innerHTML = '';
+            document.getElementById('fillingOptions').innerHTML = '';
             
             // Resetar opções de mistura
             document.querySelectorAll('.mix-btn').forEach(btn => btn.classList.remove('selected'));
@@ -1637,8 +1643,6 @@
             // Mostrar/ocultar seções baseado no tipo de produto
             if (product.hasRecheios) {
                 sizeOptionsGroup.classList.remove('hidden');
-                traditionalFillingsGroup.classList.remove('hidden');
-                mixOptionsGroup.classList.remove('hidden');
                 
                 // Configurar título baseado na categoria
                 if (product.category === 'bebidas') {
@@ -1647,13 +1651,31 @@
                     sizeOptionsTitle.textContent = 'Escolha o número de recheios (obrigatório)';
                 }
                 
-                // Mostrar/ocultar seção premium
-                if (product.isPremium) {
-                    premiumSection.classList.remove('hidden');
+                // Verificar se é Mini Pastel Doce
+                if (product.isMiniPastel) {
+                    // Para Mini Pastéis Doces: mostrar apenas recheio e tamanho
+                    fillingOptionsGroup.classList.remove('hidden');
+                    fillingOptionsTitle.textContent = 'Escolha o recheio (obrigatório)';
+                    sizeOptionsTitle.textContent = 'Escolha o tamanho';
+                    
+                    // Ocultar seções que não são necessárias para Mini Pastéis
                     traditionalFillingsGroup.classList.add('hidden');
-                } else {
                     premiumSection.classList.add('hidden');
+                    mixOptionsGroup.classList.add('hidden');
+                } else {
+                    // Para outros produtos com recheios: mostrar todas as opções normais
+                    fillingOptionsGroup.classList.add('hidden');
                     traditionalFillingsGroup.classList.remove('hidden');
+                    mixOptionsGroup.classList.remove('hidden');
+                    
+                    // Mostrar/ocultar seção premium
+                    if (product.isPremium) {
+                        premiumSection.classList.remove('hidden');
+                        traditionalFillingsGroup.classList.add('hidden');
+                    } else {
+                        premiumSection.classList.add('hidden');
+                        traditionalFillingsGroup.classList.remove('hidden');
+                    }
                 }
             } else {
                 // Produtos sem recheios (petiscos, sobremesas, bebidas)
@@ -1661,6 +1683,7 @@
                 traditionalFillingsGroup.classList.add('hidden');
                 premiumSection.classList.add('hidden');
                 mixOptionsGroup.classList.add('hidden');
+                fillingOptionsGroup.classList.add('hidden');
                 
                 // Configurar título para produtos sem recheios
                 if (product.category === 'bebidas') {
@@ -1669,6 +1692,43 @@
                     sizeOptionsTitle.textContent = 'Escolha o tamanho';
                 } else {
                     sizeOptionsTitle.textContent = 'Escolha a opção';
+                }
+            }
+            
+            // Adicionar opções de recheio para Mini Pastéis Doces
+            if (product.isMiniPastel && product.options && product.options.fillings) {
+                product.options.fillings.forEach(filling => {
+                    const optionItem = document.createElement('div');
+                    optionItem.className = 'option-item';
+                    optionItem.innerHTML = `
+                        <div class="option-label">
+                            <input type="radio" name="filling" value="${filling.name}" data-price="${filling.price}">
+                            <span>${filling.name}</span>
+                        </div>
+                        <div class="option-price"></div>
+                    `;
+                    
+                    optionItem.querySelector('input').addEventListener('change', function() {
+                        if (this.checked) {
+                            selectedOptions.filling = {
+                                name: this.value,
+                                price: parseFloat(this.getAttribute('data-price'))
+                            };
+                            updateProductPrice();
+                        }
+                    });
+                    
+                    document.getElementById('fillingOptions').appendChild(optionItem);
+                });
+                
+                // Selecionar primeira opção por padrão
+                const firstFilling = document.querySelector('input[name="filling"]');
+                if (firstFilling) {
+                    firstFilling.checked = true;
+                    selectedOptions.filling = {
+                        name: firstFilling.value,
+                        price: parseFloat(firstFilling.getAttribute('data-price'))
+                    };
                 }
             }
             
@@ -1692,7 +1752,7 @@
                                 price: parseFloat(this.getAttribute('data-price'))
                             };
                             selectedRecheiosCount = parseInt(this.getAttribute('data-recheios'));
-                            if (product.hasRecheios) {
+                            if (product.hasRecheios && !product.isMiniPastel) {
                                 updateFillingsSelection();
                                 updateSelectedFillingsDisplay();
                             }
@@ -1715,8 +1775,8 @@
                 }
             }
             
-            // Adicionar opções de recheio tradicionais (apenas para produtos com recheios)
-            if (product.hasRecheios && product.options && product.options.fillings) {
+            // Adicionar opções de recheio tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
+            if (product.hasRecheios && !product.isMiniPastel && product.options && product.options.fillings) {
                 product.options.fillings.forEach(filling => {
                     const optionItem = document.createElement('div');
                     optionItem.className = 'option-item';
@@ -1751,7 +1811,7 @@
                         updateProductPrice();
                     });
                     
-                    document.getElementById('fillingOptions').appendChild(optionItem);
+                    document.getElementById('traditionalFillingOptions').appendChild(optionItem);
                 });
             }
             
@@ -1917,8 +1977,14 @@
                 return;
             }
             
-            // Validar recheios apenas para produtos que têm recheios
-            if (currentProduct.hasRecheios) {
+            // Validar recheio para Mini Pastéis Doces
+            if (currentProduct.isMiniPastel && !selectedOptions.filling) {
+                alert('Por favor, selecione um recheio.');
+                return;
+            }
+            
+            // Validar recheios apenas para produtos com recheios que não são Mini Pastéis
+            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
                 const selectedFillingsCount = getSelectedFillingsCount();
                 if (selectedFillingsCount !== selectedRecheiosCount) {
                     alert(`Por favor, selecione exatamente ${selectedRecheiosCount} recheios.`);
@@ -1940,18 +2006,23 @@
                 optionsDescription += `${currentProduct.hasRecheios ? 'Tamanho' : 'Opção'}: ${selectedOptions.size.name}`;
             }
             
-            // Adicionar recheios tradicionais (apenas para produtos com recheios)
-            if (currentProduct.hasRecheios && selectedOptions.fillings && selectedOptions.fillings.length > 0) {
+            // Adicionar recheio para Mini Pastéis Doces
+            if (currentProduct.isMiniPastel && selectedOptions.filling) {
+                optionsDescription += ` | Recheio: ${selectedOptions.filling.name}`;
+            }
+            
+            // Adicionar recheios tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
+            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel && selectedOptions.fillings && selectedOptions.fillings.length > 0) {
                 optionsDescription += ` | Recheios: ${selectedOptions.fillings.map(f => f.name).join(', ')}`;
             }
             
             // Adicionar recheios premium (apenas para produtos premium)
-            if (currentProduct.hasRecheios && selectedOptions.premiumFillings && selectedOptions.premiumFillings.length > 0) {
+            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel && selectedOptions.premiumFillings && selectedOptions.premiumFillings.length > 0) {
                 optionsDescription += ` | Recheios Premium: ${selectedOptions.premiumFillings.map(f => f.name).join(', ')}`;
             }
             
-            // Adicionar opção de mistura (apenas para produtos com recheios)
-            if (currentProduct.hasRecheios) {
+            // Adicionar opção de mistura (apenas para produtos com recheios que não são Mini Pastéis)
+            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
                 optionsDescription += ` | Misturar: ${selectedOptions.mixRecheios === 'yes' ? 'Sim' : 'Não'}`;
             }
             
