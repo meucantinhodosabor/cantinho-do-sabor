@@ -1156,6 +1156,264 @@
                     }
                 }
             ],
+            "combos": [
+                {
+                    id: 19,
+                    name: "Combo Individual",
+                    description: "Pão com Mortadela Bolonhesa e Queijo + 1 Vitamina",
+                    price: 24.80,
+                    image: "https://i.pinimg.com/736x/df/c0/77/dfc077fc0d6bd2cb7147551817902a22.jpg",
+                    category: "combos",
+                    hasRecheios: true,
+                    isCombo: true,
+                    options: {
+                        sizes: [
+                            { name: "Combo Individual", price: 24.80 }
+                        ],
+                        vitaminas: [
+                            { 
+                                name: "Vitamina de Banana", 
+                                price: 0,
+                                description: "Vitamina de Banana Clássica e super cremosa, combina banana madura com leite e nossa mistura especial de Neston e Farinha Láctea. Perfeita para matar a fome e renovar as energias."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Chocolate", 
+                                price: 1.00,
+                                description: "A versão mais irresistível! A união da banana com chocolate cria um sabor marcante e envolvente, sem perder a leveza das vitaminas tradicionais."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Maçã", 
+                                price: 3.00,
+                                description: "Uma mistura refrescante e equilibrada, unindo a cremosidade da banana ao sabor leve da maçã — ideal para quem busca nutrição com frescor."
+                            },
+                            { 
+                                name: "Vitamina de Banana, Maçã e Mamão", 
+                                price: 5.00,
+                                description: "Uma combinação completa, nutritiva e super suave. Banana, maçã e mamão se unem para criar uma vitamina rica em sabor, textura e nutrientes."
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: 20,
+                    name: "Combo Café da Manhã Completo!",
+                    description: "Pão com Mortadela Bolonhesa e Queijo + 1 Tapioca + 1 Vitamina",
+                    price: 34.70,
+                    image: "https://i.pinimg.com/736x/4f/62/4d/4f624dc5060b8c11817f81c96bf9b9c0.jpg",
+                    category: "combos",
+                    hasRecheios: true,
+                    isCombo: true,
+                    options: {
+                        sizes: [
+                            { name: "Combo Completo", price: 34.70 }
+                        ],
+                        vitaminas: [
+                            { 
+                                name: "Vitamina de Banana", 
+                                price: 0,
+                                description: "Vitamina de Banana Clássica e super cremosa, combina banana madura com leite e nossa mistura especial de Neston e Farinha Láctea. Perfeita para matar a fome e renovar as energias."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Chocolate", 
+                                price: 1.00,
+                                description: "A versão mais irresistível! A união da banana com chocolate cria um sabor marcante e envolvente, sem perder a leveza das vitaminas tradicionais."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Maçã", 
+                                price: 3.00,
+                                description: "Uma mistura refrescante e equilibrada, unindo a cremosidade da banana ao sabor leve da maçã — ideal para quem busca nutrição com frescor."
+                            },
+                            { 
+                                name: "Vitamina de Banana, Maçã e Mamão", 
+                                price: 5.00,
+                                description: "Uma combinação completa, nutritiva e super suave. Banana, maçã e mamão se unem para criar uma vitamina rica em sabor, textura e nutrientes."
+                            }
+                        ],
+                        tapiocaSizes: [
+                            { name: "1 Recheio", price: 0 },
+                            { name: "2 Recheios", price: 1.00 },
+                            { name: "3 Recheios", price: 2.50 },
+                            { name: "4 Recheios", price: 3.60 }
+                        ],
+                        tapiocaFillings: [
+                            { name: "Cheddar", price: 0 },
+                            { name: "Requeijão", price: 0 },
+                            { name: "Frango", price: 0 },
+                            { name: "Calabresa", price: 0 },
+                            { name: "Queijo", price: 0 },
+                            { name: "Bacon", price: 5.00 },
+                            { name: "Azeitona", price: 0 },
+                            { name: "Milho", price: 0 }
+                        ]
+                    }
+                },
+                {
+                    id: 21,
+                    name: "Combo Casal",
+                    description: "2 Pães com Mortadela Bolonhesa e Queijo + 2 Vitaminas",
+                    price: 49.60,
+                    image: "https://i.pinimg.com/736x/06/17/c3/0617c32abaa956dad7ae06add59154ab.jpg",
+                    category: "combos",
+                    hasRecheios: true,
+                    isCombo: true,
+                    options: {
+                        sizes: [
+                            { name: "Combo Casal", price: 49.60 }
+                        ],
+                        vitaminas: [
+                            { 
+                                name: "Vitamina de Banana", 
+                                price: 0,
+                                description: "Vitamina de Banana Clássica e super cremosa, combina banana madura com leite e nossa mistura especial de Neston e Farinha Láctea. Perfeita para matar a fome e renovar as energias."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Chocolate", 
+                                price: 1.00,
+                                description: "A versão mais irresistível! A união da banana com chocolate cria um sabor marcante e envolvente, sem perder a leveza das vitaminas tradicionais."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Maçã", 
+                                price: 3.00,
+                                description: "Uma mistura refrescante e equilibrada, unindo a cremosidade da banana ao sabor leve da maçã — ideal para quem busca nutrição com frescor."
+                            },
+                            { 
+                                name: "Vitamina de Banana, Maçã e Mamão", 
+                                price: 5.00,
+                                description: "Uma combinação completa, nutritiva e super suave. Banana, maçã e mamão se unem para criar uma vitamina rica em sabor, textura e nutrientes."
+                            }
+                        ]
+                    }
+                }
+            ],
+            "novidades": [
+                {
+                    id: 22,
+                    name: "Combo Individual",
+                    description: "Pão com Mortadela Bolonhesa e Queijo + 1 Vitamina",
+                    price: 24.80,
+                    image: "https://i.pinimg.com/736x/df/c0/77/dfc077fc0d6bd2cb7147551817902a22.jpg",
+                    category: "novidades",
+                    hasRecheios: true,
+                    isCombo: true,
+                    options: {
+                        sizes: [
+                            { name: "Combo Individual", price: 24.80 }
+                        ],
+                        vitaminas: [
+                            { 
+                                name: "Vitamina de Banana", 
+                                price: 0,
+                                description: "Vitamina de Banana Clássica e super cremosa, combina banana madura com leite e nossa mistura especial de Neston e Farinha Láctea. Perfeita para matar a fome e renovar as energias."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Chocolate", 
+                                price: 1.00,
+                                description: "A versão mais irresistível! A união da banana com chocolate cria um sabor marcante e envolvente, sem perder a leveza das vitaminas tradicionais."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Maçã", 
+                                price: 3.00,
+                                description: "Uma mistura refrescante e equilibrada, unindo a cremosidade da banana ao sabor leve da maçã — ideal para quem busca nutrição com frescor."
+                            },
+                            { 
+                                name: "Vitamina de Banana, Maçã e Mamão", 
+                                price: 5.00,
+                                description: "Uma combinação completa, nutritiva e super suave. Banana, maçã e mamão se unem para criar uma vitamina rica em sabor, textura e nutrientes."
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: 23,
+                    name: "Combo Café da Manhã Completo!",
+                    description: "Pão com Mortadela Bolonhesa e Queijo + 1 Tapioca + 1 Vitamina",
+                    price: 34.70,
+                    image: "https://i.pinimg.com/736x/4f/62/4d/4f624dc5060b8c11817f81c96bf9b9c0.jpg",
+                    category: "novidades",
+                    hasRecheios: true,
+                    isCombo: true,
+                    options: {
+                        sizes: [
+                            { name: "Combo Completo", price: 34.70 }
+                        ],
+                        vitaminas: [
+                            { 
+                                name: "Vitamina de Banana", 
+                                price: 0,
+                                description: "Vitamina de Banana Clássica e super cremosa, combina banana madura com leite e nossa mistura especial de Neston e Farinha Láctea. Perfeita para matar a fome e renovar as energias."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Chocolate", 
+                                price: 1.00,
+                                description: "A versão mais irresistível! A união da banana com chocolate cria um sabor marcante e envolvente, sem perder a leveza das vitaminas tradicionais."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Maçã", 
+                                price: 3.00,
+                                description: "Uma mistura refrescante e equilibrada, unindo a cremosidade da banana ao sabor leve da maçã — ideal para quem busca nutrição com frescor."
+                            },
+                            { 
+                                name: "Vitamina de Banana, Maçã e Mamão", 
+                                price: 5.00,
+                                description: "Uma combinação completa, nutritiva e super suave. Banana, maçã e mamão se unem para criar uma vitamina rica em sabor, textura e nutrientes."
+                            }
+                        ],
+                        tapiocaSizes: [
+                            { name: "1 Recheio", price: 0 },
+                            { name: "2 Recheios", price: 1.00 },
+                            { name: "3 Recheios", price: 2.50 },
+                            { name: "4 Recheios", price: 3.60 }
+                        ],
+                        tapiocaFillings: [
+                            { name: "Cheddar", price: 0 },
+                            { name: "Requeijão", price: 0 },
+                            { name: "Frango", price: 0 },
+                            { name: "Calabresa", price: 0 },
+                            { name: "Queijo", price: 0 },
+                            { name: "Bacon", price: 5.00 },
+                            { name: "Azeitona", price: 0 },
+                            { name: "Milho", price: 0 }
+                        ]
+                    }
+                },
+                {
+                    id: 24,
+                    name: "Combo Casal",
+                    description: "2 Pães com Mortadela Bolonhesa e Queijo + 2 Vitaminas",
+                    price: 49.60,
+                    image: "https://i.pinimg.com/736x/06/17/c3/0617c32abaa956dad7ae06add59154ab.jpg",
+                    category: "novidades",
+                    hasRecheios: true,
+                    isCombo: true,
+                    options: {
+                        sizes: [
+                            { name: "Combo Casal", price: 49.60 }
+                        ],
+                        vitaminas: [
+                            { 
+                                name: "Vitamina de Banana", 
+                                price: 0,
+                                description: "Vitamina de Banana Clássica e super cremosa, combina banana madura com leite e nossa mistura especial de Neston e Farinha Láctea. Perfeita para matar a fome e renovar as energias."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Chocolate", 
+                                price: 1.00,
+                                description: "A versão mais irresistível! A união da banana com chocolate cria um sabor marcante e envolvente, sem perder a leveza das vitaminas tradicionais."
+                            },
+                            { 
+                                name: "Vitamina de Banana e Maçã", 
+                                price: 3.00,
+                                description: "Uma mistura refrescante e equilibrada, unindo a cremosidade da banana ao sabor leve da maçã — ideal para quem busca nutrição com frescor."
+                            },
+                            { 
+                                name: "Vitamina de Banana, Maçã e Mamão", 
+                                price: 5.00,
+                                description: "Uma combinação completa, nutritiva e super suave. Banana, maçã e mamão se unem para criar uma vitamina rica em sabor, textura e nutrientes."
+                            }
+                        ]
+                    }
+                }
+            ],
             "monte-pastel": [
                 {
                     id: 5,
@@ -1612,7 +1870,8 @@
             selectedOptions = {
                 mixRecheios: null,
                 fillings: [],
-                premiumFillings: []
+                premiumFillings: [],
+                tapiocaFillings: []
             };
             selectedRecheiosCount = 0;
             
@@ -1632,6 +1891,14 @@
             document.getElementById('premiumFillingOptions').innerHTML = '';
             document.getElementById('fillingOptions').innerHTML = '';
             
+            // Remover seções de tapioca se existirem
+            const existingTapiocaSections = document.querySelectorAll('[id^="tapioca"]');
+            existingTapiocaSections.forEach(section => {
+                if (section.parentNode) {
+                    section.parentNode.remove();
+                }
+            });
+            
             // Resetar opções de mistura
             document.querySelectorAll('.mix-btn').forEach(btn => btn.classList.remove('selected'));
             selectedOptions.mixRecheios = null;
@@ -1640,219 +1907,436 @@
             selectedFillingsSection.classList.add('hidden');
             selectedFillingsList.innerHTML = '';
             
-            // Mostrar/ocultar seções baseado no tipo de produto
-            if (product.hasRecheios) {
-                sizeOptionsGroup.classList.remove('hidden');
-                
-                // Configurar título baseado na categoria
-                if (product.category === 'bebidas') {
-                    sizeOptionsTitle.textContent = 'Escolha a Sua Bebida';
-                } else {
-                    sizeOptionsTitle.textContent = 'Escolha o número de recheios (obrigatório)';
-                }
-                
-                // Verificar se é Mini Pastel Doce
-                if (product.isMiniPastel) {
-                    // Para Mini Pastéis Doces: mostrar apenas recheio e tamanho
-                    fillingOptionsGroup.classList.remove('hidden');
-                    fillingOptionsTitle.textContent = 'Escolha o recheio (obrigatório)';
-                    sizeOptionsTitle.textContent = 'Escolha o tamanho';
-                    
-                    // Ocultar seções que não são necessárias para Mini Pastéis
-                    traditionalFillingsGroup.classList.add('hidden');
-                    premiumSection.classList.add('hidden');
-                    mixOptionsGroup.classList.add('hidden');
-                } else {
-                    // Para outros produtos com recheios: mostrar todas as opções normais
-                    fillingOptionsGroup.classList.add('hidden');
-                    traditionalFillingsGroup.classList.remove('hidden');
-                    mixOptionsGroup.classList.remove('hidden');
-                    
-                    // Mostrar/ocultar seção premium
-                    if (product.isPremium) {
-                        premiumSection.classList.remove('hidden');
-                        traditionalFillingsGroup.classList.add('hidden');
-                    } else {
-                        premiumSection.classList.add('hidden');
-                        traditionalFillingsGroup.classList.remove('hidden');
-                    }
-                }
-            } else {
-                // Produtos sem recheios (petiscos, sobremesas, bebidas)
-                sizeOptionsGroup.classList.remove('hidden');
+            // Configurar para combos
+            if (product.isCombo) {
+                // Ocultar seções padrão
+                sizeOptionsGroup.classList.add('hidden');
                 traditionalFillingsGroup.classList.add('hidden');
                 premiumSection.classList.add('hidden');
                 mixOptionsGroup.classList.add('hidden');
-                fillingOptionsGroup.classList.add('hidden');
+                fillingOptionsGroup.classList.remove('hidden');
                 
-                // Configurar título para produtos sem recheios
-                if (product.category === 'bebidas') {
-                    sizeOptionsTitle.textContent = 'Escolha a Sua Bebida';
-                } else if (product.category === 'petiscos' || product.category === 'sobremesas') {
-                    sizeOptionsTitle.textContent = 'Escolha o tamanho';
+                // Configurar opções de vitamina
+                document.getElementById('fillingOptions').innerHTML = '';
+                fillingOptionsTitle.textContent = 'Escolha sua Vitamina';
+                
+                if (product.options && product.options.vitaminas) {
+                    product.options.vitaminas.forEach(vitamina => {
+                        const optionItem = document.createElement('div');
+                        optionItem.className = 'option-item';
+                        optionItem.innerHTML = `
+                            <div class="option-label">
+                                <input type="radio" name="vitamina" value="${vitamina.name}" data-price="${vitamina.price}">
+                                <span>${vitamina.name}</span>
+                            </div>
+                            <div class="option-price">${vitamina.price > 0 ? '+ R$ ' + vitamina.price.toFixed(2) : ''}</div>
+                        `;
+                        
+                        // Adicionar descrição como tooltip
+                        if (vitamina.description) {
+                            optionItem.title = vitamina.description;
+                        }
+                        
+                        optionItem.querySelector('input').addEventListener('change', function() {
+                            if (this.checked) {
+                                selectedOptions.vitamina = {
+                                    name: this.value,
+                                    price: parseFloat(this.getAttribute('data-price'))
+                                };
+                                updateProductPrice();
+                            }
+                        });
+                        
+                        document.getElementById('fillingOptions').appendChild(optionItem);
+                    });
+                    
+                    // Selecionar primeira opção por padrão
+                    const firstVitamina = document.querySelector('input[name="vitamina"]');
+                    if (firstVitamina) {
+                        firstVitamina.checked = true;
+                        selectedOptions.vitamina = {
+                            name: firstVitamina.value,
+                            price: parseFloat(firstVitamina.getAttribute('data-price'))
+                        };
+                    }
+                }
+                
+                // Configurar opções de tapioca para o combo completo
+                if (product.id === 20 || product.id === 23) { // IDs dos combos completos
+                    // Criar seção para tamanho da tapioca
+                    const tapiocaSizeGroup = document.createElement('div');
+                    tapiocaSizeGroup.className = 'option-group';
+                    tapiocaSizeGroup.innerHTML = `
+                        <h4 class="option-title">Escolha sua Tapioca</h4>
+                        <div class="option-list" id="tapiocaSizeOptions"></div>
+                    `;
+                    
+                    // Inserir após a seção de vitaminas
+                    const fillingGroup = document.getElementById('fillingOptionsGroup');
+                    fillingGroup.parentNode.insertBefore(tapiocaSizeGroup, fillingGroup.nextSibling);
+                    
+                    // Adicionar opções de tamanho da tapioca
+                    if (product.options && product.options.tapiocaSizes) {
+                        const tapiocaSizeOptions = document.getElementById('tapiocaSizeOptions');
+                        product.options.tapiocaSizes.forEach(size => {
+                            const optionItem = document.createElement('div');
+                            optionItem.className = 'option-item';
+                            optionItem.innerHTML = `
+                                <div class="option-label">
+                                    <input type="radio" name="tapiocaSize" value="${size.name}" data-price="${size.price}">
+                                    <span>${size.name}</span>
+                                </div>
+                                <div class="option-price">${size.price > 0 ? '+ R$ ' + size.price.toFixed(2) : ''}</div>
+                            `;
+                            
+                            optionItem.querySelector('input').addEventListener('change', function() {
+                                if (this.checked) {
+                                    selectedOptions.tapiocaSize = {
+                                        name: this.value,
+                                        price: parseFloat(this.getAttribute('data-price'))
+                                    };
+                                    updateProductPrice();
+                                    updateTapiocaFillingsSelection();
+                                }
+                            });
+                            
+                            tapiocaSizeOptions.appendChild(optionItem);
+                        });
+                        
+                        // Selecionar primeira opção por padrão
+                        const firstTapiocaSize = document.querySelector('input[name="tapiocaSize"]');
+                        if (firstTapiocaSize) {
+                            firstTapiocaSize.checked = true;
+                            selectedOptions.tapiocaSize = {
+                                name: firstTapiocaSize.value,
+                                price: parseFloat(firstTapiocaSize.getAttribute('data-price'))
+                            };
+                        }
+                    }
+                    
+                    // Criar seção para recheios da tapioca
+                    const tapiocaFillingsGroup = document.createElement('div');
+                    tapiocaFillingsGroup.className = 'option-group';
+                    tapiocaFillingsGroup.innerHTML = `
+                        <h4 class="option-title">Escolha os recheios da tapioca</h4>
+                        <div class="selected-fillings hidden" id="tapiocaSelectedFillingsSection">
+                            <h4 class="selected-fillings-title"><i class="fas fa-check-circle"></i> Recheios Selecionados</h4>
+                            <div class="selected-fillings-list" id="tapiocaSelectedFillingsList"></div>
+                        </div>
+                        <div class="option-list" id="tapiocaFillingOptions"></div>
+                    `;
+                    
+                    // Inserir após a seção de tamanho da tapioca
+                    tapiocaSizeGroup.parentNode.insertBefore(tapiocaFillingsGroup, tapiocaSizeGroup.nextSibling);
+                    
+                    // Adicionar opções de recheio da tapioca
+                    if (product.options && product.options.tapiocaFillings) {
+                        const tapiocaFillingOptions = document.getElementById('tapiocaFillingOptions');
+                        product.options.tapiocaFillings.forEach(filling => {
+                            const optionItem = document.createElement('div');
+                            optionItem.className = 'option-item';
+                            optionItem.innerHTML = `
+                                <div class="option-label">
+                                    <input type="checkbox" value="${filling.name}" data-price="${filling.price}" class="tapioca-filling-checkbox">
+                                    <span>${filling.name}</span>
+                                </div>
+                                <div class="option-price">${filling.price > 0 ? '+ R$ ' + filling.price.toFixed(2) : ''}</div>
+                            `;
+                            
+                            optionItem.querySelector('input').addEventListener('change', function() {
+                                if (!selectedOptions.tapiocaFillings) selectedOptions.tapiocaFillings = [];
+                                
+                                const maxRecheios = parseInt(selectedOptions.tapiocaSize?.name?.match(/\d+/)?.[0]) || 1;
+                                
+                                if (this.checked) {
+                                    if (selectedOptions.tapiocaFillings.length < maxRecheios) {
+                                        selectedOptions.tapiocaFillings.push({
+                                            name: this.value,
+                                            price: parseFloat(this.getAttribute('data-price'))
+                                        });
+                                    } else {
+                                        this.checked = false;
+                                        alert(`Você só pode selecionar até ${maxRecheios} recheios para a tapioca`);
+                                    }
+                                } else {
+                                    selectedOptions.tapiocaFillings = selectedOptions.tapiocaFillings.filter(
+                                        f => f.name !== this.value
+                                    );
+                                }
+                                updateTapiocaFillingsSelection();
+                                updateTapiocaSelectedFillingsDisplay();
+                                updateProductPrice();
+                            });
+                            
+                            tapiocaFillingOptions.appendChild(optionItem);
+                        });
+                    }
+                }
+                
+                // Para combo casal, permitir selecionar 2 vitaminas
+                if (product.id === 21 || product.id === 24) { // IDs dos combos casal
+                    fillingOptionsTitle.textContent = 'Escolham suas Vitaminas (mínimo 1, máximo 2)';
+                    document.getElementById('fillingOptions').innerHTML = '';
+                    
+                    if (product.options && product.options.vitaminas) {
+                        selectedOptions.vitaminas = [];
+                        
+                        product.options.vitaminas.forEach(vitamina => {
+                            const optionItem = document.createElement('div');
+                            optionItem.className = 'option-item';
+                            optionItem.innerHTML = `
+                                <div class="option-label">
+                                    <input type="checkbox" value="${vitamina.name}" data-price="${vitamina.price}" class="vitamina-checkbox">
+                                    <span>${vitamina.name}</span>
+                                </div>
+                                <div class="option-price">${vitamina.price > 0 ? '+ R$ ' + vitamina.price.toFixed(2) : ''}</div>
+                            `;
+                            
+                            // Adicionar descrição como tooltip
+                            if (vitamina.description) {
+                                optionItem.title = vitamina.description;
+                            }
+                            
+                            optionItem.querySelector('input').addEventListener('change', function() {
+                                if (!selectedOptions.vitaminas) selectedOptions.vitaminas = [];
+                                
+                                if (this.checked) {
+                                    if (selectedOptions.vitaminas.length < 2) {
+                                        selectedOptions.vitaminas.push({
+                                            name: this.value,
+                                            price: parseFloat(this.getAttribute('data-price'))
+                                        });
+                                    } else {
+                                        this.checked = false;
+                                        alert('Você só pode selecionar até 2 vitaminas');
+                                    }
+                                } else {
+                                    selectedOptions.vitaminas = selectedOptions.vitaminas.filter(
+                                        v => v.name !== this.value
+                                    );
+                                }
+                                updateProductPrice();
+                            });
+                            
+                            document.getElementById('fillingOptions').appendChild(optionItem);
+                        });
+                    }
+                }
+            } else {
+                // Produtos normais (não são combos)
+                if (product.hasRecheios) {
+                    sizeOptionsGroup.classList.remove('hidden');
+                    
+                    // Configurar título baseado na categoria
+                    if (product.category === 'bebidas') {
+                        sizeOptionsTitle.textContent = 'Escolha a Sua Bebida';
+                    } else {
+                        sizeOptionsTitle.textContent = 'Escolha o número de recheios (obrigatório)';
+                    }
+                    
+                    // Verificar se é Mini Pastel Doce
+                    if (product.isMiniPastel) {
+                        // Para Mini Pastéis Doces: mostrar apenas recheio e tamanho
+                        fillingOptionsGroup.classList.remove('hidden');
+                        fillingOptionsTitle.textContent = 'Escolha o recheio (obrigatório)';
+                        sizeOptionsTitle.textContent = 'Escolha o tamanho';
+                        
+                        // Ocultar seções que não são necessárias para Mini Pastéis
+                        traditionalFillingsGroup.classList.add('hidden');
+                        premiumSection.classList.add('hidden');
+                        mixOptionsGroup.classList.add('hidden');
+                    } else {
+                        // Para outros produtos com recheios: mostrar todas as opções normais
+                        fillingOptionsGroup.classList.add('hidden');
+                        traditionalFillingsGroup.classList.remove('hidden');
+                        mixOptionsGroup.classList.remove('hidden');
+                        
+                        // Mostrar/ocultar seção premium
+                        if (product.isPremium) {
+                            premiumSection.classList.remove('hidden');
+                            traditionalFillingsGroup.classList.add('hidden');
+                        } else {
+                            premiumSection.classList.add('hidden');
+                            traditionalFillingsGroup.classList.remove('hidden');
+                        }
+                    }
                 } else {
-                    sizeOptionsTitle.textContent = 'Escolha a opção';
+                    // Produtos sem recheios (petiscos, sobremesas, bebidas)
+                    sizeOptionsGroup.classList.remove('hidden');
+                    traditionalFillingsGroup.classList.add('hidden');
+                    premiumSection.classList.add('hidden');
+                    mixOptionsGroup.classList.add('hidden');
+                    fillingOptionsGroup.classList.add('hidden');
+                    
+                    // Configurar título para produtos sem recheios
+                    if (product.category === 'bebidas') {
+                        sizeOptionsTitle.textContent = 'Escolha a Sua Bebida';
+                    } else if (product.category === 'petiscos' || product.category === 'sobremesas') {
+                        sizeOptionsTitle.textContent = 'Escolha o tamanho';
+                    } else {
+                        sizeOptionsTitle.textContent = 'Escolha a opção';
+                    }
                 }
-            }
-            
-            // Adicionar opções de recheio para Mini Pastéis Doces
-            if (product.isMiniPastel && product.options && product.options.fillings) {
-                product.options.fillings.forEach(filling => {
-                    const optionItem = document.createElement('div');
-                    optionItem.className = 'option-item';
-                    optionItem.innerHTML = `
-                        <div class="option-label">
-                            <input type="radio" name="filling" value="${filling.name}" data-price="${filling.price}">
-                            <span>${filling.name}</span>
-                        </div>
-                        <div class="option-price"></div>
-                    `;
-                    
-                    optionItem.querySelector('input').addEventListener('change', function() {
-                        if (this.checked) {
-                            selectedOptions.filling = {
-                                name: this.value,
-                                price: parseFloat(this.getAttribute('data-price'))
-                            };
-                            updateProductPrice();
-                        }
-                    });
-                    
-                    document.getElementById('fillingOptions').appendChild(optionItem);
-                });
                 
-                // Selecionar primeira opção por padrão
-                const firstFilling = document.querySelector('input[name="filling"]');
-                if (firstFilling) {
-                    firstFilling.checked = true;
-                    selectedOptions.filling = {
-                        name: firstFilling.value,
-                        price: parseFloat(firstFilling.getAttribute('data-price'))
-                    };
-                }
-            }
-            
-            // Adicionar opções de tamanho
-            if (product.options && product.options.sizes) {
-                product.options.sizes.forEach(size => {
-                    const optionItem = document.createElement('div');
-                    optionItem.className = 'option-item';
-                    optionItem.innerHTML = `
-                        <div class="option-label">
-                            <input type="radio" name="size" value="${size.name}" data-price="${size.price}" data-recheios="${getRecheiosCount(size.name)}">
-                            <span>${size.name}</span>
-                        </div>
-                        <div class="option-price">R$ ${size.price.toFixed(2)}</div>
-                    `;
-                    
-                    optionItem.querySelector('input').addEventListener('change', function() {
-                        if (this.checked) {
-                            selectedOptions.size = {
-                                name: this.value,
-                                price: parseFloat(this.getAttribute('data-price'))
-                            };
-                            selectedRecheiosCount = parseInt(this.getAttribute('data-recheios'));
-                            if (product.hasRecheios && !product.isMiniPastel) {
-                                updateFillingsSelection();
-                                updateSelectedFillingsDisplay();
-                            }
-                            updateProductPrice();
-                        }
-                    });
-                    
-                    document.getElementById('sizeOptions').appendChild(optionItem);
-                });
-                
-                // Selecionar primeira opção por padrão
-                const firstSize = document.querySelector('input[name="size"]');
-                if (firstSize) {
-                    firstSize.checked = true;
-                    selectedOptions.size = {
-                        name: firstSize.value,
-                        price: parseFloat(firstSize.getAttribute('data-price'))
-                    };
-                    selectedRecheiosCount = parseInt(firstSize.getAttribute('data-recheios'));
-                }
-            }
-            
-            // Adicionar opções de recheio tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
-            if (product.hasRecheios && !product.isMiniPastel && product.options && product.options.fillings) {
-                product.options.fillings.forEach(filling => {
-                    const optionItem = document.createElement('div');
-                    optionItem.className = 'option-item';
-                    optionItem.innerHTML = `
-                        <div class="option-label">
-                            <input type="checkbox" value="${filling.name}" data-price="${filling.price}" class="filling-checkbox">
-                            <span>${filling.name}</span>
-                        </div>
-                        <div class="option-price"></div>
-                    `;
-                    
-                    optionItem.querySelector('input').addEventListener('change', function() {
-                        if (!selectedOptions.fillings) selectedOptions.fillings = [];
+                // Adicionar opções de recheio para Mini Pastéis Doces
+                if (product.isMiniPastel && product.options && product.options.fillings) {
+                    product.options.fillings.forEach(filling => {
+                        const optionItem = document.createElement('div');
+                        optionItem.className = 'option-item';
+                        optionItem.innerHTML = `
+                            <div class="option-label">
+                                <input type="radio" name="filling" value="${filling.name}" data-price="${filling.price}">
+                                <span>${filling.name}</span>
+                            </div>
+                            <div class="option-price"></div>
+                        `;
                         
-                        if (this.checked) {
-                            if (selectedOptions.fillings.length < selectedRecheiosCount) {
-                                selectedOptions.fillings.push({
+                        optionItem.querySelector('input').addEventListener('change', function() {
+                            if (this.checked) {
+                                selectedOptions.filling = {
                                     name: this.value,
                                     price: parseFloat(this.getAttribute('data-price'))
-                                });
-                            } else {
-                                this.checked = false;
-                                alert(`Você só pode selecionar até ${selectedRecheiosCount} recheios`);
+                                };
+                                updateProductPrice();
                             }
-                        } else {
-                            selectedOptions.fillings = selectedOptions.fillings.filter(
-                                f => f.name !== this.value
-                            );
-                        }
-                        updateFillingsSelection();
-                        updateSelectedFillingsDisplay();
-                        updateProductPrice();
+                        });
+                        
+                        document.getElementById('fillingOptions').appendChild(optionItem);
                     });
                     
-                    document.getElementById('traditionalFillingOptions').appendChild(optionItem);
-                });
-            }
-            
-            // Adicionar opções de recheio premium
-            if (product.isPremium && product.options && product.options.fillings) {
-                product.options.fillings.forEach(filling => {
-                    const optionItem = document.createElement('div');
-                    optionItem.className = 'option-item';
-                    optionItem.innerHTML = `
-                        <div class="option-label">
-                            <input type="checkbox" value="${filling.name}" data-price="${filling.price}" class="premium-filling-checkbox">
-                            <span>${filling.name}</span>
-                        </div>
-                        <div class="option-price"></div>
-                    `;
-                    
-                    optionItem.querySelector('input').addEventListener('change', function() {
-                        if (!selectedOptions.premiumFillings) selectedOptions.premiumFillings = [];
+                    // Selecionar primeira opção por padrão
+                    const firstFilling = document.querySelector('input[name="filling"]');
+                    if (firstFilling) {
+                        firstFilling.checked = true;
+                        selectedOptions.filling = {
+                            name: firstFilling.value,
+                            price: parseFloat(firstFilling.getAttribute('data-price'))
+                        };
+                    }
+                }
+                
+                // Adicionar opções de tamanho
+                if (product.options && product.options.sizes) {
+                    product.options.sizes.forEach(size => {
+                        const optionItem = document.createElement('div');
+                        optionItem.className = 'option-item';
+                        optionItem.innerHTML = `
+                            <div class="option-label">
+                                <input type="radio" name="size" value="${size.name}" data-price="${size.price}" data-recheios="${getRecheiosCount(size.name)}">
+                                <span>${size.name}</span>
+                            </div>
+                            <div class="option-price">R$ ${size.price.toFixed(2)}</div>
+                        `;
                         
-                        if (this.checked) {
-                            if (selectedOptions.premiumFillings.length < selectedRecheiosCount) {
-                                selectedOptions.premiumFillings.push({
+                        optionItem.querySelector('input').addEventListener('change', function() {
+                            if (this.checked) {
+                                selectedOptions.size = {
                                     name: this.value,
                                     price: parseFloat(this.getAttribute('data-price'))
-                                });
-                            } else {
-                                this.checked = false;
-                                alert(`Você só pode selecionar até ${selectedRecheiosCount} recheios`);
+                                };
+                                selectedRecheiosCount = parseInt(this.getAttribute('data-recheios'));
+                                if (product.hasRecheios && !product.isMiniPastel) {
+                                    updateFillingsSelection();
+                                    updateSelectedFillingsDisplay();
+                                }
+                                updateProductPrice();
                             }
-                        } else {
-                            selectedOptions.premiumFillings = selectedOptions.premiumFillings.filter(
-                                f => f.name !== this.value
-                            );
-                        }
-                        updateFillingsSelection();
-                        updateSelectedFillingsDisplay();
-                        updateProductPrice();
+                        });
+                        
+                        document.getElementById('sizeOptions').appendChild(optionItem);
                     });
                     
-                    document.getElementById('premiumFillingOptions').appendChild(optionItem);
-                });
+                    // Selecionar primeira opção por padrão
+                    const firstSize = document.querySelector('input[name="size"]');
+                    if (firstSize) {
+                        firstSize.checked = true;
+                        selectedOptions.size = {
+                            name: firstSize.value,
+                            price: parseFloat(firstSize.getAttribute('data-price'))
+                        };
+                        selectedRecheiosCount = parseInt(firstSize.getAttribute('data-recheios'));
+                    }
+                }
+                
+                // Adicionar opções de recheio tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
+                if (product.hasRecheios && !product.isMiniPastel && product.options && product.options.fillings) {
+                    product.options.fillings.forEach(filling => {
+                        const optionItem = document.createElement('div');
+                        optionItem.className = 'option-item';
+                        optionItem.innerHTML = `
+                            <div class="option-label">
+                                <input type="checkbox" value="${filling.name}" data-price="${filling.price}" class="filling-checkbox">
+                                <span>${filling.name}</span>
+                            </div>
+                            <div class="option-price"></div>
+                        `;
+                        
+                        optionItem.querySelector('input').addEventListener('change', function() {
+                            if (!selectedOptions.fillings) selectedOptions.fillings = [];
+                            
+                            if (this.checked) {
+                                if (selectedOptions.fillings.length < selectedRecheiosCount) {
+                                    selectedOptions.fillings.push({
+                                        name: this.value,
+                                        price: parseFloat(this.getAttribute('data-price'))
+                                    });
+                                } else {
+                                    this.checked = false;
+                                    alert(`Você só pode selecionar até ${selectedRecheiosCount} recheios`);
+                                }
+                            } else {
+                                selectedOptions.fillings = selectedOptions.fillings.filter(
+                                    f => f.name !== this.value
+                                );
+                            }
+                            updateFillingsSelection();
+                            updateSelectedFillingsDisplay();
+                            updateProductPrice();
+                        });
+                        
+                        document.getElementById('traditionalFillingOptions').appendChild(optionItem);
+                    });
+                }
+                
+                // Adicionar opções de recheio premium
+                if (product.isPremium && product.options && product.options.fillings) {
+                    product.options.fillings.forEach(filling => {
+                        const optionItem = document.createElement('div');
+                        optionItem.className = 'option-item';
+                        optionItem.innerHTML = `
+                            <div class="option-label">
+                                <input type="checkbox" value="${filling.name}" data-price="${filling.price}" class="premium-filling-checkbox">
+                                <span>${filling.name}</span>
+                            </div>
+                            <div class="option-price"></div>
+                        `;
+                        
+                        optionItem.querySelector('input').addEventListener('change', function() {
+                            if (!selectedOptions.premiumFillings) selectedOptions.premiumFillings = [];
+                            
+                            if (this.checked) {
+                                if (selectedOptions.premiumFillings.length < selectedRecheiosCount) {
+                                    selectedOptions.premiumFillings.push({
+                                        name: this.value,
+                                        price: parseFloat(this.getAttribute('data-price'))
+                                    });
+                                } else {
+                                    this.checked = false;
+                                    alert(`Você só pode selecionar até ${selectedRecheiosCount} recheios`);
+                                }
+                            } else {
+                                selectedOptions.premiumFillings = selectedOptions.premiumFillings.filter(
+                                    f => f.name !== this.value
+                                );
+                            }
+                            updateFillingsSelection();
+                            updateSelectedFillingsDisplay();
+                            updateProductPrice();
+                        });
+                        
+                        document.getElementById('premiumFillingOptions').appendChild(optionItem);
+                    });
+                }
             }
             
             // Mostrar modal
@@ -1878,6 +2362,72 @@
                     checkbox.disabled = false;
                 }
             });
+        }
+
+        // Funções para gerenciar recheios da tapioca
+        function updateTapiocaFillingsSelection() {
+            const checkboxes = document.querySelectorAll('.tapioca-filling-checkbox');
+            const maxRecheios = parseInt(selectedOptions.tapiocaSize?.name?.match(/\d+/)?.[0]) || 1;
+            
+            checkboxes.forEach(checkbox => {
+                const isChecked = checkbox.checked;
+                const currentSelected = selectedOptions.tapiocaFillings?.length || 0;
+                
+                if (!isChecked && currentSelected >= maxRecheios) {
+                    checkbox.disabled = true;
+                } else {
+                    checkbox.disabled = false;
+                }
+            });
+        }
+
+        function updateTapiocaSelectedFillingsDisplay() {
+            const tapiocaSelectedFillingsList = document.getElementById('tapiocaSelectedFillingsList');
+            const tapiocaSelectedFillingsSection = document.getElementById('tapiocaSelectedFillingsSection');
+            
+            if (!tapiocaSelectedFillingsList || !tapiocaSelectedFillingsSection) return;
+            
+            tapiocaSelectedFillingsList.innerHTML = '';
+            
+            if (selectedOptions.tapiocaFillings && selectedOptions.tapiocaFillings.length > 0) {
+                tapiocaSelectedFillingsSection.classList.remove('hidden');
+                
+                selectedOptions.tapiocaFillings.forEach(filling => {
+                    const tag = document.createElement('div');
+                    tag.className = 'selected-filling-tag';
+                    tag.innerHTML = `
+                        ${filling.name}
+                        <span class="remove-filling" data-name="${filling.name}" data-type="tapioca">&times;</span>
+                    `;
+                    tapiocaSelectedFillingsList.appendChild(tag);
+                });
+                
+                // Adicionar eventos para remover recheios
+                document.querySelectorAll('.remove-filling[data-type="tapioca"]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const fillingName = this.getAttribute('data-name');
+                        removeTapiocaFilling(fillingName);
+                    });
+                });
+            } else {
+                tapiocaSelectedFillingsSection.classList.add('hidden');
+            }
+        }
+
+        function removeTapiocaFilling(fillingName) {
+            if (selectedOptions.tapiocaFillings) {
+                selectedOptions.tapiocaFillings = selectedOptions.tapiocaFillings.filter(f => f.name !== fillingName);
+            }
+            
+            // Atualizar checkbox
+            const checkbox = document.querySelector(`.tapioca-filling-checkbox[value="${fillingName}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            
+            updateTapiocaFillingsSelection();
+            updateTapiocaSelectedFillingsDisplay();
+            updateProductPrice();
         }
 
         // Atualizar exibição dos recheios selecionados
@@ -1963,7 +2513,50 @@
                 totalPrice = selectedOptions.size.price;
             }
             
-            // Todos os recheios são gratuitos, então não adicionamos preços extras
+            // Adicionar preços de vitaminas para combos
+            if (currentProduct.isCombo) {
+                if (selectedOptions.vitamina) {
+                    totalPrice += selectedOptions.vitamina.price;
+                }
+                
+                if (selectedOptions.vitaminas) {
+                    selectedOptions.vitaminas.forEach(v => {
+                        totalPrice += v.price;
+                    });
+                }
+                
+                // Adicionar preços da tapioca para combo completo
+                if (selectedOptions.tapiocaSize) {
+                    totalPrice += selectedOptions.tapiocaSize.price;
+                }
+                
+                if (selectedOptions.tapiocaFillings) {
+                    selectedOptions.tapiocaFillings.forEach(f => {
+                        totalPrice += f.price;
+                    });
+                }
+            } else {
+                // Adicionar preços de recheios tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
+                if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
+                    if (selectedOptions.fillings) {
+                        selectedOptions.fillings.forEach(filling => {
+                            totalPrice += filling.price;
+                        });
+                    }
+                    
+                    if (selectedOptions.premiumFillings) {
+                        selectedOptions.premiumFillings.forEach(filling => {
+                            totalPrice += filling.price;
+                        });
+                    }
+                }
+                
+                // Adicionar preço do recheio para Mini Pastéis Doces
+                if (currentProduct.isMiniPastel && selectedOptions.filling) {
+                    totalPrice += selectedOptions.filling.price;
+                }
+            }
+            
             document.querySelector('.modal-price').textContent = `R$ ${totalPrice.toFixed(2)}`;
         }
 
@@ -1971,29 +2564,69 @@
         function addToCart() {
             if (!currentProduct) return;
             
-            // Validar seleções obrigatórias
-            if (!selectedOptions.size) {
-                alert('Por favor, selecione uma opção.');
-                return;
-            }
-            
-            // Validar recheio para Mini Pastéis Doces
-            if (currentProduct.isMiniPastel && !selectedOptions.filling) {
-                alert('Por favor, selecione um recheio.');
-                return;
-            }
-            
-            // Validar recheios apenas para produtos com recheios que não são Mini Pastéis
-            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
-                const selectedFillingsCount = getSelectedFillingsCount();
-                if (selectedFillingsCount !== selectedRecheiosCount) {
-                    alert(`Por favor, selecione exatamente ${selectedRecheiosCount} recheios.`);
+            // Validar seleções obrigatórias para combos
+            if (currentProduct.isCombo) {
+                // Para combo individual e completo
+                if (currentProduct.id === 19 || currentProduct.id === 22 || currentProduct.id === 20 || currentProduct.id === 23) {
+                    if (!selectedOptions.vitamina) {
+                        alert('Por favor, selecione uma vitamina.');
+                        return;
+                    }
+                }
+                
+                // Para combo completo (tapioca)
+                if (currentProduct.id === 20 || currentProduct.id === 23) {
+                    if (!selectedOptions.tapiocaSize) {
+                        alert('Por favor, selecione o tamanho da tapioca.');
+                        return;
+                    }
+                    
+                    const maxRecheios = parseInt(selectedOptions.tapiocaSize.name.match(/\d+/)?.[0]) || 1;
+                    const selectedCount = selectedOptions.tapiocaFillings?.length || 0;
+                    
+                    if (selectedCount !== maxRecheios) {
+                        alert(`Por favor, selecione exatamente ${maxRecheios} recheio(s) para a tapioca.`);
+                        return;
+                    }
+                }
+                
+                // Para combo casal
+                if (currentProduct.id === 21 || currentProduct.id === 24) {
+                    if (!selectedOptions.vitaminas || selectedOptions.vitaminas.length === 0) {
+                        alert('Por favor, selecione pelo menos 1 vitamina.');
+                        return;
+                    }
+                    
+                    if (selectedOptions.vitaminas.length > 2) {
+                        alert('Você só pode selecionar no máximo 2 vitaminas.');
+                        return;
+                    }
+                }
+            } else {
+                // Validações originais para outros produtos
+                if (!selectedOptions.size) {
+                    alert('Por favor, selecione uma opção.');
                     return;
                 }
                 
-                if (!selectedOptions.mixRecheios) {
-                    alert('Por favor, selecione se deseja misturar os recheios.');
+                // Validar recheio para Mini Pastéis Doces
+                if (currentProduct.isMiniPastel && !selectedOptions.filling) {
+                    alert('Por favor, selecione um recheio.');
                     return;
+                }
+                
+                // Validar recheios apenas para produtos com recheios que não são Mini Pastéis
+                if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
+                    const selectedFillingsCount = getSelectedFillingsCount();
+                    if (selectedFillingsCount !== selectedRecheiosCount) {
+                        alert(`Por favor, selecione exatamente ${selectedRecheiosCount} recheios.`);
+                        return;
+                    }
+                    
+                    if (!selectedOptions.mixRecheios) {
+                        alert('Por favor, selecione se deseja misturar os recheios.');
+                        return;
+                    }
                 }
             }
             
@@ -2006,24 +2639,60 @@
                 optionsDescription += `${currentProduct.hasRecheios ? 'Tamanho' : 'Opção'}: ${selectedOptions.size.name}`;
             }
             
-            // Adicionar recheio para Mini Pastéis Doces
-            if (currentProduct.isMiniPastel && selectedOptions.filling) {
-                optionsDescription += ` | Recheio: ${selectedOptions.filling.name}`;
-            }
-            
-            // Adicionar recheios tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
-            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel && selectedOptions.fillings && selectedOptions.fillings.length > 0) {
-                optionsDescription += ` | Recheios: ${selectedOptions.fillings.map(f => f.name).join(', ')}`;
-            }
-            
-            // Adicionar recheios premium (apenas para produtos premium)
-            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel && selectedOptions.premiumFillings && selectedOptions.premiumFillings.length > 0) {
-                optionsDescription += ` | Recheios Premium: ${selectedOptions.premiumFillings.map(f => f.name).join(', ')}`;
-            }
-            
-            // Adicionar opção de mistura (apenas para produtos com recheios que não são Mini Pastéis)
-            if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
-                optionsDescription += ` | Misturar: ${selectedOptions.mixRecheios === 'yes' ? 'Sim' : 'Não'}`;
+            // Adicionar opções de combo
+            if (currentProduct.isCombo) {
+                if (selectedOptions.vitamina) {
+                    optionsDescription += ` | Vitamina: ${selectedOptions.vitamina.name}`;
+                    if (selectedOptions.vitamina.price > 0) {
+                        optionsDescription += ` (+R$ ${selectedOptions.vitamina.price.toFixed(2)})`;
+                    }
+                }
+                
+                if (selectedOptions.vitaminas) {
+                    optionsDescription += ` | Vitaminas: ${selectedOptions.vitaminas.map(v => v.name).join(', ')}`;
+                    selectedOptions.vitaminas.forEach(v => {
+                        if (v.price > 0) {
+                            optionsDescription += ` (+R$ ${v.price.toFixed(2)})`;
+                        }
+                    });
+                }
+                
+                if (selectedOptions.tapiocaSize) {
+                    optionsDescription += ` | Tapioca: ${selectedOptions.tapiocaSize.name}`;
+                    if (selectedOptions.tapiocaSize.price > 0) {
+                        optionsDescription += ` (+R$ ${selectedOptions.tapiocaSize.price.toFixed(2)})`;
+                    }
+                }
+                
+                if (selectedOptions.tapiocaFillings && selectedOptions.tapiocaFillings.length > 0) {
+                    optionsDescription += ` | Recheios Tapioca: ${selectedOptions.tapiocaFillings.map(f => f.name).join(', ')}`;
+                    selectedOptions.tapiocaFillings.forEach(f => {
+                        if (f.price > 0) {
+                            optionsDescription += ` (+R$ ${f.price.toFixed(2)})`;
+                        }
+                    });
+                }
+            } else {
+                // Opções originais para produtos não-combo
+                // Adicionar recheio para Mini Pastéis Doces
+                if (currentProduct.isMiniPastel && selectedOptions.filling) {
+                    optionsDescription += ` | Recheio: ${selectedOptions.filling.name}`;
+                }
+                
+                // Adicionar recheios tradicionais (apenas para produtos com recheios que não são Mini Pastéis)
+                if (currentProduct.hasRecheios && !currentProduct.isMiniPastel && selectedOptions.fillings && selectedOptions.fillings.length > 0) {
+                    optionsDescription += ` | Recheios: ${selectedOptions.fillings.map(f => f.name).join(', ')}`;
+                }
+                
+                // Adicionar recheios premium (apenas para produtos premium)
+                if (currentProduct.hasRecheios && !currentProduct.isMiniPastel && selectedOptions.premiumFillings && selectedOptions.premiumFillings.length > 0) {
+                    optionsDescription += ` | Recheios Premium: ${selectedOptions.premiumFillings.map(f => f.name).join(', ')}`;
+                }
+                
+                // Adicionar opção de mistura (apenas para produtos com recheios que não são Mini Pastéis)
+                if (currentProduct.hasRecheios && !currentProduct.isMiniPastel) {
+                    optionsDescription += ` | Misturar: ${selectedOptions.mixRecheios === 'yes' ? 'Sim' : 'Não'}`;
+                }
             }
             
             // Adicionar ao carrinho
