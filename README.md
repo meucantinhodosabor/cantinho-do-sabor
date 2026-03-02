@@ -33,7 +33,7 @@ padding:15px;
 }
 
 .category{
-margin-top:25px;
+margin-top:30px;
 }
 
 .product{
@@ -62,9 +62,14 @@ font-weight:bold;
 font-size:16px;
 }
 
+.desc{
+font-size:13px;
+color:#777;
+}
+
 .price{
 font-weight:bold;
-margin-top:5px;
+margin-top:4px;
 }
 
 .controls{
@@ -120,88 +125,116 @@ Cantinho do Sabor
 
 <div class="container">
 
+<!-- COMBOS -->
+
 <div class="category">
 
 <h2>Combos Promocionais</h2>
 
 <div class="product">
-
-<img src="https://pin.it/5DyjyI6cH">
-
+<img src="https://images.unsplash.com/photo-1604908176997-4310b73a91b2">
 <div class="info">
-
 <div class="name">Dueto Tradicional</div>
-
-<div>2 Pastéis de 1 recheio</div>
-
-<div class="price">R$22.50</div>
-
+<div class="desc">2 Pastéis de 1 recheio (Carne, Mussarela, Coalho ou Frango)</div>
+<div class="price">R$22,50</div>
 <div class="controls">
-
 <button onclick="removeItem('Dueto Tradicional',22.5)">-</button>
-
 <span id="Dueto Tradicional">0</span>
-
 <button onclick="addItem('Dueto Tradicional',22.5)">+</button>
-
+</div>
+</div>
 </div>
 
 </div>
 
-</div>
-
-</div>
+<!-- PASTÉIS -->
 
 <div class="category">
 
 <h2>Clássicos Inesquecíveis</h2>
 
 <div class="product">
-
-<img src="https://pin.it/53c3Or9hA">
-
+<img src="https://images.unsplash.com/photo-1601050690597-df0568f70950">
 <div class="info">
-
 <div class="name">Caipira Especial</div>
-
-<div class="price">R$17.50</div>
-
+<div class="desc">Frango e milho</div>
+<div class="price">R$17,50</div>
 <div class="controls">
-
 <button onclick="removeItem('Caipira Especial',17.5)">-</button>
-
 <span id="Caipira Especial">0</span>
-
 <button onclick="addItem('Caipira Especial',17.5)">+</button>
-
 </div>
-
 </div>
-
 </div>
 
 <div class="product">
-
-<img src="https://pin.it/ardDy0C3U">
-
+<img src="https://images.unsplash.com/photo-1612392062798-2c0c6fcb1e0a">
 <div class="info">
-
 <div class="name">O Queridinho</div>
-
-<div class="price">R$17.50</div>
-
+<div class="desc">Carne e queijo</div>
+<div class="price">R$17,50</div>
 <div class="controls">
-
 <button onclick="removeItem('O Queridinho',17.5)">-</button>
-
 <span id="O Queridinho">0</span>
-
 <button onclick="addItem('O Queridinho',17.5)">+</button>
-
+</div>
+</div>
 </div>
 
 </div>
 
+<!-- ACOMPANHAMENTOS -->
+
+<div class="category">
+
+<h2>Acompanhamentos</h2>
+
+<div class="product">
+<img src="https://images.unsplash.com/photo-1576107232684-1279f390859f">
+<div class="info">
+<div class="name">Batata Frita Ondulada P</div>
+<div class="price">R$12,50</div>
+<div class="controls">
+<button onclick="removeItem('Batata P',12.5)">-</button>
+<span id="Batata P">0</span>
+<button onclick="addItem('Batata P',12.5)">+</button>
+</div>
+</div>
+</div>
+
+<div class="product">
+<img src="https://images.unsplash.com/photo-1576107232684-1279f390859f">
+<div class="info">
+<div class="name">Batata Frita Ondulada M</div>
+<div class="price">R$16,50</div>
+<div class="controls">
+<button onclick="removeItem('Batata M',16.5)">-</button>
+<span id="Batata M">0</span>
+<button onclick="addItem('Batata M',16.5)">+</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- SOBREMESA -->
+
+<div class="category">
+
+<h2>Sobremesas</h2>
+
+<div class="product">
+<img src="https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg">
+<div class="info">
+<div class="name">Mini Pastéis Pernambucanos</div>
+<div class="desc">6 unidades</div>
+<div class="price">R$16,50</div>
+<div class="controls">
+<button onclick="removeItem('Mini Pastel',16.5)">-</button>
+<span id="Mini Pastel">0</span>
+<button onclick="addItem('Mini Pastel',16.5)">+</button>
+</div>
+</div>
 </div>
 
 </div>
@@ -217,9 +250,7 @@ Total: R$ <span id="total">0.00</span>
 </div>
 
 <button onclick="enviarPedido()">
-
 Enviar Pedido
-
 </button>
 
 </div>
@@ -271,15 +302,15 @@ for(let item in cart){
 
 if(cart[item]>0){
 
-mensagem+= item + " x" + cart[item] + "%0A"
+mensagem+=item+" x"+cart[item]+"%0A"
 
 }
 
 }
 
-mensagem+="Total: R$ " + total.toFixed(2)
+mensagem+="Total: R$ "+total.toFixed(2)
 
-window.open("https://wa.me/5587933009283?text=" + mensagem)
+window.open("https://wa.me/5587933009283?text="+mensagem)
 
 }
 
