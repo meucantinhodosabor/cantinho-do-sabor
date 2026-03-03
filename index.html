@@ -1,487 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cantinho do Sabor</title>
-<style>
-/* Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-body { background: #fff; color: #333; }
-header { display: flex; align-items: center; padding: 10px 20px; background: #ff2d00; color: #fff; }
-header img.logo { width: 60px; height: 60px; border-radius: 50%; margin-right: 15px; }
-header h1 { font-size: 1.8em; }
-.container { max-width: 1200px; margin: auto; padding: 20px; }
-.category { margin-bottom: 40px; }
-.category h2 { font-size: 1.5em; margin-bottom: 10px; border-bottom: 2px solid #ff2d00; padding-bottom: 5px; }
-.products { display: flex; flex-wrap: wrap; gap: 15px; }
-.product { width: 200px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; cursor: pointer; transition: 0.2s; }
-.product:hover { transform: scale(1.03); }
-.product img { width: 100%; height: 150px; object-fit: cover; }
-.product-info { padding: 10px; }
-.product-info h3 { font-size: 1em; margin-bottom: 5px; }
-.product-info p { font-size: 0.9em; margin-bottom: 5px; }
-.product-info span { font-weight: bold; color: #ff2d00; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantinho do Sabor - Delivery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ifood-red: #ea1d2c;
+            --ifood-gray: #717171;
+            --ifood-light-gray: #f2f2f2;
+            --text-dark: #3e3e3e;
+            --success: #2e7d32;
+        }
 
-/* Modal */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.5); }
-.modal-content { background: #fff; margin: 50px auto; padding: 20px; border-radius: 10px; max-width: 500px; position: relative; }
-.modal-close { position: absolute; top: 10px; right: 15px; font-size: 1.2em; cursor: pointer; color: #333; }
-.modal h3 { margin-bottom: 10px; }
-.modal .options { margin-bottom: 10px; }
-.modal .options label { display: block; margin-bottom: 5px; }
-.modal .quantity { margin-bottom: 10px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #fff; color: var(--text-dark); padding-bottom: 100px; }
 
-/* Carrinho */
-.cart { position: fixed; bottom: 0; right: 0; background: #ff2d00; color: #fff; padding: 15px; border-top-left-radius: 10px; cursor: pointer; }
-.cart-items { position: fixed; bottom: 50px; right: 0; background: #fff; color: #333; width: 300px; max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 10px; display: none; }
-.cart-items ul { list-style: none; }
-.cart-items ul li { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
-.cart-items ul li:last-child { border-bottom: none; }
-button.add-cart, button.modal-add { background: #ff2d00; color: #fff; border: none; padding: 7px 12px; border-radius: 5px; cursor: pointer; }
-button.add-cart:hover, button.modal-add:hover { background: #e60000; }
+        /* Header Estilo iFood */
+        header { padding: 20px; text-align: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
+        .logo-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; border: 2px solid var(--ifood-red); }
+        header h1 { font-size: 1.4rem; color: var(--ifood-red); }
+        .status { font-size: 0.8rem; color: var(--success); font-weight: 600; }
 
-/* Responsive */
-@media(max-width:768px) {
-  .products { justify-content: center; }
-  .product { width: 45%; }
-}
-@media(max-width:480px) {
-  .product { width: 100%; }
-  .modal-content { width: 90%; }
-}
-</style>
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+
+        /* Categorias */
+        h2 { font-size: 1.2rem; margin: 25px 0 15px; font-weight: 700; border-left: 4px solid var(--ifood-red); padding-left: 10px; }
+
+        /* Cards de Produto */
+        .product-card {
+            display: flex; justify-content: space-between; padding: 16px; border-bottom: 1px solid #f2f2f2;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .product-card:hover { background-color: #fafafa; }
+        .product-info { flex: 1; padding-right: 12px; }
+        .product-info h3 { font-size: 1rem; margin-bottom: 4px; color: #333; }
+        .product-info p { font-size: 0.85rem; color: var(--ifood-gray); line-height: 1.2; margin-bottom: 8px; }
+        .product-price { color: var(--text-dark); font-weight: 600; font-size: 0.95rem; }
+        .product-img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; background: #eee; }
+
+        /* Modais */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal-content { 
+            background: white; position: fixed; bottom: 0; width: 100%; max-width: 600px; 
+            left: 50%; transform: translateX(-50%); padding: 20px; border-radius: 20px 20px 0 0;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .recheio-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 12px 0; border-bottom: 1px solid #eee; 
+        }
+        .recheio-item input { width: 20px; height: 20px; accent-color: var(--ifood-red); }
+
+        /* Carrinho Inferior */
+        #cart-bar {
+            display: none; position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: white; border-top: 1px solid #eee; padding: 15px 20px; z-index: 999;
+        }
+        .cart-btn {
+            background: var(--ifood-red); color: white; display: flex; justify-content: space-between;
+            padding: 14px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;
+        }
+
+        /* Formulário Checkout */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--ifood-gray); }
+        .form-group input, .form-group select { 
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none;
+        }
+
+        .btn-confirm { background: var(--ifood-red); color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+    </style>
 </head>
 <body>
 
 <header>
-<img class="logo" src="https://i.pinimg.com/736x/15/ac/c8/15acc8b00600f7f49f899cccbb55050d.jpg" alt="Logo">
-<h1>Delivery Sua Loja</h1>
+    <img src="1000232949.jpg" class="logo-img" alt="Logo">
+    <h1>Cantinho do Sabor</h1>
+    <p class="status">● Aberto agora</p>
 </header>
 
 <div class="container">
+    <h2>Pastéis</h2>
+    <div class="product-card" onclick="openModal('Pastel', 19.50, 'recheios')">
+        <div class="product-info">
+            <h3>Pastel Personalizado</h3>
+            <p>Escolha exatamente 3 recheios de sua preferência.</p>
+            <span class="product-price">R$ 19,50</span>
+        </div>
+        <img src="https://via.placeholder.com/100?text=Pastel" class="product-img">
+    </div>
 
-<!-- Categoria Combos Promocionais -->
-<div class="category" id="combos">
-<h2>Combos Promocionais!</h2>
-<div class="products">
-  <div class="product" onclick="openModal('duetoModal')">
-    <img src="https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg" alt="Dueto Tradicional">
-    <div class="product-info">
-      <h3>Dueto Tradicional</h3>
-      <p>2 Pastéis de 1 Recheio (Carne, Mussarela ou Coalho e Frango)</p>
-      <span>R$22,50</span>
+    <h2>Cuscuz</h2>
+    <div class="product-card" onclick="openModal('Cuscuz', 18.50, 'recheios')">
+        <div class="product-info">
+            <h3>Cuscuz Recheado</h3>
+            <p>Escolha 3 recheios. Acompanha manteiga.</p>
+            <span class="product-price">R$ 18,50</span>
+        </div>
+        <img src="https://via.placeholder.com/100?text=Cuscuz" class="product-img">
     </div>
-  </div>
-</div>
-</div>
 
-<!-- Modal Dueto Tradicional -->
-<div class="modal" id="duetoModal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('duetoModal')">&times;</span>
-    <h3>Dueto Tradicional</h3>
-    <div class="options">
-      <label>Escolha o 1° Pastel:</label>
-      <select id="dueto1">
-        <option value="Frango">Frango</option>
-        <option value="Carne">Carne</option>
-        <option value="Mussarela">Mussarela</option>
-        <option value="Coalho">Coalho</option>
-      </select>
+    <h2>Bebidas</h2>
+    <div class="product-card" onclick="addSimpleItem('Coca-Cola Lata', 5.00)">
+        <div class="product-info">
+            <h3>Coca-Cola Lata</h3>
+            <p>350ml gelada.</p>
+            <span class="product-price">R$ 5,00</span>
+        </div>
+        <img src="https://via.placeholder.com/100?text=Coca" class="product-img">
     </div>
-    <div class="options">
-      <label>Escolha o 2° Pastel:</label>
-      <select id="dueto2">
-        <option value="Frango">Frango</option>
-        <option value="Carne">Carne</option>
-        <option value="Mussarela">Mussarela</option>
-        <option value="Coalho">Coalho</option>
-      </select>
-    </div>
-    <button class="modal-add" onclick="addDuetoCart()">Adicionar ao Carrinho</button>
-  </div>
 </div>
 
-<!-- Aqui iniciaremos as próximas categorias -->
-  <!-- Categoria Batidinhas de Açaí Gourmet -->
-<div class="category" id="batidas">
-<h2>Batidinhas de Açaí Gourmet!</h2>
-<div class="products">
-  <!-- 300ml -->
-  <div class="product" onclick="openModal('acai300Modal')">
-    <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" alt="Açaí 300ml">
-    <div class="product-info">
-      <h3>1 Unidade 300ml</h3>
-      <span>R$14,90</span>
+<div id="recheioModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Escolha 3 recheios</h3>
+        <p style="color: var(--ifood-red); font-size: 0.8rem; margin-bottom: 10px;">Obrigatório selecionar 3</p>
+        <div id="recheiosList">
+            </div>
+        <button class="btn-confirm" onclick="confirmRecheios()">Adicionar</button>
+        <button onclick="closeModal('recheioModal')" style="width:100%; background:none; border:none; padding:10px; color:var(--ifood-gray);">Voltar</button>
     </div>
-  </div>
-  <div class="product" onclick="openModal('acai300Modal')">
-    <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" alt="Açaí 2 unidades 300ml">
-    <div class="product-info">
-      <h3>Combo 2 Unidades</h3>
-      <span>R$26,00</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('acai300Modal')">
-    <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" alt="Açaí 3 unidades 300ml">
-    <div class="product-info">
-      <h3>Combo 3 Unidades</h3>
-      <span>R$36,00</span>
-    </div>
-  </div>
-  <!-- 500ml -->
-  <div class="product" onclick="openModal('acai500Modal')">
-    <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" alt="Açaí 500ml">
-    <div class="product-info">
-      <h3>1 Unidade 500ml</h3>
-      <span>R$22,00</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('acai500Modal')">
-    <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" alt="Açaí 2 unidades 500ml">
-    <div class="product-info">
-      <h3>Combo 2 Unidades</h3>
-      <span>R$39,90</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('acai500Modal')">
-    <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" alt="Açaí 3 unidades 500ml">
-    <div class="product-info">
-      <h3>Combo 3 Unidades</h3>
-      <span>R$57,00</span>
-    </div>
-  </div>
-</div>
 </div>
 
-<!-- Modais Açaí -->
-<div class="modal" id="acai300Modal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('acai300Modal')">&times;</span>
-    <h3>Escolha sua Batidinha 300ml</h3>
-    <div class="options">
-      <label>Sabores:</label>
-      <select id="acai300Select">
-        <option value="Uva Cremosa">Uva Cremosa</option>
-        <option value="Abacaxi Cremoso">Abacaxi Cremoso</option>
-        <option value="Maracujá Cremoso">Maracujá Cremoso</option>
-        <option value="Morango Cremoso">Morango Cremoso</option>
-      </select>
+<div id="checkoutModal" class="modal">
+    <div class="modal-content">
+        <h3>Finalizar Pedido</h3>
+        <div id="cartItemsList" style="margin: 15px 0; font-size: 0.9rem; border-bottom: 1px solid #eee;"></div>
+        
+        <div class="form-group">
+            <label>Seu Nome</label>
+            <input type="text" id="nome" placeholder="Ex: João Silva">
+        </div>
+        <div class="form-group">
+            <label>Endereço Completo</label>
+            <input type="text" id="endereco" placeholder="Rua, número e bairro">
+        </div>
+        <div class="form-group">
+            <label>Forma de Pagamento</label>
+            <select id="pagamento">
+                <option value="Pix">Pix</option>
+                <option value="Cartão">Cartão</option>
+                <option value="Dinheiro">Dinheiro</option>
+            </select>
+        </div>
+        <button class="btn-confirm" onclick="enviarWhatsApp()">Enviar para o WhatsApp</button>
+        <button onclick="closeModal('checkoutModal')" style="width:100%; background:none; border:none; padding:10px; color:var(--ifood-gray);">Continuar Comprando</button>
     </div>
-    <button class="modal-add" onclick="addAcai300Cart()">Adicionar ao Carrinho</button>
-  </div>
 </div>
 
-<div class="modal" id="acai500Modal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('acai500Modal')">&times;</span>
-    <h3>Escolha sua Batidinha 500ml (+R$5)</h3>
-    <div class="options">
-      <label>Sabores:</label>
-      <select id="acai500Select">
-        <option value="Uva Cremosa">Uva Cremosa</option>
-        <option value="Abacaxi Cremoso">Abacaxi Cremoso</option>
-        <option value="Maracujá Cremoso">Maracujá Cremoso</option>
-        <option value="Morango Cremoso">Morango Cremoso</option>
-      </select>
+<div id="cart-bar">
+    <div class="cart-btn" onclick="openCheckout()">
+        <span><i class="fa-solid fa-bag-shopping"></i> <span id="cart-qty">0</span></span>
+        <span>Ver sacola</span>
+        <span id="cart-total">R$ 0,00</span>
     </div>
-    <button class="modal-add" onclick="addAcai500Cart()">Adicionar ao Carrinho</button>
-  </div>
 </div>
 
-<!-- Categoria Clássicos Inesquecíveis -->
-<div class="category" id="classicos">
-<h2>Clássicos Inesquecíveis!</h2>
-<div class="products">
-  <div class="product">
-    <img src="https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg" alt="Caipira Especial">
-    <div class="product-info">
-      <h3>Caipira Especial</h3>
-      <p>Frango/Milho</p>
-      <span>R$17,50</span>
-    </div>
-  </div>
-  <div class="product">
-    <img src="https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg" alt="O Queridinho">
-    <div class="product-info">
-      <h3>O Queridinho</h3>
-      <p>Carne/Queijo</p>
-      <span>R$17,50</span>
-    </div>
-  </div>
-  <div class="product">
-    <img src="https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg" alt="Pastel de Hotdog">
-    <div class="product-info">
-      <h3>Pastel de Hotdog</h3>
-      <p>Salsicha/Carne/Cheddar</p>
-      <span>R$17,50</span>
-    </div>
-  </div>
-  <!-- Continue todos os clássicos da lista aqui -->
-</div>
-</div>
-
-<!-- Categoria Monte o Seu Pastel Crocante -->
-<div class="category" id="montePastel">
-<h2>Monte o Seu Pastel Crocante!</h2>
-<div class="products">
-  <div class="product" onclick="openModal('pastelModal')">
-    <img src="https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg" alt="Monte seu Pastel">
-    <div class="product-info">
-      <h3>2 Recheios</h3>
-      <span>R$17,50</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('pastelModal')">
-    <img src="https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg" alt="Monte seu Pastel">
-    <div class="product-info">
-      <h3>3 Recheios</h3>
-      <span>R$19,50</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('pastelModal')">
-    <img src="https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg" alt="Monte seu Pastel">
-    <div class="product-info">
-      <h3>4 Recheios</h3>
-      <span>R$21,50</span>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal Monte Pastel -->
-<div class="modal" id="pastelModal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('pastelModal')">&times;</span>
-    <h3>Monte seu Pastel</h3>
-    <div class="options">
-      <label>Escolha seus Recheios (mínimo 3, máximo 3):</label>
-      <select id="pastelRecheios" multiple>
-        <option value="Frango">Frango</option>
-        <option value="Carne">Carne</option>
-        <option value="Pernil">Pernil</option>
-        <option value="Salsicha">Salsicha</option>
-        <option value="Mussarela">Mussarela</option>
-        <option value="Coalho">Coalho</option>
-        <option value="Milho">Milho</option>
-        <option value="Azeitona">Azeitona</option>
-        <option value="Cream Cheese">Cream Cheese</option>
-        <option value="Requeijão">Requeijão</option>
-        <option value="Cheddar">Cheddar</option>
-        <option value="Catupiry">Catupiry</option>
-        <option value="Alho Frito">Alho Frito</option>
-        <option value="Pimenta Calabresa">Pimenta Calabresa</option>
-      </select>
-    </div>
-    <button class="modal-add" onclick="addPastelCart()">Adicionar ao Carrinho</button>
-  </div>
-                       </div>
-                       <!-- Categoria Monte o Seu Cuscuz Recheado -->
-<div class="category" id="monteCuscuz">
-<h2>Monte o Seu Cuscuz Recheado!</h2>
-<div class="products">
-  <div class="product" onclick="openModal('cuscuzModal')">
-    <img src="https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg" alt="Monte seu Cuscuz">
-    <div class="product-info">
-      <h3>2 Recheios</h3>
-      <span>R$16,50</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('cuscuzModal')">
-    <img src="https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg" alt="Monte seu Cuscuz">
-    <div class="product-info">
-      <h3>3 Recheios</h3>
-      <span>R$18,50</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('cuscuzModal')">
-    <img src="https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg" alt="Monte seu Cuscuz">
-    <div class="product-info">
-      <h3>4 Recheios</h3>
-      <span>R$20,50</span>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal Monte Cuscuz -->
-<div class="modal" id="cuscuzModal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('cuscuzModal')">&times;</span>
-    <h3>Monte seu Cuscuz</h3>
-    <div class="options">
-      <label>Escolha seus Recheios (mínimo 3, máximo 3):</label>
-      <select id="cuscuzRecheios" multiple>
-        <option value="Frango">Frango</option>
-        <option value="Carne">Carne</option>
-        <option value="Pernil">Pernil</option>
-        <option value="Salsicha">Salsicha</option>
-        <option value="Mussarela">Mussarela</option>
-        <option value="Coalho">Coalho</option>
-        <option value="Milho">Milho</option>
-        <option value="Azeitona">Azeitona</option>
-        <option value="Cream Cheese">Cream Cheese</option>
-        <option value="Requeijão">Requeijão</option>
-        <option value="Cheddar">Cheddar</option>
-        <option value="Catupiry">Catupiry</option>
-        <option value="Alho Frito">Alho Frito</option>
-        <option value="Pimenta Calabresa">Pimenta Calabresa</option>
-      </select>
-    </div>
-    <button class="modal-add" onclick="addCuscuzCart()">Adicionar ao Carrinho</button>
-  </div>
-</div>
-
-<!-- Categoria Monte a Sua Tapioca Recheada -->
-<div class="category" id="monteTapioca">
-<h2>Monte a Sua Tapioca Recheada!</h2>
-<div class="products">
-  <div class="product" onclick="openModal('tapiocaModal')">
-    <img src="https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg" alt="Monte sua Tapioca">
-    <div class="product-info">
-      <h3>2 Recheios</h3>
-      <span>R$17,00</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('tapiocaModal')">
-    <img src="https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg" alt="Monte sua Tapioca">
-    <div class="product-info">
-      <h3>3 Recheios</h3>
-      <span>R$19,00</span>
-    </div>
-  </div>
-  <div class="product" onclick="openModal('tapiocaModal')">
-    <img src="https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg" alt="Monte sua Tapioca">
-    <div class="product-info">
-      <h3>4 Recheios</h3>
-      <span>R$21,00</span>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal Monte Tapioca -->
-<div class="modal" id="tapiocaModal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal('tapiocaModal')">&times;</span>
-    <h3>Monte sua Tapioca</h3>
-    <div class="options">
-      <label>Escolha seus Recheios (mínimo 3, máximo 3):</label>
-      <select id="tapiocaRecheios" multiple>
-        <option value="Frango">Frango</option>
-        <option value="Carne">Carne</option>
-        <option value="Pernil">Pernil</option>
-        <option value="Salsicha">Salsicha</option>
-        <option value="Mussarela">Mussarela</option>
-        <option value="Coalho">Coalho</option>
-        <option value="Milho">Milho</option>
-        <option value="Azeitona">Azeitona</option>
-        <option value="Cream Cheese">Cream Cheese</option>
-        <option value="Requeijão">Requeijão</option>
-        <option value="Cheddar">Cheddar</option>
-        <option value="Catupiry">Catupiry</option>
-        <option value="Alho Frito">Alho Frito</option>
-        <option value="Pimenta Calabresa">Pimenta Calabresa</option>
-      </select>
-    </div>
-    <button class="modal-add" onclick="addTapiocaCart()">Adicionar ao Carrinho</button>
-  </div>
-</div>
-
-<!-- Categoria Novidades Especiais -->
-<div class="category" id="novidades">
-<h2>Novidades Especiais!</h2>
-<div class="products">
-  <div class="product">
-    <img src="https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg" alt="Mini Pastéis Pernambucanos">
-    <div class="product-info">
-      <h3>Mini Pastéis Pernambucanos (6 Unidades)</h3>
-      <p>Recheados com Carne e polvilhados com açúcar e canela</p>
-      <span>R$16,50</span>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Carrinho de Compras -->
-<div id="cart">
-<h3>Carrinho de Compras</h3>
-<ul id="cartItems"></ul>
-<div id="cartTotal">Total: R$0,00</div>
-<button onclick="checkout()">Finalizar Pedido</button>
-</div>
-
-<!-- Scripts JavaScript -->
 <script>
-let cart = [];
+    let cart = [];
+    let currentItem = null;
+    const listaRecheios = ["Carne", "Queijo", "Frango", "Calabresa", "Presunto", "Ovo", "Milho", "Azeitona"];
 
-function openModal(id){document.getElementById(id).style.display='block';}
-function closeModal(id){document.getElementById(id).style.display='none';}
+    function openModal(name, price) {
+        currentItem = { name, price };
+        const list = document.getElementById('recheiosList');
+        list.innerHTML = '';
+        listaRecheios.forEach(r => {
+            list.innerHTML += `
+                <label class="recheio-item">
+                    <span>${r}</span>
+                    <input type="checkbox" name="recheio" value="${r}" onchange="checkLimit(this)">
+                </label>
+            `;
+        });
+        document.getElementById('recheioModal').style.display = 'block';
+    }
 
-function updateCart(){
-  const list = document.getElementById('cartItems');
-  list.innerHTML = '';
-  let total = 0;
-  cart.forEach((item,index)=>{
-    let li = document.createElement('li');
-    li.textContent = `${item.name} - R$${item.price.toFixed(2)}`;
-    list.appendChild(li);
-    total += item.price;
-  });
-  document.getElementById('cartTotal').textContent = `Total: R$${total.toFixed(2)}`;
-}
+    function checkLimit(el) {
+        const checked = document.querySelectorAll('input[name="recheio"]:checked');
+        if (checked.length > 3) {
+            el.checked = false;
+            alert("Escolha apenas 3 recheios!");
+        }
+    }
 
-function addAcai300Cart(){
-  let flavor = document.getElementById('acai300Select').value;
-  cart.push({name:`Batidinha 300ml - ${flavor}`, price:14.9});
-  updateCart();
-  closeModal('acai300Modal');
-}
+    function confirmRecheios() {
+        const checked = Array.from(document.querySelectorAll('input[name="recheio"]:checked')).map(i => i.value);
+        if (checked.length !== 3) {
+            alert("Você precisa escolher exatamente 3 recheios!");
+            return;
+        }
+        addSimpleItem(`${currentItem.name} (${checked.join(', ')})`, currentItem.price);
+        closeModal('recheioModal');
+    }
 
-function addAcai500Cart(){
-  let flavor = document.getElementById('acai500Select').value;
-  cart.push({name:`Batidinha 500ml - ${flavor}`, price:22+5});
-  updateCart();
-  closeModal('acai500Modal');
-}
+    function addSimpleItem(name, price) {
+        cart.push({ name, price });
+        updateCartBar();
+    }
 
-function addPastelCart(){
-  let select = document.getElementById('pastelRecheios');
-  let selected = Array.from(select.selectedOptions).map(opt=>opt.value);
-  if(selected.length !==3){alert('Escolha exatamente 3 recheios!'); return;}
-  let name = `Pastel - ${selected.join(', ')}`;
-  let price = 19.5; // preço base médio
-  cart.push({name,price});
-  updateCart();
-  closeModal('pastelModal');
-}
+    function updateCartBar() {
+        const bar = document.getElementById('cart-bar');
+        if (cart.length > 0) {
+            bar.style.display = 'block';
+            document.getElementById('cart-qty').innerText = cart.length;
+            const total = cart.reduce((acc, i) => acc + i.price, 0);
+            document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
+        }
+    }
 
-function addCuscuzCart(){
-  let select = document.getElementById('cuscuzRecheios');
-  let selected = Array.from(select.selectedOptions).map(opt=>opt.value);
-  if(selected.length !==3){alert('Escolha exatamente 3 recheios!'); return;}
-  let name = `Cuscuz - ${selected.join(', ')}`;
-  let price = 18.5; 
-  cart.push({name,price});
-  updateCart();
-  closeModal('cuscuzModal');
-}
+    function openCheckout() {
+        const list = document.getElementById('cartItemsList');
+        list.innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${i.name}</span> <b>R$ ${i.price.toFixed(2)}</b></div>`).join('');
+        document.getElementById('checkoutModal').style.display = 'block';
+    }
 
-function addTapiocaCart(){
-  let select = document.getElementById('tapiocaRecheios');
-  let selected = Array.from(select.selectedOptions).map(opt=>opt.value);
-  if(selected.length !==3){alert('Escolha exatamente 3 recheios!'); return;}
-  let name = `Tapioca - ${selected.join(', ')}`;
-  let price = 19; 
-  cart.push({name,price});
-  updateCart();
-  closeModal('tapiocaModal');
-}
+    function enviarWhatsApp() {
+        const nome = document.getElementById('nome').value;
+        const endereco = document.getElementById('endereco').value;
+        const pag = document.getElementById('pagamento').value;
 
-function checkout(){
-  if(cart.length===0){alert('Carrinho vazio!'); return;}
-  alert('Pedido finalizado!\nItens:\n'+cart.map(i=>i.name).join('\n')+'\nTotal: R$'+cart.reduce((a,b)=>a+b.price,0).toFixed(2));
-  cart=[]; updateCart();
-}
-  </script>
+        if (!nome || !endereco) { alert("Preencha nome e endereço!"); return; }
+
+        let texto = `*NOVO PEDIDO - CANTINHO DO SABOR*\n--------------------------\n`;
+        texto += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pag}\n\n*ITENS:*\n`;
+        
+        cart.forEach(i => { texto += `• ${i.name} - R$ ${i.price.toFixed(2)}\n`; });
+        
+        const total = cart.reduce((acc, i) => acc + i.price, 0);
+        texto += `\n*TOTAL: R$ ${total.toFixed(2)}*`;
+
+        const fone = "5587933009283";
+        window.open(`https://wa.me/${fone}?text=${encodeURIComponent(texto)}`);
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+</script>
+
+</body>
+</html>
