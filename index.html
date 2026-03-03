@@ -3,242 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantinho do Sabor - Delivery</title>
+    <title>Cantinho do Sabor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --ifood-red: #ea1d2c;
             --ifood-gray: #717171;
-            --ifood-light-gray: #f2f2f2;
+            --ifood-bg: #f7f7f7;
             --text-dark: #3e3e3e;
             --success: #2e7d32;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: #fff; color: var(--text-dark); padding-bottom: 100px; }
+        body { background-color: #fff; color: var(--text-dark); padding-bottom: 120px; }
 
         /* Header Estilo iFood */
-        header { padding: 20px; text-align: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
-        .logo-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; border: 2px solid var(--ifood-red); }
-        header h1 { font-size: 1.4rem; color: var(--ifood-red); }
-        .status { font-size: 0.8rem; color: var(--success); font-weight: 600; }
-
-        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
-
-        /* Categorias */
-        h2 { font-size: 1.2rem; margin: 25px 0 15px; font-weight: 700; border-left: 4px solid var(--ifood-red); padding-left: 10px; }
-
-        /* Cards de Produto */
-        .product-card {
-            display: flex; justify-content: space-between; padding: 16px; border-bottom: 1px solid #f2f2f2;
-            cursor: pointer; transition: background 0.2s;
+        header { 
+            padding: 20px; text-align: center; border-bottom: 1px solid #eee; 
+            background: white; position: sticky; top: 0; z-index: 100;
         }
-        .product-card:hover { background-color: #fafafa; }
-        .product-info { flex: 1; padding-right: 12px; }
+        .logo-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid var(--ifood-red); padding: 2px; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        .category-header { 
+            margin: 30px 0 15px; padding-bottom: 8px; border-bottom: 2px solid #f2f2f2;
+        }
+        .category-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); }
+        .category-img { width: 100%; height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; }
+
+        /* Cards iFood */
+        .product-card {
+            display: flex; justify-content: space-between; padding: 16px 0; 
+            border-bottom: 1px solid #f2f2f2; cursor: pointer;
+        }
+        .product-info { flex: 1; padding-right: 15px; }
         .product-info h3 { font-size: 1rem; margin-bottom: 4px; color: #333; }
-        .product-info p { font-size: 0.85rem; color: var(--ifood-gray); line-height: 1.2; margin-bottom: 8px; }
-        .product-price { color: var(--text-dark); font-weight: 600; font-size: 0.95rem; }
-        .product-img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; background: #eee; }
+        .product-info p { font-size: 0.85rem; color: var(--ifood-gray); line-height: 1.3; margin-bottom: 6px; }
+        .product-price { color: #333; font-weight: 600; font-size: 0.95rem; }
+        .product-img-card { width: 95px; height: 95px; border-radius: 8px; object-fit: cover; background: #eee; }
 
         /* Modais */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
         .modal-content { 
             background: white; position: fixed; bottom: 0; width: 100%; max-width: 600px; 
-            left: 50%; transform: translateX(-50%); padding: 20px; border-radius: 20px 20px 0 0;
-            max-height: 90vh; overflow-y: auto;
+            left: 50%; transform: translateX(-50%); padding: 25px; border-radius: 20px 20px 0 0;
+            max-height: 85vh; overflow-y: auto;
         }
-        .recheio-item { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 12px 0; border-bottom: 1px solid #eee; 
-        }
-        .recheio-item input { width: 20px; height: 20px; accent-color: var(--ifood-red); }
+        .recheio-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .recheio-item input { width: 22px; height: 22px; accent-color: var(--ifood-red); }
 
-        /* Carrinho Inferior */
+        /* Barra Inferior */
         #cart-bar {
-            display: none; position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: white; border-top: 1px solid #eee; padding: 15px 20px; z-index: 999;
+            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 500px; z-index: 999;
         }
         .cart-btn {
             background: var(--ifood-red); color: white; display: flex; justify-content: space-between;
-            padding: 14px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;
+            padding: 16px 25px; border-radius: 12px; font-weight: bold; box-shadow: 0 10px 25px rgba(234, 29, 44, 0.3);
         }
 
-        /* Formulário Checkout */
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--ifood-gray); }
-        .form-group input, .form-group select { 
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none;
-        }
-
-        .btn-confirm { background: var(--ifood-red); color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .btn-confirm { background: var(--ifood-red); color: white; border: none; width: 100%; padding: 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="1000232949.jpg" class="logo-img" alt="Logo">
+    <img src="https://i.pinimg.com/736x/15/ac/c8/15acc8b00600f7f49f899cccbb55050d.jpg" class="logo-img" alt="Logo">
     <h1>Cantinho do Sabor</h1>
-    <p class="status">● Aberto agora</p>
+    <p style="font-size: 0.85rem; color: var(--success); font-weight: 600;">Aberto agora</p>
 </header>
 
-<div class="container">
-    <h2>Pastéis</h2>
-    <div class="product-card" onclick="openModal('Pastel', 19.50, 'recheios')">
+<div class="container" id="menu">
+    <div class="category-header"><h2>Combos Promocionais!</h2></div>
+    <div class="product-card" onclick="addToCart('Dueto Tradicional (2 Pastéis)', 22.50)">
         <div class="product-info">
-            <h3>Pastel Personalizado</h3>
-            <p>Escolha exatamente 3 recheios de sua preferência.</p>
-            <span class="product-price">R$ 19,50</span>
+            <h3>Dueto Tradicional</h3>
+            <p>2 Pastéis de 1 Recheio (Carne, Mussarela ou Coalho e Frango)</p>
+            <span class="product-price">R$ 22,50</span>
         </div>
-        <img src="https://via.placeholder.com/100?text=Pastel" class="product-img">
+        <img src="https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg" class="product-img-card">
     </div>
 
-    <h2>Cuscuz</h2>
-    <div class="product-card" onclick="openModal('Cuscuz', 18.50, 'recheios')">
-        <div class="product-info">
-            <h3>Cuscuz Recheado</h3>
-            <p>Escolha 3 recheios. Acompanha manteiga.</p>
-            <span class="product-price">R$ 18,50</span>
-        </div>
-        <img src="https://via.placeholder.com/100?text=Cuscuz" class="product-img">
+    <div class="category-header">
+        <img src="https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg" class="category-img">
+        <h2>Batidinhas de Açaí Gourmet!</h2>
+    </div>
+    <div class="product-card" onclick="addToCart('Batidinha Açaí 300ml (1 Un)', 14.90)">
+        <div class="product-info"><h3>1 Unidade (300ml)</h3><span class="product-price">R$ 14,90</span></div>
+    </div>
+    <div class="product-card" onclick="addToCart('Combo 2 Açaí 300ml', 26.00)">
+        <div class="product-info"><h3>Combo 2 Unidades (300ml)</h3><span class="product-price">R$ 26,00</span></div>
+    </div>
+    <div class="product-card" onclick="addToCart('Combo 2 Açaí 500ml', 39.90)">
+        <div class="product-info"><h3>Combo 2 Unidades (500ml)</h3><span class="product-price">R$ 39,90</span></div>
     </div>
 
-    <h2>Bebidas</h2>
-    <div class="product-card" onclick="addSimpleItem('Coca-Cola Lata', 5.00)">
+    <div class="category-header"><h2>Clássicos Inesquecíveis!</h2></div>
+    <div class="product-card" onclick="addToCart('Caipira Especial (Frango/Milho)', 17.50)">
+        <div class="product-info"><h3>Caipira Especial</h3><p>Frango e Milho</p><span class="product-price">R$ 17,50</span></div>
+        <img src="https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg" class="product-img-card">
+    </div>
+    <div class="product-card" onclick="addToCart('O Queridinho (Carne/Queijo)', 17.50)">
+        <div class="product-info"><h3>O Queridinho</h3><p>Carne e Queijo</p><span class="product-price">R$ 17,50</span></div>
+        <img src="https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg" class="product-img-card">
+    </div>
+
+    <div class="category-header">
+        <img src="https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg" class="category-img">
+        <h2>Monte o Seu Pastel Crocante!</h2>
+    </div>
+    <div class="product-card" onclick="openCustom('Pastel', 17.50, 2)">
+        <div class="product-info"><h3>Pastel 2 Recheios</h3><span class="product-price">R$ 17,50</span></div>
+    </div>
+    <div class="product-card" onclick="openCustom('Pastel', 19.50, 3)">
+        <div class="product-info"><h3>Pastel 3 Recheios</h3><span class="product-price">R$ 19,50</span></div>
+    </div>
+    <div class="product-card" onclick="openCustom('Pastel', 21.50, 4)">
+        <div class="product-info"><h3>Pastel 4 Recheios</h3><span class="product-price">R$ 21,50</span></div>
+    </div>
+
+    <div class="category-header"><h2>Novidades Especiais!</h2></div>
+    <div class="product-card" onclick="addToCart('Mini Pastéis Pernambucanos (6un)', 16.50)">
         <div class="product-info">
-            <h3>Coca-Cola Lata</h3>
-            <p>350ml gelada.</p>
-            <span class="product-price">R$ 5,00</span>
+            <h3>Mini Pastéis Pernambucanos (6 Unidades)</h3>
+            <p>Recheados com Carne e polvilhados com açúcar e canela!</p>
+            <span class="product-price">R$ 16,50</span>
         </div>
-        <img src="https://via.placeholder.com/100?text=Coca" class="product-img">
+        <img src="https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg" class="product-img-card">
     </div>
 </div>
 
-<div id="recheioModal" class="modal">
+<div id="customModal" class="modal">
     <div class="modal-content">
-        <h3 id="modalTitle">Escolha 3 recheios</h3>
-        <p style="color: var(--ifood-red); font-size: 0.8rem; margin-bottom: 10px;">Obrigatório selecionar 3</p>
-        <div id="recheiosList">
-            </div>
-        <button class="btn-confirm" onclick="confirmRecheios()">Adicionar</button>
-        <button onclick="closeModal('recheioModal')" style="width:100%; background:none; border:none; padding:10px; color:var(--ifood-gray);">Voltar</button>
+        <h3 id="modalTitle">Escolha os recheios</h3>
+        <p id="limitText" style="color: var(--ifood-red); font-size: 0.85rem; margin-bottom: 15px; font-weight: 600;"></p>
+        <div id="recheiosList"></div>
+        <button class="btn-confirm" onclick="confirmCustom()">Adicionar à sacola</button>
+        <button onclick="closeModal('customModal')" style="width:100%; border:none; background:none; padding:10px; color:var(--ifood-gray);">Cancelar</button>
     </div>
 </div>
 
 <div id="checkoutModal" class="modal">
     <div class="modal-content">
-        <h3>Finalizar Pedido</h3>
-        <div id="cartItemsList" style="margin: 15px 0; font-size: 0.9rem; border-bottom: 1px solid #eee;"></div>
+        <h3>Sua Sacola</h3>
+        <div id="cartItems" style="margin: 20px 0; border-bottom: 1px solid #eee;"></div>
         
         <div class="form-group">
-            <label>Seu Nome</label>
-            <input type="text" id="nome" placeholder="Ex: João Silva">
+            <label>Nome</label>
+            <input type="text" id="cust-name">
         </div>
         <div class="form-group">
-            <label>Endereço Completo</label>
-            <input type="text" id="endereco" placeholder="Rua, número e bairro">
+            <label>Endereço</label>
+            <input type="text" id="cust-addr">
         </div>
         <div class="form-group">
-            <label>Forma de Pagamento</label>
-            <select id="pagamento">
+            <label>Pagamento</label>
+            <select id="cust-pay">
                 <option value="Pix">Pix</option>
+                <option value="Dinheiro">Dinheiro (Troco nas observações)</option>
                 <option value="Cartão">Cartão</option>
-                <option value="Dinheiro">Dinheiro</option>
             </select>
         </div>
-        <button class="btn-confirm" onclick="enviarWhatsApp()">Enviar para o WhatsApp</button>
-        <button onclick="closeModal('checkoutModal')" style="width:100%; background:none; border:none; padding:10px; color:var(--ifood-gray);">Continuar Comprando</button>
+        <button class="btn-confirm" onclick="checkout()">Finalizar Pedido</button>
+        <button onclick="closeModal('checkoutModal')" style="width:100%; border:none; background:none; padding:10px; color:var(--ifood-gray);">Continuar Comprando</button>
     </div>
 </div>
 
 <div id="cart-bar">
     <div class="cart-btn" onclick="openCheckout()">
-        <span><i class="fa-solid fa-bag-shopping"></i> <span id="cart-qty">0</span></span>
-        <span>Ver sacola</span>
+        <span id="cart-qty">0</span>
+        <span>Ver Sacola</span>
         <span id="cart-total">R$ 0,00</span>
     </div>
 </div>
 
 <script>
     let cart = [];
-    let currentItem = null;
-    const listaRecheios = ["Carne", "Queijo", "Frango", "Calabresa", "Presunto", "Ovo", "Milho", "Azeitona"];
+    let activeCustom = null;
+    const recheiosData = ["Frango", "Carne", "Pernil", "Salsicha", "Mussarela", "Coalho", "Milho", "Azeitona", "Cream Cheese", "Cheddar", "Catupiry", "Alho Frito"];
 
-    function openModal(name, price) {
-        currentItem = { name, price };
+    function openCustom(type, price, limit) {
+        activeCustom = { type, price, limit };
+        document.getElementById('modalTitle').innerText = `Escolha ${limit} recheios para seu ${type}`;
+        document.getElementById('limitText').innerText = `Obrigatório selecionar ${limit}`;
+        
         const list = document.getElementById('recheiosList');
         list.innerHTML = '';
-        listaRecheios.forEach(r => {
+        recheiosData.forEach(r => {
             list.innerHTML += `
                 <label class="recheio-item">
                     <span>${r}</span>
-                    <input type="checkbox" name="recheio" value="${r}" onchange="checkLimit(this)">
+                    <input type="checkbox" name="rech" value="${r}" onchange="checkLimit(this)">
                 </label>
             `;
         });
-        document.getElementById('recheioModal').style.display = 'block';
+        document.getElementById('customModal').style.display = 'block';
     }
 
     function checkLimit(el) {
-        const checked = document.querySelectorAll('input[name="recheio"]:checked');
-        if (checked.length > 3) {
+        const checked = document.querySelectorAll('input[name="rech"]:checked');
+        if (checked.length > activeCustom.limit) {
             el.checked = false;
-            alert("Escolha apenas 3 recheios!");
         }
     }
 
-    function confirmRecheios() {
-        const checked = Array.from(document.querySelectorAll('input[name="recheio"]:checked')).map(i => i.value);
-        if (checked.length !== 3) {
-            alert("Você precisa escolher exatamente 3 recheios!");
+    function confirmCustom() {
+        const checked = Array.from(document.querySelectorAll('input[name="rech"]:checked')).map(i => i.value);
+        if (checked.length !== activeCustom.limit) {
+            alert(`Por favor, selecione exatamente ${activeCustom.limit} recheios.`);
             return;
         }
-        addSimpleItem(`${currentItem.name} (${checked.join(', ')})`, currentItem.price);
-        closeModal('recheioModal');
+        addToCart(`${activeCustom.type} (${checked.join(', ')})`, activeCustom.price);
+        closeModal('customModal');
     }
 
-    function addSimpleItem(name, price) {
+    function addToCart(name, price) {
         cart.push({ name, price });
-        updateCartBar();
+        updateCart();
     }
 
-    function updateCartBar() {
-        const bar = document.getElementById('cart-bar');
-        if (cart.length > 0) {
-            bar.style.display = 'block';
-            document.getElementById('cart-qty').innerText = cart.length;
-            const total = cart.reduce((acc, i) => acc + i.price, 0);
-            document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
-        }
+    function updateCart() {
+        document.getElementById('cart-bar').style.display = cart.length > 0 ? 'block' : 'none';
+        document.getElementById('cart-qty').innerText = cart.length;
+        const total = cart.reduce((acc, i) => acc + i.price, 0);
+        document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
     }
 
     function openCheckout() {
-        const list = document.getElementById('cartItemsList');
-        list.innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${i.name}</span> <b>R$ ${i.price.toFixed(2)}</b></div>`).join('');
+        const list = document.getElementById('cartItems');
+        list.innerHTML = cart.map(i => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:0.9rem">${i.name}</span>
+                <span style="font-weight:600">R$ ${i.price.toFixed(2)}</span>
+            </div>
+        `).join('');
         document.getElementById('checkoutModal').style.display = 'block';
     }
 
-    function enviarWhatsApp() {
-        const nome = document.getElementById('nome').value;
-        const endereco = document.getElementById('endereco').value;
-        const pag = document.getElementById('pagamento').value;
+    function checkout() {
+        const n = document.getElementById('cust-name').value;
+        const a = document.getElementById('cust-addr').value;
+        const p = document.getElementById('cust-pay').value;
+        if (!n || !a) return alert("Preencha os campos!");
 
-        if (!nome || !endereco) { alert("Preencha nome e endereço!"); return; }
-
-        let texto = `*NOVO PEDIDO - CANTINHO DO SABOR*\n--------------------------\n`;
-        texto += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pag}\n\n*ITENS:*\n`;
-        
-        cart.forEach(i => { texto += `• ${i.name} - R$ ${i.price.toFixed(2)}\n`; });
-        
+        let text = `*PEDIDO CANTINHO DO SABOR*\n\n*Cliente:* ${n}\n*Endereço:* ${a}\n*Pagamento:* ${p}\n\n*ITENS:*\n`;
+        cart.forEach(i => text += `• ${i.name} - R$ ${i.price.toFixed(2)}\n`);
         const total = cart.reduce((acc, i) => acc + i.price, 0);
-        texto += `\n*TOTAL: R$ ${total.toFixed(2)}*`;
+        text += `\n*TOTAL: R$ ${total.toFixed(2)}*`;
 
-        const fone = "5587933009283";
-        window.open(`https://wa.me/${fone}?text=${encodeURIComponent(texto)}`);
+        window.open(`https://wa.me/5587933009283?text=${encodeURIComponent(text)}`);
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 </script>
-
 </body>
 </html>
