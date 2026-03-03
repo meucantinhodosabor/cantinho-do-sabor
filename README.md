@@ -1,555 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantinho do Sabor</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --orange: linear-gradient(135deg, #ff8c00 0%, #ff4500 100%);
-            --bg: #f8f9fa; --white: #ffffff; --text: #1a1a1a;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text); padding-bottom: 100px; }
-        
-        .hero { width: 100%; height: 180px; background: url('https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg') center/cover; }
-        header { background: var(--white); padding: 20px; text-align: center; margin-top: -30px; border-radius: 30px 30px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
-        .logo { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--white); margin-top: -60px; object-fit: cover; }
-        
-        .nav-cats { 
-            display: flex; 
-            gap: 8px; 
-            overflow-x: auto; 
-            padding: 15px; 
-            background: var(--white); 
-            position: sticky; 
-            top: 0; 
-            z-index: 10; 
-            border-bottom: 1px solid #eee;
-            scrollbar-width: thin;
-            -webkit-overflow-scrolling: touch;
-        }
-        .nav-cats::-webkit-scrollbar {
-            height: 3px;
-        }
-        .nav-cats::-webkit-scrollbar-thumb {
-            background: #ff4500;
-            border-radius: 10px;
-        }
-        .cat-btn { 
-            padding: 10px 18px; 
-            border-radius: 25px; 
-            border: none; 
-            background: #f0f0f0; 
-            white-space: nowrap; 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .cat-btn:hover { 
-            background: #e0e0e0; 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .cat-btn.active { 
-            background: #ff4500; 
-            color: white; 
-            box-shadow: 0 4px 10px rgba(255,69,0,0.3);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cantinho do Sabor</title>
 
-        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
-        .card { background: var(--white); border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1px solid #eee; transition: transform 0.2s; }
-        .card:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .card-info { flex: 1; }
-        .card-info h3 { font-size: 0.95rem; margin-bottom: 5px; }
-        .card-info p { font-size: 0.75rem; color: #666; margin-bottom: 8px; }
-        .price { color: #ff4500; font-weight: 700; }
-        .card-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; margin-left: 10px; }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f8f8f8;
+}
 
-        #cart-bar { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; background: var(--orange); color: white; padding: 15px 20px; border-radius: 30px; justify-content: space-between; font-weight: 700; z-index: 1000; cursor: pointer; box-shadow: 0 5px 20px rgba(255,69,0,0.4); }
+header {
+    background: #ff6600;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: flex-end; }
-        .modal-content { background: white; width: 100%; max-width: 500px; margin: 0 auto; border-radius: 30px 30px 0 0; padding: 25px; max-height: 90vh; overflow-y: auto; }
-        
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; }
-        
-        .btn-add { background: var(--orange); color: white; border: none; width: 100%; padding: 15px; border-radius: 30px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .btn-add:disabled { opacity: 0.5; cursor: not-allowed; }
-        .opt-box { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; border: 1px solid #eee; transition: all 0.2s; }
-        .opt-box:hover { background: #f0f0f0; }
-        .opt-box.selected { background: #ff4500; color: white; border-color: #ff4500; }
-        .size-selector { display: flex; gap: 10px; margin-bottom: 15px; }
-        .size-btn { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 12px; background: white; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.2s; }
-        .size-btn:hover { background: #f0f0f0; }
-        .size-btn.selected { background: #ff4500; color: white; border-color: #ff4500; }
-        .combo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 15px 0; }
-        .combo-option { border: 1px solid #eee; padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; font-weight: 600; }
-        .combo-option:hover { background: #f0f0f0; }
-        .combo-option.selected { background: #ff4500; color: white; border-color: #ff4500; }
-        .recheios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; max-height: 350px; overflow-y: auto; padding: 5px; }
-        .recheio-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; background: #f9f9f9; padding: 8px; border-radius: 8px; }
-    </style>
+.container {
+    padding: 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    margin: 0 0 5px 0;
+}
+
+.card button {
+    background: #ff6600;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+#cart-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    display: none;
+    justify-content: space-between;
+    width: 85%;
+    max-width: 400px;
+    cursor: pointer;
+}
+
+#cart-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cart-controls button {
+    margin: 0 5px;
+}
+
+.close {
+    text-align: right;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
 </head>
+
 <body>
 
-<div class="hero"></div>
-<header>
-    <img src="https://i.pinimg.com/736x/15/ac/c8/15acc8b00600f7f49f899cccbb55050d.jpg" class="logo">
-    <h1 style="font-size: 1.3rem; margin-top: 10px;">Cantinho do Sabor</h1>
-    <p style="font-size: 0.8rem; color: #2e7d32; font-weight: 700;">● Aberto • Delivery via WhatsApp</p>
-</header>
+<header>Cantinho do Sabor</header>
 
-<div class="nav-cats" id="cat-nav">
-    <button class="cat-btn active" onclick="filtrar('todos')">Todos</button>
-    <button class="cat-btn" onclick="filtrar('combos')">Combos</button>
-    <button class="cat-btn" onclick="filtrar('acai')">Açaí Gourmet</button>
-    <button class="cat-btn" onclick="filtrar('classicos')">Clássicos</button>
-    <button class="cat-btn" onclick="filtrar('monte')">Monte o Seu</button>
-    <button class="cat-btn" onclick="filtrar('cuscuz')">Cuscuz</button>
-    <button class="cat-btn" onclick="filtrar('tapioca')">Tapioca</button>
-    <button class="cat-btn" onclick="filtrar('porcoes')">Porções</button>
-    <button class="cat-btn" onclick="filtrar('bebidas')">Bebidas</button>
-    <button class="cat-btn" onclick="filtrar('novidades')">Novidades</button>
+<div class="container">
+
+<div class="card">
+<h3>Pastel de Carne</h3>
+<p>R$ 10.00</p>
+<button onclick="addToCart('Pastel de Carne',10)">Adicionar</button>
 </div>
 
-<div class="container" id="menu"></div>
-
-<div id="cart-bar" onclick="mostrarCarrinho()">
-    <span id="c-qty">0</span>
-    <span>Ver Sacola</span>
-    <span id="c-total">R$ 0,00</span>
+<div class="card">
+<h3>Pastel de Queijo</h3>
+<p>R$ 9.00</p>
+<button onclick="addToCart('Pastel de Queijo',9)">Adicionar</button>
 </div>
 
-<div id="modal-custom" class="modal"><div class="modal-content" id="custom-body"></div></div>
-<div id="modal-cart" class="modal">
-    <div class="modal-content">
-        <h2 style="margin-bottom:20px">🛍️ Sua Sacola</h2>
-        <div id="cart-list" style="margin: 15px 0;"></div>
-        <hr><br>
-        <form id="f-checkout">
-            <div class="form-group"><label>Nome *</label><input type="text" id="f-nome" required></div>
-            <div class="form-group"><label>Endereço e Número *</label><input type="text" id="f-rua" required></div>
-            <div class="form-group"><label>Referência *</label><input type="text" id="f-ref" required></div>
-            <div class="form-group">
-                <label>Pagamento *</label>
-                <select id="f-pay" onchange="checkPix()" required>
-                    <option value="">Escolha...</option>
-                    <option value="Pix">Pix</option>
-                    <option value="Dinheiro">Dinheiro</option>
-                    <option value="Cartão">Cartão</option>
-                </select>
-            </div>
-            <div id="pix-info" style="display:none; background:#fff5eb; padding:15px; border:1px dashed #ff4500; text-align:center; font-size:0.8rem; border-radius:12px; margin:10px 0;">
-                Chave Pix: <strong>82e5f2e0-772e-46d6-8ec9-3dbcf9b2c54c</strong><br>
-                <button type="button" onclick="navigator.clipboard.writeText('82e5f2e0-772e-46d6-8ec9-3dbcf9b2c54c');alert('Chave Pix copiada!')" style="background:#ff4500; color:white; border:none; padding:5px 15px; border-radius:20px; margin-top:8px; cursor:pointer">Copiar Chave</button>
-            </div>
-            <h3 style="text-align:right; margin:15px 0;">Total: <span id="f-total">R$ 0,00</span></h3>
-            <button type="submit" class="btn-add">FINALIZAR NO WHATSAPP</button>
-        </form>
-        <button onclick="fecharModais()" style="width:100%; border:none; background:none; padding:15px; color:#666; font-weight:600; cursor:pointer">Voltar</button>
-    </div>
+<div class="card">
+<h3>Refrigerante Lata</h3>
+<p>R$ 6.00</p>
+<button onclick="addToCart('Refrigerante Lata',6)">Adicionar</button>
+</div>
+
+</div>
+
+<!-- Barra do Carrinho -->
+<div id="cart-bar" onclick="abrirSacola()">
+<span id="c-qty">0 itens</span>
+<span id="c-total">R$ 0.00</span>
+</div>
+
+<!-- Modal -->
+<div id="cart-modal">
+<div class="modal-content">
+<div class="close" onclick="fecharSacola()">X</div>
+
+<h3>Sua Sacola</h3>
+<div id="cart-items"></div>
+
+<p id="info-entrega">🚚 Entrega Grátis aplicada!</p>
+
+<h3>Total: <span id="f-total">R$ 0.00</span></h3>
+
+<button onclick="finalizarPedido()" style="width:100%;margin-top:10px;background:#25D366;">
+Finalizar pelo WhatsApp
+</button>
+
+</div>
 </div>
 
 <script>
-    const TEL = "5587933009283";
-    let cart = [];
-    let currentItem = null;
-    let selectedSize = null;
-    let selectedPrice = null;
-    let selectedCombo = null;
-    let selectedRecheios = [];
+let cart = [];
 
-    const recheios = [
-        "Frango", "Carne", "Pernil", "Salsicha", "Mussarela", "Coalho", 
-        "Milho", "Azeitona", "Cream Cheese", "Requeijão", "Cheddar", 
-        "Catupiry", "Alho Frito", "Pimenta Calabresa"
-    ];
+// Adicionar
+function addToCart(nome, preco){
+    const item = cart.find(i => i.nome === nome);
+    if(item){
+        item.qtd++;
+    } else {
+        cart.push({nome, preco, qtd:1});
+    }
+    atualizarUI();
+}
 
-    const db = [
-        // Combos
-        {id:1, nome:'Dueto Tradicional', preco:22.50, desc:'2 Pastéis (Carne, Frango, Mussarela ou Coalho)', cat:'combos', img:'https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg', tipo:'dueto'},
-        
-        // Açaí Gourmet
-        {id:2, nome:'Batidinha de Açaí 300ml', preco:14.90, cat:'acai', img:'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', tipo:'acai'},
-        {id:3, nome:'Batidinha de Açaí 500ml', preco:22.00, cat:'acai', img:'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', tipo:'acai'},
-        
-        // Clássicos
-        {id:4, nome:'Caipira Especial', preco:17.50, desc:'Frango/Milho', cat:'classicos', img:'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg'},
-        {id:5, nome:'O Queridinho', preco:17.50, desc:'Carne/Queijo', cat:'classicos', img:'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg'},
-        {id:6, nome:'Pastel de Hotdog', preco:17.50, desc:'Salsicha/Carne/Cheddar', cat:'classicos', img:'https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg'},
-        {id:7, nome:'Frango Dourado', preco:18.00, desc:'Frango/Queijo', cat:'classicos', img:'https://i.pinimg.com/736x/90/7b/a5/907ba5cb7574a1ad9aa2eb0548c9eed4.jpg'},
-        {id:8, nome:'Sabor Mediterrâneo', preco:18.00, desc:'Carne/Azeitonas', cat:'classicos', img:'https://i.pinimg.com/736x/8f/f6/b2/8ff6b260aa8709cce002ec39f97a464c.jpg'},
-        {id:9, nome:'Super Cremoso', preco:18.50, desc:'Frango/Requeijão', cat:'classicos', img:'https://i.pinimg.com/736x/66/20/80/662080576d5755f1fb79d243117a37d8.jpg'},
-        {id:10, nome:'Frango Clássico', preco:18.50, desc:'Frango/Catupiry/Milho', cat:'classicos', img:'https://i.pinimg.com/736x/f4/29/44/f42944f3d798cf35a1e4fb028e62813a.jpg'},
-        {id:11, nome:'Cheddar Melt', preco:18.50, desc:'Carne/Cheddar', cat:'classicos', img:'https://i.pinimg.com/736x/3b/ee/28/3bee28d4d4e562a48782b3c1371d4009.jpg'},
-        {id:12, nome:'Trio Imperial', preco:18.50, desc:'3 Queijos', cat:'classicos', img:'https://i.pinimg.com/736x/25/44/bb/2544bb486fc56f83130814b41c27b0a9.jpg'},
-        {id:13, nome:'Pernil Cremoso', preco:19.50, desc:'Pernil/Catupiry/Milho', cat:'classicos', img:'https://i.pinimg.com/736x/ee/65/0e/ee650e334bd5020ba51dfa1b32043d60.jpg'},
-        {id:14, nome:'Pernil Especial', preco:20.00, desc:'Pernil/Coalho/Requeijão', cat:'classicos', img:'https://i.pinimg.com/736x/de/29/bf/de29bf0cfd6c1b1b2a52e37ea4e05c07.jpg'},
-        {id:15, nome:'Frango Gourmet', preco:20.00, desc:'Cream Cheese/Azeitona', cat:'classicos', img:'https://i.pinimg.com/736x/fb/c8/f4/fbc8f415a71bfb628aed9f182affe245.jpg'},
-        {id:16, nome:'Carne Completa', preco:20.00, desc:'Queijo/Milho/Azeitona', cat:'classicos', img:'https://i.pinimg.com/736x/e8/ed/20/e8ed20d0214d3033fdf86b708e2ac5fd.jpg'},
-        
-        // Monte o Seu Pastel
-        {id:17, nome:'Monte seu Pastel (2 Recheios)', preco:17.50, cat:'monte', tipo:'monte', max:2, min:1, img:'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg'},
-        {id:18, nome:'Monte seu Pastel (3 Recheios)', preco:19.50, cat:'monte', tipo:'monte', max:3, min:2, img:'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg'},
-        {id:19, nome:'Monte seu Pastel (4 Recheios)', preco:21.50, cat:'monte', tipo:'monte', max:4, min:3, img:'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg'},
-        
-        // Cuscuz
-        {id:20, nome:'Cuscuz (2 Recheios)', preco:16.50, cat:'cuscuz', tipo:'monte', max:2, min:1, img:'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg'},
-        {id:21, nome:'Cuscuz (3 Recheios)', preco:18.50, cat:'cuscuz', tipo:'monte', max:3, min:2, img:'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg'},
-        {id:22, nome:'Cuscuz (4 Recheios)', preco:20.50, cat:'cuscuz', tipo:'monte', max:4, min:3, img:'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg'},
-        
-        // Tapioca
-        {id:23, nome:'Tapioca (2 Recheios)', preco:17.00, cat:'tapioca', tipo:'monte', max:2, min:1, img:'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg'},
-        {id:24, nome:'Tapioca (3 Recheios)', preco:19.00, cat:'tapioca', tipo:'monte', max:3, min:2, img:'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg'},
-        {id:25, nome:'Tapioca (4 Recheios)', preco:21.00, cat:'tapioca', tipo:'monte', max:4, min:3, img:'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg'},
-        
-        // Porções
-        {id:26, nome:'Batata Frita Ondulada P', preco:12.50, cat:'porcoes', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:27, nome:'Batata Frita Ondulada M', preco:16.50, cat:'porcoes', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:28, nome:'Batata Frita Palito P', preco:10.00, cat:'porcoes', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:29, nome:'Batata Frita Palito M', preco:14.00, cat:'porcoes', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:30, nome:'Bolinhas de Carne de Sol P (100g)', preco:12.00, cat:'porcoes', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:31, nome:'Bolinhas de Carne de Sol M (200g)', preco:21.00, cat:'porcoes', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:32, nome:'Mini Pastéis Pernambucanos (6 un)', preco:9.50, cat:'porcoes', img:'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg'},
-        
-        // Bebidas
-        {id:33, nome:'Batidinha de Uva Cremosa', preco:7.50, cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/12/99/22/1299226e7417a8c5bcdaf7d21a0ac45e.jpg'},
-        {id:34, nome:'Batidinha de Abacaxi Cremoso', preco:7.50, cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/e2/96/29/e2962983d1f17481a303aa9d5a506f3c.jpg'},
-        {id:35, nome:'Batidinha de Maracujá Cremoso', preco:9.50, cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/42/82/a9/4282a913d5a689015ecc849a6a27029b.jpg'},
-        {id:36, nome:'Batidinha de Morango Cremoso', preco:9.50, cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/f5/35/5a/f5355aa77f9f84ce9c48cdad0901598d.jpg'},
-        {id:37, nome:'Espanhola', preco:7.50, desc:'Uva, Abacaxi e Leite condensado', cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/be/52/f9/be52f94c1721ef6e573bf97c56204c95.jpg'},
-        {id:38, nome:'Morancujá', preco:9.50, desc:'Morango e Maracujá', cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/52/07/e3/5207e32580c9e67594e2eabafd60631d.jpg'},
-        {id:39, nome:'Morango com Abacaxi', preco:8.50, cat:'bebidas', tipo:'drink', img:'https://i.pinimg.com/736x/52/07/e3/5207e32580c9e67594e2eabafd60631d.jpg'},
-        
-        // Novidades
-        {id:40, nome:'Mini Pastéis Pernambucanos', preco:16.50, desc:'6 unidades recheados com Carne, polvilhados com açúcar e canela', cat:'novidades', img:'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg'}
-    ];
+// Alterar quantidade
+function alterarQtd(nome, tipo){
+    const item = cart.find(i => i.nome === nome);
+    if(!item) return;
 
-    // Inicializar com todos os produtos
-    window.onload = function() {
-        filtrar('todos');
-    };
-
-    function filtrar(categoria) {
-        // Atualizar botões ativos
-        document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        // Filtrar produtos
-        let produtosFiltrados = [];
-        if (categoria === 'todos') {
-            produtosFiltrados = db;
-        } else {
-            produtosFiltrados = db.filter(item => item.cat === categoria);
-        }
-        
-        // Renderizar menu
-        const menu = document.getElementById('menu');
-        if (produtosFiltrados.length === 0) {
-            menu.innerHTML = '<div style="text-align:center; padding:40px; color:#666">Nenhum produto encontrado</div>';
-        } else {
-            menu.innerHTML = produtosFiltrados.map(item => `
-                <div class="card" onclick="clickProd(${item.id})">
-                    <div class="card-info">
-                        <h3>${item.nome}</h3>
-                        <p>${item.desc || ''}</p>
-                        <span class="price">R$ ${item.preco.toFixed(2)}</span>
-                    </div>
-                    ${item.img ? `<img src="${item.img}" class="card-img">` : ''}
-                </div>
-            `).join('');
+    if(tipo === 'mais'){
+        item.qtd++;
+    } else {
+        item.qtd--;
+        if(item.qtd <= 0){
+            cart = cart.filter(i => i.nome !== nome);
         }
     }
+    atualizarUI();
+}
 
-    function clickProd(id) {
-        const item = db.find(x => x.id === id);
-        if (item.tipo === 'dueto') return openDueto(item);
-        if (item.tipo === 'monte') return openMonte(item);
-        if (item.tipo === 'drink') return openDrink(item);
-        if (item.tipo === 'acai') return openAcai(item);
-        adicionarAoCarrinho(item.nome, item.preco);
-    }
+// Atualizar interface
+function atualizarUI(){
+    let total = 0;
+    let qtdTotal = 0;
+    const lista = document.getElementById("cart-items");
+    lista.innerHTML = "";
 
-    function adicionarAoCarrinho(nome, preco, detalhes = "") {
-        const key = nome + detalhes;
-        const existing = cart.find(item => (item.nome + item.detalhes) === key);
-        
-        if (existing) {
-            existing.qtd++;
-        } else {
-            cart.push({ nome, preco, qtd: 1, detalhes });
-        }
-        
-        atualizarUI();
-    }
+    cart.forEach(item=>{
+        total += item.preco * item.qtd;
+        qtdTotal += item.qtd;
 
-    function atualizarUI() {
-        let total = 0;
-        let qtd = 0;
-        
-        cart.forEach(item => {
-            qtd += item.qtd;
-            total += item.preco * item.qtd;
-        });
-        
-        document.getElementById('cart-bar').style.display = qtd > 0 ? 'flex' : 'none';
-        document.getElementById('c-qty').innerText = qtd + (qtd === 1 ? ' item' : ' itens');
-        document.getElementById('c-total').innerText = 'R$ ' + total.toFixed(2);
-        document.getElementById('f-total').innerText = 'R$ ' + total.toFixed(2);
-    }
-
-    function mostrarCarrinho() {
-        const cartList = document.getElementById('cart-list');
-        if (cart.length === 0) {
-            cartList.innerHTML = '<p style="text-align:center; color:#666; padding:20px">Sua sacola está vazia</p>';
-        } else {
-            cartList.innerHTML = cart.map((item, index) => `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:12px; background:#f9f9f9; border-radius:12px">
-                    <div style="flex:1">
-                        <strong style="font-size:0.95rem">${item.qtd}x ${item.nome}</strong>
-                        ${item.detalhes ? `<br><small style="color:#666; font-size:0.75rem">${item.detalhes}</small>` : ''}
-                    </div>
-                    <div style="display:flex; align-items:center; gap:8px">
-                        <span style="font-weight:700; color:#ff4500">R$ ${(item.preco * item.qtd).toFixed(2)}</span>
-                        <div style="display:flex; gap:5px">
-                            <button onclick="alterarQuantidade(${index}, -1)" style="background:#ff4500; color:white; border:none; width:30px; height:30px; border-radius:8px; cursor:pointer; font-weight:700">-</button>
-                            <button onclick="alterarQuantidade(${index}, 1)" style="background:#ff4500; color:white; border:none; width:30px; height:30px; border-radius:8px; cursor:pointer; font-weight:700">+</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        document.getElementById('modal-cart').style.display = 'flex';
-    }
-
-    function alterarQuantidade(index, delta) {
-        cart[index].qtd += delta;
-        if (cart[index].qtd <= 0) {
-            cart.splice(index, 1);
-        }
-        atualizarUI();
-        mostrarCarrinho();
-    }
-
-    function checkPix() {
-        const paySelect = document.getElementById('f-pay');
-        const pixInfo = document.getElementById('pix-info');
-        pixInfo.style.display = paySelect.value === 'Pix' ? 'block' : 'none';
-    }
-
-    function fecharModais() {
-        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-    }
-
-    function openDueto(item) {
-        const modalBody = document.getElementById('custom-body');
-        modalBody.innerHTML = `
-            <h3 style="margin-bottom:10px">${item.nome}</h3>
-            <img src="${item.img}" style="width:100%; max-height:200px; object-fit:cover; border-radius:15px; margin:10px 0">
-            <p style="margin-bottom:15px; color:#666">${item.desc}</p>
-            
-            <div style="margin:15px 0">
-                <label style="font-weight:600; display:block; margin-bottom:5px">1º Pastel:</label>
-                <select id="sabor1" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:10px">
-                    <option>Carne</option>
-                    <option>Frango</option>
-                    <option>Mussarela</option>
-                    <option>Coalho</option>
-                </select>
-                
-                <label style="font-weight:600; display:block; margin-bottom:5px">2º Pastel:</label>
-                <select id="sabor2" style="width:100%; padding:12px; margin-bottom:5px; border:1px solid #ddd; border-radius:10px">
-                    <option>Carne</option>
-                    <option>Frango</option>
-                    <option>Mussarela</option>
-                    <option>Coalho</option>
-                </select>
+        lista.innerHTML += `
+        <div class="cart-item">
+            <div>
+                ${item.nome}<br>
+                R$ ${item.preco.toFixed(2)}
             </div>
-            
-            <button class="btn-add" onclick="adicionarDueto()">ADICIONAR À SACOLA</button>
+            <div class="cart-controls">
+                <button onclick="alterarQtd('${item.nome}','menos')">-</button>
+                ${item.qtd}
+                <button onclick="alterarQtd('${item.nome}','mais')">+</button>
+            </div>
+        </div>
         `;
-        document.getElementById('modal-custom').style.display = 'flex';
-    }
+    });
 
-    function adicionarDueto() {
-        const s1 = document.getElementById('sabor1').value;
-        const s2 = document.getElementById('sabor2').value;
-        adicionarAoCarrinho('Dueto Tradicional', 22.50, `Sabores: ${s1} e ${s2}`);
-        fecharModais();
-    }
+    document.getElementById("c-qty").innerText = qtdTotal + (qtdTotal === 1 ? " item" : " itens");
+    document.getElementById("c-total").innerText = "R$ " + total.toFixed(2);
+    document.getElementById("f-total").innerText = "R$ " + total.toFixed(2);
 
-    function openAcai(item) {
-        const modalBody = document.getElementById('custom-body');
-        modalBody.innerHTML = `
-            <h3 style="margin-bottom:10px">${item.nome}</h3>
-            <img src="${item.img}" style="width:100%; max-height:200px; object-fit:cover; border-radius:15px; margin:10px 0">
-            
-            <div class="size-selector">
-                <div class="size-btn" onclick="selecionarTamanhoAcai(300)">300ml</div>
-                <div class="size-btn" onclick="selecionarTamanhoAcai(500)">500ml</div>
-            </div>
-            
-            <div id="acaiOptions" style="margin-top:20px">
-                ${gerarOpcoesAcai(300)}
-            </div>
-        `;
-        document.getElementById('modal-custom').style.display = 'flex';
-    }
+    document.getElementById("cart-bar").style.display = qtdTotal > 0 ? "flex" : "none";
+}
 
-    function selecionarTamanhoAcai(size) {
-        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
-        event.target.classList.add('selected');
-        document.getElementById('acaiOptions').innerHTML = gerarOpcoesAcai(size);
-    }
+// Abrir/Fechar
+function abrirSacola(){
+    document.getElementById("cart-modal").style.display = "flex";
+}
 
-    function gerarOpcoesAcai(size) {
-        if (size === 300) {
-            return `
-                <div class="combo-grid">
-                    <div class="combo-option" onclick="selecionarComboAcai(1, 300, 14.90)">1 un<br>R$ 14,90</div>
-                    <div class="combo-option" onclick="selecionarComboAcai(2, 300, 26.00)">2 un<br>R$ 26,00</div>
-                    <div class="combo-option" onclick="selecionarComboAcai(3, 300, 36.00)">3 un<br>R$ 36,00</div>
-                </div>
-                <button class="btn-add" onclick="adicionarComboAcai()" id="addAcaiBtn" disabled>ADICIONAR À SACOLA</button>
-            `;
-        } else {
-            return `
-                <div class="combo-grid">
-                    <div class="combo-option" onclick="selecionarComboAcai(1, 500, 22.00)">1 un<br>R$ 22,00</div>
-                    <div class="combo-option" onclick="selecionarComboAcai(2, 500, 39.90)">2 un<br>R$ 39,90</div>
-                    <div class="combo-option" onclick="selecionarComboAcai(3, 500, 57.00)">3 un<br>R$ 57,00</div>
-                </div>
-                <button class="btn-add" onclick="adicionarComboAcai()" id="addAcaiBtn" disabled>ADICIONAR À SACOLA</button>
-            `;
-        }
-    }
+function fecharSacola(){
+    document.getElementById("cart-modal").style.display = "none";
+}
 
-    function selecionarComboAcai(qty, size, price) {
-        document.querySelectorAll('.combo-option').forEach(btn => btn.classList.remove('selected'));
-        event.target.classList.add('selected');
-        selectedCombo = {qty, size, price};
-        document.getElementById('addAcaiBtn').disabled = false;
-    }
+// Finalizar
+function finalizarPedido(){
+    if(cart.length === 0) return;
 
-    function adicionarComboAcai() {
-        if (!selectedCombo) return alert('Selecione uma opção');
-        adicionarAoCarrinho(`Açaí ${selectedCombo.size}ml (${selectedCombo.qty} un)`, selectedCombo.price);
-        fecharModais();
-    }
+    let mensagem = "🛒 *Novo Pedido - Cantinho do Sabor*%0A%0A";
 
-    function openMonte(item) {
-        selectedRecheios = [];
-        currentItem = item;
-        
-        const modalBody = document.getElementById('custom-body');
-        modalBody.innerHTML = `
-            <h3 style="margin-bottom:10px">${item.nome}</h3>
-            <img src="${item.img}" style="width:100%; max-height:200px; object-fit:cover; border-radius:15px; margin:10px 0">
-            <p style="color:#ff4500; font-weight:bold; margin-bottom:15px; background:#fff0e6; padding:10px; border-radius:8px">
-                Selecione de ${item.min} a ${item.max} recheios
-            </p>
-            
-            <div class="recheios-grid">
-                ${recheios.map(r => `
-                    <label class="recheio-item">
-                        <input type="checkbox" value="${r}" onchange="atualizarRecheios(this, ${item.min}, ${item.max})"> ${r}
-                    </label>
-                `).join('')}
-            </div>
-            
-            <button class="btn-add" id="addMonteBtn" onclick="adicionarMonte()" disabled>ADICIONAR À SACOLA</button>
-        `;
-        document.getElementById('modal-custom').style.display = 'flex';
-    }
+    cart.forEach(item=>{
+        mensagem += `• ${item.nome} (${item.qtd}x) - R$ ${(item.preco*item.qtd).toFixed(2)}%0A`;
+    });
 
-    function atualizarRecheios(checkbox, min, max) {
-        if (checkbox.checked) {
-            selectedRecheios.push(checkbox.value);
-        } else {
-            selectedRecheios = selectedRecheios.filter(r => r !== checkbox.value);
-        }
-        
-        // Desabilitar checkboxes se atingir o máximo
-        document.querySelectorAll('.recheio-item input').forEach(cb => {
-            if (!cb.checked && selectedRecheios.length >= max) {
-                cb.disabled = true;
-            } else {
-                cb.disabled = false;
-            }
-        });
-        
-        // Habilitar botão se quantidade válida
-        const addBtn = document.getElementById('addMonteBtn');
-        addBtn.disabled = !(selectedRecheios.length >= min && selectedRecheios.length <= max);
-    }
+    const total = cart.reduce((acc,item)=>acc + item.preco*item.qtd,0);
 
-    function adicionarMonte() {
-        if (!currentItem || selectedRecheios.length === 0) return;
-        adicionarAoCarrinho(currentItem.nome, currentItem.preco, `Recheios: ${selectedRecheios.join(', ')}`);
-        fecharModais();
-    }
+    mensagem += `%0A🚚 Entrega: GRÁTIS`;
+    mensagem += `%0A💰 *Total: R$ ${total.toFixed(2)}*`;
 
-    function openDrink(item) {
-        currentItem = item;
-        const modalBody = document.getElementById('custom-body');
-        modalBody.innerHTML = `
-            <h3 style="margin-bottom:10px">${item.nome}</h3>
-            <img src="${item.img}" style="width:100%; max-height:200px; object-fit:cover; border-radius:15px; margin:10px 0">
-            
-            <div class="size-selector" style="margin:20px 0">
-                <div class="size-btn" onclick="selecionarTamanhoDrink(300, ${item.preco})">300ml - R$ ${item.preco.toFixed(2)}</div>
-                <div class="size-btn" onclick="selecionarTamanhoDrink(500, ${item.preco + 5})">500ml - R$ ${(item.preco + 5).toFixed(2)}</div>
-            </div>
-            
-            <button class="btn-add" onclick="adicionarDrink()" id="addDrinkBtn" disabled>ADICIONAR À SACOLA</button>
-        `;
-        document.getElementById('modal-custom').style.display = 'flex';
-    }
-
-    function selecionarTamanhoDrink(size, price) {
-        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
-        event.target.classList.add('selected');
-        selectedSize = size;
-        selectedPrice = price;
-        document.getElementById('addDrinkBtn').disabled = false;
-    }
-
-    function adicionarDrink() {
-        if (!selectedSize) return alert('Selecione um tamanho');
-        adicionarAoCarrinho(`${currentItem.nome} (${selectedSize}ml)`, selectedPrice);
-        fecharModais();
-    }
-
-    document.getElementById('f-checkout').onsubmit = (e) => {
-        e.preventDefault();
-        
-        const nome = document.getElementById('f-nome').value;
-        const endereco = document.getElementById('f-rua').value;
-        const ref = document.getElementById('f-ref').value;
-        const pagamento = document.getElementById('f-pay').value;
-        const total = document.getElementById('f-total').innerText;
-        
-        let itemsText = '';
-        cart.forEach(item => {
-            itemsText += `${item.qtd}x ${item.nome} ${item.detalhes ? '- ' + item.detalhes : ''}\n`;
-        });
-        
-        const message = `*CANTINHO DO SABOR - NOVO PEDIDO*\n\n` +
-            `*Cliente:* ${nome}\n` +
-            `*Endereço:* ${endereco}\n` +
-            `*Referência:* ${ref}\n` +
-            `*Pagamento:* ${pagamento}\n\n` +
-            `*ITENS:*\n${itemsText}\n` +
-            `*TOTAL:* ${total}`;
-        
-        window.open(`https://wa.me/${TEL}?text=${encodeURIComponent(message)}`);
-    };
+    window.open(`https://wa.me/5587933009283?text=${mensagem}`,"_blank");
+}
 </script>
+
 </body>
 </html>
