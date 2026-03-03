@@ -40,7 +40,17 @@
         .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
         
         .btn-add { background: var(--orange); color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .btn-add:disabled { opacity: 0.5; cursor: not-allowed; }
         .opt-box { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; border: 1px solid #eee; }
+        .opt-box.selected { background: #ff4500; color: white; border-color: #ff4500; }
+        .size-selector { display: flex; gap: 10px; margin-bottom: 15px; }
+        .size-btn { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background: white; cursor: pointer; text-align: center; }
+        .size-btn.selected { background: #ff4500; color: white; border-color: #ff4500; }
+        .combo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 15px 0; }
+        .combo-option { border: 1px solid #eee; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; }
+        .combo-option.selected { background: #ff4500; color: white; }
+        .recheios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0; max-height: 300px; overflow-y: auto; }
+        .recheio-item { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -55,13 +65,12 @@
 <div class="nav-cats" id="cat-nav">
     <button class="cat-btn active" onclick="filter('Todos')">Todos</button>
     <button class="cat-btn" onclick="filter('Combos')">Combos</button>
-    <button class="cat-btn" onclick="filter('Açaí')">Açaí</button>
+    <button class="cat-btn" onclick="filter('Açaí Gourmet')">Açaí Gourmet</button>
     <button class="cat-btn" onclick="filter('Clássicos')">Clássicos</button>
     <button class="cat-btn" onclick="filter('Monte o Seu')">Monte o Seu</button>
     <button class="cat-btn" onclick="filter('Cuscuz')">Cuscuz</button>
     <button class="cat-btn" onclick="filter('Tapioca')">Tapioca</button>
-    <button class="cat-btn" onclick="filter('Porções')">Porções</button>
-    <button class="cat-btn" onclick="filter('Bebidas')">Bebidas</button>
+    <button class="cat-btn" onclick="filter('Novidades')">Novidades</button>
 </div>
 
 <div class="container" id="menu"></div>
@@ -105,58 +114,93 @@
 <script>
     const TEL = "5587933009283";
     let cart = [];
-    const recheios = ["Frango", "Carne", "Pernil", "Salsicha", "Mussarela", "Coalho", "Milho", "Azeitona", "Cream Cheese", "Requeijão", "Cheddar", "Catupiry", "Alho Frito", "Pimenta"];
+    let currentItem = null;
+    let selectedSize = null;
+    let selectedCombo = null;
+    let selectedRecheios = [];
+
+    const recheios = [
+        "Frango", "Carne", "Pernil", "Salsicha", "Mussarela", "Coalho", 
+        "Milho", "Azeitona", "Cream Cheese", "Requeijão", "Cheddar", 
+        "Catupiry", "Alho Frito", "Pimenta Calabresa"
+    ];
 
     const db = [
-        {id:1, n:'Dueto Tradicional', p:22.50, d:'2 Pastéis (Carne, Frango, Mussarela ou Coalho)', cat:'Combos', type:'dueto'},
-        {id:2, n:'Batidinha de Açaí 300ml', p:14.90, d:'Combos: 2un R$26 / 3un R$36', cat:'Açaí', type:'acai', vol:300},
-        {id:3, n:'Batidinha de Açaí 500ml', p:22.00, d:'Combos: 2un R$39.90 / 3un R$57', cat:'Açaí', type:'acai', vol:500},
-        {id:4, n:'Caipira Especial (Frango/Milho)', p:17.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg'},
-        {id:5, n:'O Queridinho (Carne/Queijo)', p:17.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg'},
-        {id:6, n:'Pastel de Hotdog', p:17.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg'},
-        {id:7, n:'Frango Dourado', p:18.00, cat:'Clássicos', img:'https://i.pinimg.com/736x/90/7b/a5/907ba5cb7574a1ad9aa2eb0548c9eed4.jpg'},
-        {id:8, n:'Sabor Mediterrâneo', p:18.00, cat:'Clássicos', img:'https://i.pinimg.com/736x/8f/f6/b2/8ff6b260aa8709cce002ec39f97a464c.jpg'},
-        {id:9, n:'Super Cremoso', p:18.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/66/20/80/662080576d5755f1fb79d243117a37d8.jpg'},
-        {id:10, n:'Frango Clássico', p:18.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/f4/29/44/f42944f3d798cf35a1e4fb028e62813a.jpg'},
-        {id:11, n:'Cheddar Melt', p:18.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/3b/ee/28/3bee28d4d4e562a48782b3c1371d4009.jpg'},
-        {id:12, n:'Trio Imperial', p:18.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/25/44/bb/2544bb486fc56f83130814b41c27b0a9.jpg'},
-        {id:13, n:'Pernil Cremoso', p:19.50, cat:'Clássicos', img:'https://i.pinimg.com/736x/ee/65/0e/ee650e334bd5020ba51dfa1b32043d60.jpg'},
-        {id:14, n:'Pernil Especial', p:20.00, cat:'Clássicos', img:'https://i.pinimg.com/736x/de/29/bf/de29bf0cfd6c1b1b2a52e37ea4e05c07.jpg'},
-        {id:15, n:'Frango Gourmet', p:20.00, cat:'Clássicos', img:'https://i.pinimg.com/736x/fb/c8/f4/fbc8f415a71bfb628aed9f182affe245.jpg'},
-        {id:16, n:'Carne Completa', p:20.00, cat:'Clássicos', img:'https://i.pinimg.com/736x/e8/ed/20/e8ed20d0214d3033fdf86b708e2ac5fd.jpg'},
-        {id:17, n:'Monte seu Pastel (2 Rech)', p:17.50, cat:'Monte o Seu', type:'monte', max:2},
-        {id:18, n:'Monte seu Pastel (3 Rech)', p:19.50, cat:'Monte o Seu', type:'monte', max:3},
-        {id:19, n:'Monte seu Pastel (4 Rech)', p:21.50, cat:'Monte o Seu', type:'monte', max:4},
-        {id:20, n:'Cuscuz (2 Rech)', p:16.50, cat:'Cuscuz', type:'monte', max:2},
-        {id:21, n:'Cuscuz (3 Rech)', p:18.50, cat:'Cuscuz', type:'monte', max:3},
-        {id:22, n:'Cuscuz (4 Rech)', p:20.50, cat:'Cuscuz', type:'monte', max:4},
-        {id:23, n:'Tapioca (2 Rech)', p:17.00, cat:'Tapioca', type:'monte', max:2},
-        {id:24, n:'Tapioca (3 Rech)', p:19.00, cat:'Tapioca', type:'monte', max:3},
-        {id:25, n:'Tapioca (4 Rech)', p:21.00, cat:'Tapioca', type:'monte', max:4},
-        {id:26, n:'Batata Ondulada P', p:12.50, cat:'Porções'},
-        {id:27, n:'Batata Ondulada M', p:16.50, cat:'Porções'},
-        {id:28, n:'Batata Palito P', p:10.00, cat:'Porções'},
-        {id:29, n:'Batata Palito M', p:14.00, cat:'Porções'},
-        {id:30, n:'Bolinhas Carne de Sol P', p:12.00, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:31, n:'Bolinhas Carne de Sol M', p:21.00, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
-        {id:32, n:'Mini Pastéis (6 un)', p:9.50, cat:'Porções', img:'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg'},
-        {id:33, n:'Batidinha Uva', p:7.50, cat:'Bebidas', type:'drink'},
-        {id:34, n:'Batidinha Abacaxi', p:7.50, cat:'Bebidas', type:'drink'},
-        {id:35, n:'Batidinha Maracujá', p:9.50, cat:'Bebidas', type:'drink'},
-        {id:36, n:'Batidinha Morango', p:9.50, cat:'Bebidas', type:'drink'},
-        {id:37, n:'Espanhola', p:7.50, cat:'Bebidas', type:'drink'},
-        {id:38, n:'Morancujá', p:9.50, cat:'Bebidas', type:'drink'},
-        {id:39, n:'Morango c/ Abacaxi', p:8.50, cat:'Bebidas', type:'drink'},
-        {id:40, n:'Mini Pernambucanos (6 un)', p:16.50, d:'Açúcar e canela', cat:'Novidades'}
+        // Combos
+        {id:1, n:'Dueto Tradicional', p:22.50, d:'2 Pastéis (Carne, Frango, Mussarela ou Coalho)', cat:'Combos', img:'https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg', type:'dueto'},
+        
+        // Açaí Gourmet
+        {id:2, n:'Batidinha de Açaí 300ml', p:14.90, cat:'Açaí Gourmet', type:'acai', img:'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg'},
+        {id:3, n:'Batidinha de Açaí 500ml', p:22.00, cat:'Açaí Gourmet', type:'acai', img:'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg'},
+        
+        // Clássicos
+        {id:4, n:'Caipira Especial', p:17.50, d:'Frango/Milho', cat:'Clássicos', img:'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg'},
+        {id:5, n:'O Queridinho', p:17.50, d:'Carne/Queijo', cat:'Clássicos', img:'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg'},
+        {id:6, n:'Pastel de Hotdog', p:17.50, d:'Salsicha/Carne/Cheddar', cat:'Clássicos', img:'https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg'},
+        {id:7, n:'Frango Dourado', p:18.00, d:'Frango/Queijo', cat:'Clássicos', img:'https://i.pinimg.com/736x/90/7b/a5/907ba5cb7574a1ad9aa2eb0548c9eed4.jpg'},
+        {id:8, n:'Sabor Mediterrâneo', p:18.00, d:'Carne/Azeitonas', cat:'Clássicos', img:'https://i.pinimg.com/736x/8f/f6/b2/8ff6b260aa8709cce002ec39f97a464c.jpg'},
+        {id:9, n:'Super Cremoso', p:18.50, d:'Frango/Requeijão', cat:'Clássicos', img:'https://i.pinimg.com/736x/66/20/80/662080576d5755f1fb79d243117a37d8.jpg'},
+        {id:10, n:'Frango Clássico', p:18.50, d:'Frango/Catupiry/Milho', cat:'Clássicos', img:'https://i.pinimg.com/736x/f4/29/44/f42944f3d798cf35a1e4fb028e62813a.jpg'},
+        {id:11, n:'Cheddar Melt', p:18.50, d:'Carne/Cheddar', cat:'Clássicos', img:'https://i.pinimg.com/736x/3b/ee/28/3bee28d4d4e562a48782b3c1371d4009.jpg'},
+        {id:12, n:'Trio Imperial', p:18.50, d:'3 Queijos', cat:'Clássicos', img:'https://i.pinimg.com/736x/25/44/bb/2544bb486fc56f83130814b41c27b0a9.jpg'},
+        {id:13, n:'Pernil Cremoso', p:19.50, d:'Pernil/Catupiry/Milho', cat:'Clássicos', img:'https://i.pinimg.com/736x/ee/65/0e/ee650e334bd5020ba51dfa1b32043d60.jpg'},
+        {id:14, n:'Pernil Especial', p:20.00, d:'Pernil/Coalho/Requeijão', cat:'Clássicos', img:'https://i.pinimg.com/736x/de/29/bf/de29bf0cfd6c1b1b2a52e37ea4e05c07.jpg'},
+        {id:15, n:'Frango Gourmet', p:20.00, d:'Cream Cheese/Azeitona', cat:'Clássicos', img:'https://i.pinimg.com/736x/fb/c8/f4/fbc8f415a71bfb628aed9f182affe245.jpg'},
+        {id:16, n:'Carne Completa', p:20.00, d:'Queijo/Milho/Azeitona', cat:'Clássicos', img:'https://i.pinimg.com/736x/e8/ed/20/e8ed20d0214d3033fdf86b708e2ac5fd.jpg'},
+        
+        // Monte o Seu Pastel
+        {id:17, n:'Monte seu Pastel (2 Recheios)', p:17.50, cat:'Monte o Seu', type:'monte', max:2, min:1, img:'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg'},
+        {id:18, n:'Monte seu Pastel (3 Recheios)', p:19.50, cat:'Monte o Seu', type:'monte', max:3, min:2, img:'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg'},
+        {id:19, n:'Monte seu Pastel (4 Recheios)', p:21.50, cat:'Monte o Seu', type:'monte', max:4, min:3, img:'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg'},
+        
+        // Cuscuz
+        {id:20, n:'Cuscuz (2 Recheios)', p:16.50, cat:'Cuscuz', type:'monte', max:2, min:1, img:'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg'},
+        {id:21, n:'Cuscuz (3 Recheios)', p:18.50, cat:'Cuscuz', type:'monte', max:3, min:2, img:'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg'},
+        {id:22, n:'Cuscuz (4 Recheios)', p:20.50, cat:'Cuscuz', type:'monte', max:4, min:3, img:'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg'},
+        
+        // Tapioca
+        {id:23, n:'Tapioca (2 Recheios)', p:17.00, cat:'Tapioca', type:'monte', max:2, min:1, img:'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg'},
+        {id:24, n:'Tapioca (3 Recheios)', p:19.00, cat:'Tapioca', type:'monte', max:3, min:2, img:'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg'},
+        {id:25, n:'Tapioca (4 Recheios)', p:21.00, cat:'Tapioca', type:'monte', max:4, min:3, img:'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg'},
+        
+        // Porções (acompanhamentos)
+        {id:26, n:'Batata Frita Ondulada P', p:12.50, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
+        {id:27, n:'Batata Frita Ondulada M', p:16.50, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
+        {id:28, n:'Batata Frita Palito P', p:10.00, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
+        {id:29, n:'Batata Frita Palito M', p:14.00, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
+        {id:30, n:'Bolinhas de Carne de Sol P (100g)', p:12.00, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
+        {id:31, n:'Bolinhas de Carne de Sol M (200g)', p:21.00, cat:'Porções', img:'https://i.pinimg.com/736x/1e/b1/bb/1eb1bbf04ba24dbb9f0b1e8e8db2e719.jpg'},
+        {id:32, n:'Mini Pastéis Pernambucanos (6 un)', p:9.50, cat:'Porções', img:'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg'},
+        
+        // Batidas e Drinks
+        {id:33, n:'Batidinha de Uva Cremosa', p:7.50, cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/12/99/22/1299226e7417a8c5bcdaf7d21a0ac45e.jpg'},
+        {id:34, n:'Batidinha de Abacaxi Cremoso', p:7.50, cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/e2/96/29/e2962983d1f17481a303aa9d5a506f3c.jpg'},
+        {id:35, n:'Batidinha de Maracujá Cremoso', p:9.50, cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/42/82/a9/4282a913d5a689015ecc849a6a27029b.jpg'},
+        {id:36, n:'Batidinha de Morango Cremoso', p:9.50, cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/f5/35/5a/f5355aa77f9f84ce9c48cdad0901598d.jpg'},
+        {id:37, n:'Espanhola', p:7.50, d:'Uva, Abacaxi e Leite condensado', cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/be/52/f9/be52f94c1721ef6e573bf97c56204c95.jpg'},
+        {id:38, n:'Morancujá', p:9.50, d:'Morango e Maracujá', cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/52/07/e3/5207e32580c9e67594e2eabafd60631d.jpg'},
+        {id:39, n:'Morango com Abacaxi', p:8.50, cat:'Bebidas', type:'drink', img:'https://i.pinimg.com/736x/52/07/e3/5207e32580c9e67594e2eabafd60631d.jpg'},
+        
+        // Novidades
+        {id:40, n:'Mini Pastéis Pernambucanos', p:16.50, d:'6 unidades recheados com Carne, polvilhados com açúcar e canela', cat:'Novidades', img:'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg'}
     ];
 
     function filter(c) {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
-        const list = c === 'Todos' ? db : db.filter(i => i.cat === c);
+        let list = [];
+        if (c === 'Todos') {
+            list = db;
+        } else {
+            list = db.filter(i => i.cat === c);
+        }
         document.getElementById('menu').innerHTML = list.map(i => `
             <div class="card" onclick="clickProd(${i.id})">
-                <div class="card-info"><h3>${i.n}</h3><p>${i.d || ''}</p><span class="price">R$ ${i.p.toFixed(2)}</span></div>
+                <div class="card-info">
+                    <h3>${i.n}</h3>
+                    <p>${i.d || ''}</p>
+                    <span class="price">R$ ${i.p.toFixed(2)}</span>
+                </div>
                 ${i.img ? `<img src="${i.img}" class="card-img">` : ''}
             </div>
         `).join('');
@@ -167,92 +211,97 @@
         if(i.type === 'dueto') return openDueto(i);
         if(i.type === 'monte') return openMonte(i);
         if(i.type === 'drink') return openDrink(i);
-        addCart(i.n, i.p);
+        if(i.type === 'acai') return openAcai(i);
+        addToCart(i.n, i.p);
     }
 
     function openDueto(i) {
         const b = document.getElementById('custom-body');
-        b.innerHTML = `<h3>Escolha os 2 sabores</h3>
-            <label>1º:</label><select id="s1"><option>Carne</option><option>Frango</option><option>Mussarela</option><option>Coalho</option></select><br><br>
-            <label>2º:</label><select id="s2"><option>Carne</option><option>Frango</option><option>Mussarela</option><option>Coalho</option></select>
-            <button class="btn-add" onclick="addCart('${i.n}', ${i.p}, 'Sabores: '+s1.value+', '+s2.value);closeAll()">ADICIONAR</button>`;
-        document.getElementById('modal-custom').style.display = 'flex';
-    }
-
-    function openMonte(i) {
-        const b = document.getElementById('custom-body');
-        b.innerHTML = `<h3>Escolha até ${i.max} recheios</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:0.7rem;">
-                ${recheios.map(r => `<label><input type="checkbox" class="rk" value="${r}"> ${r}</label>`).join('')}
+        b.innerHTML = `
+            <h3>Escolha os 2 sabores</h3>
+            <div style="margin:15px 0">
+                <label><strong>1º Pastel:</strong></label>
+                <select id="s1" class="form-group" style="width:100%; padding:10px; margin:5px 0 15px">
+                    <option>Carne</option>
+                    <option>Frango</option>
+                    <option>Mussarela</option>
+                    <option>Coalho</option>
+                </select>
+                
+                <label><strong>2º Pastel:</strong></label>
+                <select id="s2" class="form-group" style="width:100%; padding:10px; margin:5px 0">
+                    <option>Carne</option>
+                    <option>Frango</option>
+                    <option>Mussarela</option>
+                    <option>Coalho</option>
+                </select>
             </div>
-            <button class="btn-add" onclick="saveMonte('${i.n}', ${i.p}, ${i.max})">ADICIONAR</button>`;
+            <button class="btn-add" onclick="addDueto()">ADICIONAR À SACOLA</button>
+        `;
         document.getElementById('modal-custom').style.display = 'flex';
     }
 
-    function saveMonte(n, p, m) {
-        const sel = Array.from(document.querySelectorAll('.rk:checked')).map(x => x.value);
-        if(!sel.length || sel.length > m) return alert("Selecione de 1 a "+m);
-        addCart(n, p, "Recheios: "+sel.join(", ")); closeAll();
+    function addDueto() {
+        const s1 = document.getElementById('s1').value;
+        const s2 = document.getElementById('s2').value;
+        const item = db.find(x => x.id === 1);
+        addToCart(item.n, item.p, `Sabores: ${s1} e ${s2}`);
+        closeAll();
     }
 
-    function openDrink(i) {
+    function openAcai(i) {
         const b = document.getElementById('custom-body');
-        b.innerHTML = `<h3>Tamanho:</h3>
-            <div class="opt-box" onclick="addCart('${i.n} (300ml)', ${i.p});closeAll()">300ml - R$ ${i.p.toFixed(2)}</div>
-            <div class="opt-box" onclick="addCart('${i.n} (500ml)', ${i.p+5});closeAll()">500ml - R$ ${(i.p+5).toFixed(2)}</div>`;
+        b.innerHTML = `
+            <h3>Batidinha de Açaí Gourmet</h3>
+            <img src="${i.img}" style="width:100%; max-height:200px; object-fit:cover; border-radius:10px; margin:10px 0">
+            
+            <div class="size-selector">
+                <div class="size-btn ${i.n.includes('300ml') ? 'selected' : ''}" onclick="selectAcaiSize(300)">300ml</div>
+                <div class="size-btn ${i.n.includes('500ml') ? 'selected' : ''}" onclick="selectAcaiSize(500)">500ml</div>
+            </div>
+            
+            <div id="acai-options">
+                ${generateAcaiOptions(i.n.includes('300ml') ? 300 : 500)}
+            </div>
+        `;
+        selectedSize = i.n.includes('300ml') ? 300 : 500;
         document.getElementById('modal-custom').style.display = 'flex';
     }
 
-    function addCart(n, p, d="") {
-        const key = n+d;
-        const x = cart.find(i => (i.n+i.d) === key);
-        if(x) x.q++; else cart.push({n, p, q:1, d});
-        updateUI();
+    function selectAcaiSize(size) {
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+        event.target.classList.add('selected');
+        selectedSize = size;
+        document.getElementById('acai-options').innerHTML = generateAcaiOptions(size);
     }
 
-    function updateUI() {
-        let t = 0, q = 0;
-        cart.forEach(i => {
-            q += i.q;
-            if(i.n.includes('300ml') && i.n.includes('Açaí')) {
-                if(i.q === 2) t += 26; else if(i.q >= 3) t += 36 + (i.q-3)*12; else t += i.p*i.q;
-            } else if(i.n.includes('500ml') && i.n.includes('Açaí')) {
-                if(i.q === 2) t += 39.9; else if(i.q >= 3) t += 57 + (i.q-3)*19; else t += i.p*i.q;
-            } else t += i.p*i.q;
-        });
-        document.getElementById('cart-bar').style.display = q > 0 ? 'flex' : 'none';
-        document.getElementById('c-qty').innerText = q;
-        document.getElementById('c-total').innerText = 'R$ ' + t.toFixed(2);
-        document.getElementById('f-total').innerText = 'R$ ' + t.toFixed(2);
+    function generateAcaiOptions(size) {
+        if (size === 300) {
+            return `
+                <div class="combo-grid">
+                    <div class="combo-option" onclick="selectAcaiCombo(1, 300)">1 un<br>R$ 14,90</div>
+                    <div class="combo-option" onclick="selectAcaiCombo(2, 300)">2 un<br>R$ 26,00</div>
+                    <div class="combo-option" onclick="selectAcaiCombo(3, 300)">3 un<br>R$ 36,00</div>
+                </div>
+                <button class="btn-add" onclick="addAcaiCombo()">ADICIONAR À SACOLA</button>
+            `;
+        } else {
+            return `
+                <div class="combo-grid">
+                    <div class="combo-option" onclick="selectAcaiCombo(1, 500)">1 un<br>R$ 22,00</div>
+                    <div class="combo-option" onclick="selectAcaiCombo(2, 500)">2 un<br>R$ 39,90</div>
+                    <div class="combo-option" onclick="selectAcaiCombo(3, 500)">3 un<br>R$ 57,00</div>
+                </div>
+                <button class="btn-add" onclick="addAcaiCombo()">ADICIONAR À SACOLA</button>
+            `;
+        }
     }
 
-    function showCart() {
-        document.getElementById('cart-list').innerHTML = cart.map((i, idx) => `
-            <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
-                <span>${i.q}x ${i.n}<br><small>${i.d}</small></span>
-                <div><button onclick="change(${idx},-1)">-</button> <button onclick="change(${idx},1)">+</button></div>
-            </div>
-        `).join('');
-        document.getElementById('modal-cart').style.display = 'flex';
+    function selectAcaiCombo(qty, size) {
+        document.querySelectorAll('.combo-option').forEach(btn => btn.classList.remove('selected'));
+        event.target.classList.add('selected');
+        selectedCombo = {qty, size};
     }
 
-    function change(idx, v) {
-        cart[idx].q += v;
-        if(cart[idx].q <= 0) cart.splice(idx,1);
-        updateUI(); showCart();
-        if(!cart.length) closeAll();
-    }
-
-    function checkPix() { document.getElementById('pix-info').style.display = document.getElementById('f-pay').value === 'Pix' ? 'block' : 'none'; }
-    function closeAll() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-
-    document.getElementById('f-checkout').onsubmit = (e) => {
-        e.preventDefault();
-        const msg = `*PEDIDO CANTINHO DO SABOR*\nCliente: ${document.getElementById('f-nome').value}\nEndereço: ${document.getElementById('f-rua').value}\nReferência: ${document.getElementById('f-ref').value}\nPagamento: ${document.getElementById('f-pay').value}\n\n*ITENS:*\n` + cart.map(i => `${i.q}x ${i.n} ${i.d}`).join('\n') + `\n\n*TOTAL: ${document.getElementById('f-total').innerText}*`;
-        window.open(`https://wa.me/${TEL}?text=${encodeURIComponent(msg)}`);
-    };
-
-    filter('Todos');
-</script>
-</body>
-</html>
+    function addAcaiCombo() {
+        if (!
