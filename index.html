@@ -6,94 +6,84 @@
 <title>Cantinho do Sabor</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f8f8f8;
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f4f4;
 }
 
-header {
-    background: #ff6600;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 1.4rem;
-    font-weight: bold;
+header{
+    background:#ff6600;
+    color:white;
+    text-align:center;
+    padding:15px;
+    font-size:20px;
+    font-weight:bold;
 }
 
-.container {
-    padding: 15px;
+.container{
+    padding:15px;
 }
 
-.card {
-    background: white;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+.card{
+    background:white;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:15px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
 
-.card h3 {
-    margin: 0 0 5px 0;
+.card button{
+    background:#ff6600;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+    margin-top:8px;
 }
 
-.card button {
-    background: #ff6600;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 8px;
+#cart-bar{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#222;
+    color:white;
+    padding:12px 20px;
+    border-radius:30px;
+    display:none;
+    justify-content:space-between;
+    width:90%;
+    max-width:400px;
+    cursor:pointer;
 }
 
-#cart-bar {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #222;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 30px;
-    display: none;
-    justify-content: space-between;
-    width: 85%;
-    max-width: 400px;
-    cursor: pointer;
+#cart-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
 }
 
-#cart-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:400px;
+    border-radius:8px;
+    padding:15px;
 }
 
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 400px;
-    border-radius: 10px;
-    padding: 15px;
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
 }
 
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.cart-controls button {
-    margin: 0 5px;
-}
-
-.close {
-    text-align: right;
-    cursor: pointer;
-    font-weight: bold;
+.cart-controls button{
+    margin:0 5px;
 }
 </style>
 </head>
@@ -124,71 +114,63 @@ header {
 
 </div>
 
-<!-- Barra do Carrinho -->
 <div id="cart-bar" onclick="abrirSacola()">
 <span id="c-qty">0 itens</span>
 <span id="c-total">R$ 0.00</span>
 </div>
 
-<!-- Modal -->
 <div id="cart-modal">
 <div class="modal-content">
-<div class="close" onclick="fecharSacola()">X</div>
-
 <h3>Sua Sacola</h3>
 <div id="cart-items"></div>
-
-<p id="info-entrega">🚚 Entrega Grátis aplicada!</p>
-
+<p>🚚 Entrega Grátis</p>
 <h3>Total: <span id="f-total">R$ 0.00</span></h3>
-
-<button onclick="finalizarPedido()" style="width:100%;margin-top:10px;background:#25D366;">
+<button onclick="finalizarPedido()" style="width:100%;background:#25D366;color:white;padding:10px;border:none;border-radius:5px;">
 Finalizar pelo WhatsApp
 </button>
-
+<button onclick="fecharSacola()" style="width:100%;margin-top:5px;">Fechar</button>
 </div>
 </div>
 
 <script>
+
 let cart = [];
 
-// Adicionar
 function addToCart(nome, preco){
-    const item = cart.find(i => i.nome === nome);
+    const item = cart.find(p => p.nome === nome);
     if(item){
         item.qtd++;
     } else {
-        cart.push({nome, preco, qtd:1});
+        cart.push({nome:nome, preco:preco, qtd:1});
     }
-    atualizarUI();
+    atualizar();
 }
 
-// Alterar quantidade
-function alterarQtd(nome, tipo){
-    const item = cart.find(i => i.nome === nome);
+function alterar(nome, tipo){
+    const item = cart.find(p => p.nome === nome);
     if(!item) return;
 
-    if(tipo === 'mais'){
+    if(tipo === "mais"){
         item.qtd++;
     } else {
         item.qtd--;
         if(item.qtd <= 0){
-            cart = cart.filter(i => i.nome !== nome);
+            cart = cart.filter(p => p.nome !== nome);
         }
     }
-    atualizarUI();
+    atualizar();
 }
 
-// Atualizar interface
-function atualizarUI(){
+function atualizar(){
     let total = 0;
-    let qtdTotal = 0;
+    let qtd = 0;
+
     const lista = document.getElementById("cart-items");
     lista.innerHTML = "";
 
     cart.forEach(item=>{
         total += item.preco * item.qtd;
-        qtdTotal += item.qtd;
+        qtd += item.qtd;
 
         lista.innerHTML += `
         <div class="cart-item">
@@ -197,22 +179,21 @@ function atualizarUI(){
                 R$ ${item.preco.toFixed(2)}
             </div>
             <div class="cart-controls">
-                <button onclick="alterarQtd('${item.nome}','menos')">-</button>
+                <button onclick="alterar('${item.nome}','menos')">-</button>
                 ${item.qtd}
-                <button onclick="alterarQtd('${item.nome}','mais')">+</button>
+                <button onclick="alterar('${item.nome}','mais')">+</button>
             </div>
         </div>
         `;
     });
 
-    document.getElementById("c-qty").innerText = qtdTotal + (qtdTotal === 1 ? " item" : " itens");
+    document.getElementById("c-qty").innerText = qtd + " item(ns)";
     document.getElementById("c-total").innerText = "R$ " + total.toFixed(2);
     document.getElementById("f-total").innerText = "R$ " + total.toFixed(2);
 
-    document.getElementById("cart-bar").style.display = qtdTotal > 0 ? "flex" : "none";
+    document.getElementById("cart-bar").style.display = qtd > 0 ? "flex" : "none";
 }
 
-// Abrir/Fechar
 function abrirSacola(){
     document.getElementById("cart-modal").style.display = "flex";
 }
@@ -221,7 +202,6 @@ function fecharSacola(){
     document.getElementById("cart-modal").style.display = "none";
 }
 
-// Finalizar
 function finalizarPedido(){
     if(cart.length === 0) return;
 
@@ -236,8 +216,9 @@ function finalizarPedido(){
     mensagem += `%0A🚚 Entrega: GRÁTIS`;
     mensagem += `%0A💰 *Total: R$ ${total.toFixed(2)}*`;
 
-    window.open(`https://wa.me/5587933009283?text=${mensagem}`,"_blank");
+    window.open("https://wa.me/5587933009283?text="+mensagem, "_blank");
 }
+
 </script>
 
 </body>
