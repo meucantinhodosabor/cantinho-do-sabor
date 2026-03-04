@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Cantinho do Sabor • delivery inteligente</title>
+  <title>Cantinho do Sabor</title>
   <style>
     * {
       margin: 0;
@@ -127,6 +127,15 @@
       margin-bottom: 12px;
       padding-left: 8px;
       border-left: 5px solid var(--orange-start);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .category h2 img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
     }
 
     .product-grid {
@@ -240,18 +249,36 @@
       color: var(--gray-dark);
     }
 
+    .acai-option {
+      background: var(--gray-light);
+      border-radius: 20px;
+      padding: 16px;
+      margin: 12px 0;
+    }
+    .acai-option h4 { margin-bottom: 12px; color: var(--orange-end); }
+    .acai-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--gray-medium);
+    }
+    .acai-row:last-child { border: none; }
+    .acai-row button {
+      background: var(--orange-start);
+      border: none;
+      color: white;
+      padding: 4px 16px;
+      border-radius: 40px;
+      font-weight: 600;
+    }
+
     .recheio-group {
       margin: 20px 0;
       border: 1px solid var(--gray-medium);
       border-radius: 24px;
       padding: 16px;
     }
-
-    .recheio-group h4 {
-      margin-bottom: 12px;
-      color: var(--orange-end);
-    }
-
     .recheio-option {
       display: flex;
       align-items: center;
@@ -265,7 +292,6 @@
       padding: 16px;
       margin: 16px 0;
     }
-
     .extra-item {
       display: flex;
       justify-content: space-between;
@@ -273,17 +299,11 @@
       padding: 10px 0;
       border-bottom: 1px dashed var(--gray-medium);
     }
-
-    .extra-item:last-child {
-      border-bottom: none;
-    }
-
     .extra-qtd {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
     .extra-qtd button {
       width: 32px; height: 32px;
       border-radius: 50%;
@@ -299,7 +319,6 @@
       display: flex;
       gap: 12px;
     }
-
     .btn-primary {
       flex: 1;
       background: linear-gradient(135deg, var(--orange-start), var(--orange-end));
@@ -311,7 +330,6 @@
       font-size: 1.1rem;
       cursor: pointer;
     }
-
     .btn-secondary {
       background: var(--gray-light);
       border: none;
@@ -402,8 +420,8 @@
       pointer-events: none;
     }
 
-    /* MODAL PIX */
-    .pix-modal {
+    /* MODAIS PIX E CHECKOUT (mesmos estilos) */
+    .pix-modal, .checkout-modal {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.5);
@@ -412,7 +430,7 @@
       justify-content: center;
       z-index: 4000;
     }
-    .pix-content {
+    .pix-content, .checkout-form {
       background: white;
       width: 90%;
       max-width: 360px;
@@ -420,6 +438,7 @@
       padding: 24px;
       text-align: center;
     }
+    .checkout-form { max-width: 480px; text-align: left; }
     .pix-code {
       background: var(--gray-light);
       padding: 12px;
@@ -436,29 +455,7 @@
       border-radius: 40px;
       font-weight: 600;
     }
-
-    /* MODAL CHECKOUT */
-    .checkout-modal {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 3500;
-    }
-    .checkout-form {
-      background: white;
-      width: 92%;
-      max-width: 480px;
-      max-height: 90vh;
-      border-radius: 32px;
-      padding: 24px;
-      overflow-y: auto;
-    }
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
     .form-group input, select {
       width: 100%;
       padding: 14px;
@@ -480,10 +477,7 @@
       align-items: center;
       gap: 6px;
     }
-    #trocoField {
-      margin-top: 8px;
-      display: none;
-    }
+    #trocoField { display: none; margin-top: 8px; }
     .toast {
       position: fixed;
       bottom: 100px; left: 50%; transform: translateX(-50%);
@@ -529,7 +523,7 @@
     </div>
   </div>
 
-  <!-- MODAL DINÂMICO DE PRODUTO -->
+  <!-- MODAL DINÂMICO -->
   <div class="modal-overlay" id="productModal">
     <div class="modal-content" id="modalDynamicContent"></div>
   </div>
@@ -543,7 +537,7 @@
     </div>
   </div>
 
-  <!-- MODAL CHECKOUT (DADOS) -->
+  <!-- MODAL CHECKOUT -->
   <div class="checkout-modal" id="checkoutModal">
     <div class="checkout-form" id="checkoutForm"></div>
   </div>
@@ -552,13 +546,12 @@
 
   <script>
     (function() {
-      // ---------- BASE DE DADOS ----------
+      // ---------- BASE DE DADOS ATUALIZADA ----------
       const recheiosDisponiveis = [
-        'Frango', 'Carne', 'Salsicha', 'Mussarela', 'Coalho', 'Milho', 'Azeitona',
+        'Frango', 'Carne', 'Pernil', 'Salsicha', 'Mussarela', 'Coalho', 'Milho', 'Azeitona',
         'Cream Cheese', 'Requeijão', 'Cheddar', 'Catupiry', 'Alho Frito', 'Pimenta Calabresa'
       ];
 
-      // Acompanhamentos e Bebidas (extras)
       const acompanhamentos = [
         { nome: 'Batata Ondulada P', preco: 12.50 },
         { nome: 'Batata Ondulada M', preco: 16.50 },
@@ -582,11 +575,26 @@
         { nome: 'Morancujá 500ml', preco: 14.50 }
       ];
 
-      // Cardápio completo (resumido para o modal)
-      const produtosBase = [
-        { id: 'dueto', nome: 'Dueto Tradicional', preco: 22.50, img: 'https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg', categoria: '🔥 Combos', tipo: 'dueto', recheiosObr: ['Frango','Carne','Mussarela','Coalho'] },
-        { id: 'classico1', nome: 'Caipira Especial', preco: 17.50, img: 'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'classico2', nome: 'O Queridinho', preco: 17.50, img: 'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+      // ---------- CATEGORIA CLÁSSICOS (ATUALIZADA) ----------
+      const classicos = [
+        { nome: 'Caipira Especial!', desc: 'Frango e Milho', preco: 17.50, img: 'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg' },
+        { nome: 'O Queridinho!', desc: 'Carne e Queijo', preco: 17.50, img: 'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg' },
+        { nome: 'Pastel de Hotdog!', desc: 'Salsicha, Carne e Cheddar', preco: 17.50, img: 'https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg' },
+        { nome: 'Frango Dourado!', desc: 'Frango e Queijo', preco: 18.00, img: 'https://i.pinimg.com/736x/90/7b/a5/907ba5cb7574a1ad9aa2eb0548c9eed4.jpg' },
+        { nome: 'Sabor Mediterrâneo', desc: 'Carne e Azeitonas', preco: 18.00, img: 'https://i.pinimg.com/736x/8f/f6/b2/8ff6b260aa8709cce002ec39f97a464c.jpg' },
+        { nome: 'Super Cremoso', desc: 'Frango e Requeijão', preco: 18.50, img: 'https://i.pinimg.com/736x/66/20/80/662080576d5755f1fb79d243117a37d8.jpg' },
+        { nome: 'Frango Clássico', desc: 'Frango, Catupiry e Milho', preco: 18.50, img: 'https://i.pinimg.com/736x/f4/29/44/f42944f3d798cf35a1e4fb028e62813a.jpg' },
+        { nome: 'Cheddar Melt', desc: 'Carne e Cheddar', preco: 18.50, img: 'https://i.pinimg.com/736x/3b/ee/28/3bee28d4d4e562a48782b3c1371d4009.jpg' },
+        { nome: 'Trio Imperial 3 Queijos', desc: 'Mussarela, Coalho e Requeijão', preco: 18.50, img: 'https://i.pinimg.com/736x/25/44/bb/2544bb486fc56f83130814b41c27b0a9.jpg' },
+        { nome: 'Pernil Cremoso', desc: 'Pernil, Catupiry e Milho', preco: 19.50, img: 'https://i.pinimg.com/736x/ee/65/0e/ee650e334bd5020ba51dfa1b32043d60.jpg' },
+        { nome: 'Pernil Especial', desc: 'Pernil, Coalho e Requeijão', preco: 20.00, img: 'https://i.pinimg.com/736x/de/29/bf/de29bf0cfd6c1b1b2a52e37ea4e05c07.jpg' },
+        { nome: 'Frango Gourmet', desc: 'Cream Cheese e Azeitona', preco: 20.00, img: 'https://i.pinimg.com/736x/fb/c8/f4/fbc8f415a71bfb628aed9f182affe245.jpg' },
+        { nome: 'Carne Completa', desc: 'Queijo, Milho e Azeitona', preco: 20.00, img: 'https://i.pinimg.com/736x/e8/ed/20/e8ed20d0214d3033fdf86b708e2ac5fd.jpg' }
+      ];
+
+      // ---------- PRODUTOS BASE (inclui combos, montar, etc) ----------
+      let produtosBase = [
+        { id: 'dueto', nome: 'Dueto Tradicional', desc: '2 Pastéis de 1 recheio', preco: 22.50, img: 'https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg', categoria: '🔥 Combos', tipo: 'dueto', recheiosObr: ['Frango','Carne','Mussarela','Coalho'] },
         { id: 'pastel2', nome: 'Pastel 2 Recheios', preco: 17.50, img: 'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg', categoria: '🛠 Monte Pastel', tipo: 'montar', minRech:1, maxRech:2 },
         { id: 'pastel3', nome: 'Pastel 3 Recheios', preco: 19.50, img: 'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg', categoria: '🛠 Monte Pastel', tipo: 'montar', minRech:2, maxRech:3 },
         { id: 'pastel4', nome: 'Pastel 4 Recheios', preco: 21.50, img: 'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg', categoria: '🛠 Monte Pastel', tipo: 'montar', minRech:3, maxRech:4 },
@@ -596,13 +604,37 @@
         { id: 'tapioca2', nome: 'Tapioca 2 Recheios', preco: 17.00, img: 'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg', categoria: '🫔 Monte Tapioca', tipo: 'montar', minRech:1, maxRech:2 },
         { id: 'tapioca3', nome: 'Tapioca 3 Recheios', preco: 19.00, img: 'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg', categoria: '🫔 Monte Tapioca', tipo: 'montar', minRech:2, maxRech:3 },
         { id: 'tapioca4', nome: 'Tapioca 4 Recheios', preco: 21.00, img: 'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg', categoria: '🫔 Monte Tapioca', tipo: 'montar', minRech:3, maxRech:4 },
-        { id: 'mini', nome: 'Mini Pastéis Pernambucanos', preco: 16.50, img: 'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg', categoria: '✨ Novidades', tipo: 'classico' }
+        { id: 'mini', nome: 'Mini Pastéis Pernambucanos', desc: '6 unidades', preco: 16.50, img: 'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg', categoria: '✨ Novidades', tipo: 'classico' }
       ];
 
+      // Adiciona clássicos
+      classicos.forEach((c, idx) => {
+        produtosBase.push({
+          id: `classico-${idx}`,
+          nome: c.nome,
+          desc: c.desc,
+          preco: c.preco,
+          img: c.img,
+          categoria: '🥟 Clássicos Inesquecíveis',
+          tipo: 'classico'
+        });
+      });
+
+      // Batidinhas de Açaí Gourmet (como itens especiais)
+      produtosBase.push({
+        id: 'acai-cat',
+        nome: '🥣 Batidinhas de Açaí Gourmet',
+        desc: '300ml e 500ml - combos',
+        preco: 0, // será tratado no modal
+        img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg',
+        categoria: '🥣 Batidinhas de Açaí Gourmet',
+        tipo: 'acai'
+      });
+
       // ---------- ESTADO ----------
-      let carrinho = []; // { id, nome, preco, quantidade, recheios?:[], extras:[] }
+      let carrinho = [];
       let currentModalProd = null;
-      let extrasSelecionados = []; // para o modal atual
+      let extrasSelecionados = [];
 
       // ---------- RENDER CARDÁPIO ----------
       const cardapioEl = document.getElementById('cardapio');
@@ -610,17 +642,19 @@
         const cats = [...new Set(produtosBase.map(p => p.categoria))];
         cardapioEl.innerHTML = cats.map(cat => {
           const prodCat = produtosBase.filter(p => p.categoria === cat);
+          const catImg = prodCat[0]?.img || '';
           return `
             <div class="category">
-              <h2>${cat}</h2>
+              <h2><img src="${catImg}" onerror="this.style.display='none'"> ${cat}</h2>
               <div class="product-grid">
                 ${prodCat.map(p => `
-                  <div class="product-card" data-id="${p.id}">
+                  <div class="product-card">
                     <img class="product-img" src="${p.img}" loading="lazy">
                     <div class="product-info">
                       <h3>${p.nome}</h3>
+                      <div class="product-desc">${p.desc || ''}</div>
                       <div class="product-footer">
-                        <span class="price">R$ ${p.preco.toFixed(2)}</span>
+                        <span class="price">R$ ${p.preco > 0 ? p.preco.toFixed(2) : 'variado'}</span>
                         <button class="add-btn" data-prod-id="${p.id}">+ adicionar</button>
                       </div>
                     </div>
@@ -633,35 +667,276 @@
       }
       renderCardapio();
 
-      // ABRIR MODAL DE PRODUTO
+      // ---------- ABRIR MODAL POR TIPO ----------
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains('add-btn')) {
           const prodId = e.target.dataset.prodId;
           const produto = produtosBase.find(p => p.id === prodId);
           if (!produto) return;
           currentModalProd = { ...produto };
-          extrasSelecionados = []; // reset
-          abrirModalProduto(produto);
+          extrasSelecionados = [];
+          
+          if (produto.tipo === 'acai') {
+            abrirModalAcai();
+          } else {
+            abrirModalGenerico(produto);
+          }
         }
       });
 
-      function abrirModalProduto(prod) {
+      function abrirModalAcai() {
+        const modalDiv = document.getElementById('modalDynamicContent');
+        modalDiv.innerHTML = `
+          <div class="modal-header">
+            <h2>Batidinhas de Açaí Gourmet</h2>
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+          </div>
+          <div class="acai-option">
+            <h4>300ml</h4>
+            <div class="acai-row"><span>1 Unidade</span> <span>R$ 14,90</span> <button onclick="addAcai(14.90, 'Açaí 300ml 1und')">+</button></div>
+            <div class="acai-row"><span>Combo 2 Unidades</span> <span>R$ 26,00</span> <button onclick="addAcai(26.00, 'Açaí 300ml Combo 2')">+</button></div>
+            <div class="acai-row"><span>Combo 3 Unidades</span> <span>R$ 36,00</span> <button onclick="addAcai(36.00, 'Açaí 300ml Combo 3')">+</button></div>
+          </div>
+          <div class="acai-option">
+            <h4>500ml</h4>
+            <div class="acai-row"><span>1 Unidade</span> <span>R$ 22,00</span> <button onclick="addAcai(22.00, 'Açaí 500ml 1und')">+</button></div>
+            <div class="acai-row"><span>Combo 2 Unidades</span> <span>R$ 39,90</span> <button onclick="addAcai(39.90, 'Açaí 500ml Combo 2')">+</button></div>
+            <div class="acai-row"><span>Combo 3 Unidades</span> <span>R$ 57,00</span> <button onclick="addAcai(57.00, 'Açaí 500ml Combo 3')">+</button></div>
+          </div>
+          <div class="modal-footer"><button class="btn-secondary" onclick="fecharModal()">Fechar</button></div>
+        `;
+        document.getElementById('productModal').style.display = 'flex';
+
+        window.fecharModal = () => document.getElementById('productModal').style.display = 'none';
+        window.addAcai = (preco, nome) => {
+          carrinho.push({
+            id: 'acai-' + Date.now(),
+            nome: nome,
+            preco: preco,
+            quantidade: 1,
+            recheios: [],
+            extras: []
+          });
+          atualizarCarrinhoUI();
+          fecharModal();
+        };
+      }
+
+      function abrirModalGenerico(prod) {
         const modalDiv = document.getElementById('modalDynamicContent');
         let html = `<div class="modal-header"><h2>${prod.nome}</h2><span class="close-modal" onclick="fecharModal()">&times;</span></div>`;
         
-        // Área de recheios conforme tipo
         if (prod.tipo === 'dueto') {
           html += `
-            <div class="recheio-group">
-              <h4>Escolha o Recheio do 1° Pastel!</h4>
-              ${prod.recheiosObr.map(r => `<label class="recheio-option"><input type="radio" name="recheio1" value="${r}" required> ${r}</label>`).join('')}
-            </div>
-            <div class="recheio-group">
-              <h4>Escolha o Recheio do 2° Pastel!</h4>
-              ${prod.recheiosObr.map(r => `<label class="recheio-option"><input type="radio" name="recheio2" value="${r}" required> ${r}</label>`).join('')}
-            </div>
+            <div class="recheio-group"><h4>Recheio do 1° Pastel</h4>${prod.recheiosObr.map(r => `<label class="recheio-option"><input type="radio" name="recheio1" value="${r}"> ${r}</label>`).join('')}</div>
+            <div class="recheio-group"><h4>Recheio do 2° Pastel</h4>${prod.recheiosObr.map(r => `<label class="recheio-option"><input type="radio" name="recheio2" value="${r}"> ${r}</label>`).join('')}</div>
           `;
         } else if (prod.tipo === 'montar') {
-          html += `<div class="recheio-group"><h4>Selecione os recheios (mín ${prod.minRech} • máx ${prod.maxRech})</h4>`;
-          recheiosDisponiveis.forEach(r => {
-            html += `<label class="recheio-option"><input type="checkbox" class="recheio-check"
+          html += `<div class="recheio-group"><h4>Selecione (mín ${prod.minRech} • máx ${prod.maxRech})</h4>`;
+          recheiosDisponiveis.forEach(r => html += `<label class="recheio-option"><input type="checkbox" class="recheio-check" value="${r}"> ${r}</label>`);
+          html += `</div>`;
+        }
+
+        // Extras (para todos exceto acai)
+        html += `<div class="extras-section"><h4>🍟 Acompanhamentos</h4>`;
+        acompanhamentos.forEach((ext, idx) => {
+          html += `<div class="extra-item"><span>${ext.nome} - R$ ${ext.preco.toFixed(2)}</span><div class="extra-qtd"><button onclick="alterarExtra(${idx}, 'acomp', -1)">−</button><span id="qtd-acomp-${idx}">0</span><button onclick="alterarExtra(${idx}, 'acomp', 1)">+</button></div></div>`;
+        });
+        html += `</div><div class="extras-section"><h4>🥤 Bebidas</h4>`;
+        bebidas.forEach((ext, idx) => {
+          html += `<div class="extra-item"><span>${ext.nome} - R$ ${ext.preco.toFixed(2)}</span><div class="extra-qtd"><button onclick="alterarExtra(${idx}, 'bebida', -1)">−</button><span id="qtd-bebida-${idx}">0</span><button onclick="alterarExtra(${idx}, 'bebida', 1)">+</button></div></div>`;
+        });
+        html += `</div><div class="modal-footer"><button class="btn-secondary" onclick="fecharModal()">Cancelar</button><button class="btn-primary" onclick="adicionarAoCarrinho()">Adicionar</button></div>`;
+        
+        modalDiv.innerHTML = html;
+        document.getElementById('productModal').style.display = 'flex';
+
+        window.fecharModal = () => document.getElementById('productModal').style.display = 'none';
+        window.alterarExtra = (idx, tipo, delta) => {
+          const span = document.getElementById(`qtd-${tipo}-${idx}`);
+          let val = parseInt(span.innerText) + delta;
+          if (val < 0) val = 0;
+          span.innerText = val;
+          const lista = tipo === 'acomp' ? acompanhamentos : bebidas;
+          const item = lista[idx];
+          const existing = extrasSelecionados.find(e => e.nome === item.nome);
+          if (existing) existing.qtd = val;
+          else extrasSelecionados.push({ nome: item.nome, preco: item.preco, qtd: val });
+          if (val === 0) {
+            const index = extrasSelecionados.findIndex(e => e.nome === item.nome);
+            if (index !== -1) extrasSelecionados.splice(index, 1);
+          }
+        };
+
+        window.adicionarAoCarrinho = () => {
+          if (prod.tipo === 'dueto') {
+            if (!document.querySelector('input[name="recheio1"]:checked') || !document.querySelector('input[name="recheio2"]:checked')) {
+              alert('Escolha os dois recheios!'); return;
+            }
+          }
+          if (prod.tipo === 'montar') {
+            const checks = document.querySelectorAll('.recheio-check:checked');
+            if (checks.length < prod.minRech || checks.length > prod.maxRech) {
+              alert(`Selecione entre ${prod.minRech} e ${prod.maxRech} recheios.`); return;
+            }
+          }
+
+          const item = {
+            id: prod.id + Date.now(),
+            nome: prod.nome,
+            preco: prod.preco,
+            quantidade: 1,
+            recheios: [],
+            extras: extrasSelecionados.filter(e => e.qtd > 0)
+          };
+
+          if (prod.tipo === 'dueto') {
+            const r1 = document.querySelector('input[name="recheio1"]:checked').value;
+            const r2 = document.querySelector('input[name="recheio2"]:checked').value;
+            item.recheios = [r1, r2];
+          } else if (prod.tipo === 'montar') {
+            const checks = document.querySelectorAll('.recheio-check:checked');
+            item.recheios = Array.from(checks).map(c => c.value);
+          }
+
+          carrinho.push(item);
+          atualizarCarrinhoUI();
+          fecharModal();
+        };
+      }
+
+      // ---------- CARRINHO UI ----------
+      function atualizarCarrinhoUI() {
+        const container = document.getElementById('cartItems');
+        const itemCount = carrinho.reduce((acc, i) => acc + i.quantidade, 0);
+        document.getElementById('itemCount').innerText = itemCount;
+        let subtotal = carrinho.reduce((acc, i) => acc + (i.preco * i.quantidade), 0);
+        carrinho.forEach(i => i.extras?.forEach(e => subtotal += e.preco * e.qtd));
+        document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+        document.getElementById('total').innerText = subtotal.toFixed(2);
+        document.getElementById('checkoutBtn').disabled = carrinho.length === 0;
+
+        if (carrinho.length === 0) {
+          container.innerHTML = '<p style="text-align:center;color:#999;">Sua sacola está vazia</p>';
+        } else {
+          container.innerHTML = carrinho.map((item, idx) => `
+            <div class="cart-item">
+              <div class="cart-item-info">
+                <strong>${item.nome}</strong> R$ ${item.preco.toFixed(2)}<br>
+                ${item.recheios?.length ? `Recheios: ${item.recheios.join(', ')}<br>` : ''}
+                ${item.extras?.length ? `Extras: ${item.extras.map(e => `${e.nome} x${e.qtd}`).join(', ')}` : ''}
+              </div>
+              <div class="cart-item-actions">
+                <button onclick="alterarQtd(${idx}, -1)">−</button>
+                <span>${item.quantidade}</span>
+                <button onclick="alterarQtd(${idx}, 1)">+</button>
+                <button onclick="removerItem(${idx})" style="background:none;">🗑️</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      window.alterarQtd = (idx, delta) => {
+        const novo = carrinho[idx].quantidade + delta;
+        if (novo <= 0) carrinho.splice(idx, 1);
+        else carrinho[idx].quantidade = novo;
+        atualizarCarrinhoUI();
+      };
+      window.removerItem = (idx) => {
+        carrinho.splice(idx, 1);
+        atualizarCarrinhoUI();
+      };
+
+      document.getElementById('cartHandle').addEventListener('click', () => {
+        const drawer = document.getElementById('cartDrawer');
+        drawer.classList.toggle('collapsed');
+        document.getElementById('drawerToggle').innerText = drawer.classList.contains('collapsed') ? '▲' : '▼';
+      });
+
+      // ---------- CHECKOUT ----------
+      document.getElementById('checkoutBtn').addEventListener('click', () => {
+        if (carrinho.length === 0) return;
+        const modal = document.getElementById('checkoutModal');
+        const formDiv = document.getElementById('checkoutForm');
+        formDiv.innerHTML = `
+          <h3>Finalizar pedido</h3>
+          <div class="form-group"><input id="nomeCliente" placeholder="Nome completo"></div>
+          <div class="form-group"><input id="endereco" placeholder="Rua / Logradouro"></div>
+          <div class="form-group"><input id="numeroRes" placeholder="Número"></div>
+          <div class="form-group"><input id="bairro" placeholder="Bairro"></div>
+          <div class="form-group"><input id="referencia" placeholder="Ponto de referência"></div>
+          <div class="payment-options">
+            <label><input type="radio" name="pagamento" value="Pix" checked> Pix</label>
+            <label><input type="radio" name="pagamento" value="Dinheiro"> Dinheiro</label>
+            <label><input type="radio" name="pagamento" value="Débito"> Débito</label>
+            <label><input type="radio" name="pagamento" value="Crédito"> Crédito</label>
+          </div>
+          <div id="trocoField"><input id="troco" placeholder="Troco para quanto?"></div>
+          <button class="btn-primary" id="confirmarPedido" style="margin-top:16px;">Confirmar</button>
+        `;
+        modal.style.display = 'flex';
+
+        document.querySelectorAll('input[name="pagamento"]').forEach(r => {
+          r.addEventListener('change', (e) => {
+            document.getElementById('trocoField').style.display = e.target.value === 'Dinheiro' ? 'block' : 'none';
+          });
+        });
+
+        document.getElementById('confirmarPedido').addEventListener('click', () => {
+          const nome = document.getElementById('nomeCliente').value.trim();
+          const endereco = document.getElementById('endereco').value.trim();
+          const numero = document.getElementById('numeroRes').value.trim();
+          const bairro = document.getElementById('bairro').value.trim();
+          const ref = document.getElementById('referencia').value.trim();
+          const pagto = document.querySelector('input[name="pagamento"]:checked').value;
+          let troco = '';
+          if (pagto === 'Dinheiro') troco = document.getElementById('troco').value.trim();
+
+          if (!nome || !endereco || !numero || !bairro) { alert('Preencha campos obrigatórios'); return; }
+
+          let total = carrinho.reduce((acc,i) => acc + i.preco*i.quantidade,0);
+          carrinho.forEach(i => i.extras?.forEach(e => total += e.preco * e.qtd));
+          if (pagto === 'Crédito' || pagto === 'Débito') total *= 1.015;
+
+          let msg = `🛍️ NOVO PEDIDO!%0A`;
+          msg += `Cliente: ${nome}%0AEndereço: ${endereco}%0ANúmero: ${numero}%0ABairro: ${bairro}%0AReferência: ${ref}%0A`;
+          msg += `Pagamento: ${pagto}${pagto === 'Dinheiro' && troco ? ` (Troco p/ ${troco})` : ''}%0A`;
+          msg += `ITENS:%0A`;
+          carrinho.forEach(item => {
+            msg += `° ${item.quantidade}x ${item.nome} - R$ ${(item.preco*item.quantidade).toFixed(2)}%0A`;
+            if (item.recheios?.length) msg += `   Recheios: ${item.recheios.join(', ')}%0A`;
+            if (item.extras?.length) item.extras.forEach(e => msg += `   + ${e.nome} x${e.qtd}%0A`);
+          });
+          msg += `TOTAL: R$ ${total.toFixed(2)}%0A`;
+
+          if (pagto === 'Pix') {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.getElementById('pixModal').style.display = 'flex';
+            window.urlWhats = `https://wa.me/5587933009283?text=${encodeURIComponent(msg.replace(/%0A/g, '\n'))}`;
+          } else {
+            window.open(`https://wa.me/5587933009283?text=${encodeURIComponent(msg.replace(/%0A/g, '\n'))}`, '_blank');
+            document.getElementById('checkoutModal').style.display = 'none';
+          }
+        });
+      });
+
+      document.getElementById('copyPixBtn').addEventListener('click', () => {
+        navigator.clipboard.writeText('82e5f2e0-772e-46d6-8ec9-3dbcf9b2c54c');
+        document.getElementById('toast').style.opacity = 1;
+        setTimeout(() => document.getElementById('toast').style.opacity = 0, 1500);
+        if (window.urlWhats) window.open(window.urlWhats, '_blank');
+        document.getElementById('pixModal').style.display = 'none';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) e.target.style.display = 'none';
+        if (e.target.classList.contains('checkout-modal')) e.target.style.display = 'none';
+        if (e.target.classList.contains('pix-modal')) e.target.style.display = 'none';
+      });
+
+      atualizarCarrinhoUI();
+    })();
+  </script>
+</body>
+</html>
