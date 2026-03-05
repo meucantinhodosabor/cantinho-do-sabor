@@ -265,16 +265,15 @@
       padding: 8px 0;
     }
 
-    .recheio-option.disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
     .recheio-counter {
       font-size: 0.9rem;
       color: var(--orange-end);
-      margin-bottom: 10px;
+      margin: 10px 0;
       font-weight: 600;
+      padding: 8px;
+      background: var(--gray-light);
+      border-radius: 20px;
+      text-align: center;
     }
 
     .extras-section {
@@ -333,11 +332,6 @@
       border-radius: 40px;
       font-size: 1.1rem;
       cursor: pointer;
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
     }
 
     .btn-secondary {
@@ -618,566 +612,59 @@
 
   <script>
     (function() {
-      const WHATSAPP_NUMBER = '5587933009283';
-      
-      const recheiosDisponiveis = [
-        'Frango', 'Carne', 'Salsicha', 'Mussarela', 'Coalho', 'Milho', 'Azeitona',
-        'Cream Cheese', 'Requeijão', 'Cheddar', 'Catupiry', 'Alho Frito', 'Pimenta Calabresa', 'Pernil'
-      ];
-
-      const acompanhamentos = [
-        { nome: 'Batata Ondulada P', preco: 12.50 },
-        { nome: 'Batata Ondulada M', preco: 16.50 },
-        { nome: 'Batata Palito P', preco: 10.00 },
-        { nome: 'Batata Palito M', preco: 14.00 },
-        { nome: 'Bolinhas Carne Sol P', preco: 12.00 },
-        { nome: 'Bolinhas Carne Sol M', preco: 21.00 },
-        { nome: 'Mini Pastéis Pernambucanos (6und)', preco: 9.50 }
-      ];
-
-      const bebidas = [
-        { nome: 'Batidinha Uva 300ml', preco: 7.50 },
-        { nome: 'Batidinha Uva 500ml', preco: 12.50 },
-        { nome: 'Batidinha Abacaxi 300ml', preco: 7.50 },
-        { nome: 'Batidinha Abacaxi 500ml', preco: 12.50 },
-        { nome: 'Batidinha Maracujá 300ml', preco: 9.50 },
-        { nome: 'Batidinha Maracujá 500ml', preco: 14.50 },
-        { nome: 'Espanhola 300ml', preco: 7.50 },
-        { nome: 'Espanhola 500ml', preco: 12.50 },
-        { nome: 'Morancujá 300ml', preco: 9.50 },
-        { nome: 'Morancujá 500ml', preco: 14.50 }
-      ];
-
-      // Cardápio completo com as regras corretas
-      const produtosBase = [
-        { id: 'dueto', nome: 'Dueto Tradicional', preco: 22.50, img: 'https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg', categoria: '🔥 Combos', tipo: 'dueto', recheiosObr: ['Frango','Carne','Mussarela','Coalho'] },
+      // CORREÇÃO 1: Usar DOMContentLoaded para garantir que o HTML carregou
+      document.addEventListener('DOMContentLoaded', function() {
         
-        // 🥟 Clássicos
-        { id: 'caipira-especial', nome: 'Caipira Especial!', descricao: 'Frango e Milho', preco: 17.50, img: 'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'queridinho', nome: 'O Queridinho!', descricao: 'Carne e Queijo', preco: 17.50, img: 'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'pastel-hotdog', nome: 'Pastel de Hotdog!', descricao: 'Salsicha, Carne e Cheddar', preco: 17.50, img: 'https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'frango-dourado', nome: 'Frango Dourado!', descricao: 'Frango e Queijo', preco: 18.00, img: 'https://i.pinimg.com/736x/90/7b/a5/907ba5cb7574a1ad9aa2eb0548c9eed4.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'mediterraneo', nome: 'Sabor Mediterrâneo', descricao: 'Carne e Azeitonas', preco: 18.00, img: 'https://i.pinimg.com/736x/8f/f6/b2/8ff6b260aa8709cce002ec39f97a464c.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'super-cremoso', nome: 'Super Cremoso', descricao: 'Frango e Requeijão', preco: 18.50, img: 'https://i.pinimg.com/736x/66/20/80/662080576d5755f1fb79d243117a37d8.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'frango-classico', nome: 'Frango Clássico', descricao: 'Frango, Catupiry e Milho', preco: 18.50, img: 'https://i.pinimg.com/736x/f4/29/44/f42944f3d798cf35a1e4fb028e62813a.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'cheddar-melt', nome: 'Cheddar Melt', descricao: 'Carne e Cheddar', preco: 18.50, img: 'https://i.pinimg.com/736x/3b/ee/28/3bee28d4d4e562a48782b3c1371d4009.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'trio-imperial', nome: 'Trio Imperial 3 Queijos', descricao: 'Mussarela, Coalho e Requeijão', preco: 18.50, img: 'https://i.pinimg.com/736x/25/44/bb/2544bb486fc56f83130814b41c27b0a9.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'pernil-cremoso', nome: 'Pernil Cremoso', descricao: 'Pernil, Catupiry e Milho', preco: 19.50, img: 'https://i.pinimg.com/736x/ee/65/0e/ee650e334bd5020ba51dfa1b32043d60.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'pernil-especial', nome: 'Pernil Especial', descricao: 'Pernil, Coalho e Requeijão', preco: 20.00, img: 'https://i.pinimg.com/736x/de/29/bf/de29bf0cfd6c1b1b2a52e37ea4e05c07.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'frango-gourmet', nome: 'Frango Gourmet', descricao: 'Cream Cheese e Azeitona', preco: 20.00, img: 'https://i.pinimg.com/736x/fb/c8/f4/fbc8f415a71bfb628aed9f182affe245.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
-        { id: 'carne-completa', nome: 'Carne Completa', descricao: 'Queijo, Milho e Azeitona', preco: 20.00, img: 'https://i.pinimg.com/736x/e8/ed/20/e8ed20d0214d3033fdf86b708e2ac5fd.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+        const WHATSAPP_NUMBER = '5587933009283';
         
-        // 🍧 Batidinhas de Açaí Gourmet
-        { id: 'acai-300-1', nome: 'Batidinha de Açaí 300ml', descricao: '1 unidade (300ml)', preco: 14.90, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '300ml', quantidade: 1 },
-        { id: 'acai-300-2', nome: 'Batidinha de Açaí 300ml', descricao: 'Combo 2 unidades', preco: 26.00, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '300ml', quantidade: 2 },
-        { id: 'acai-300-3', nome: 'Batidinha de Açaí 300ml', descricao: 'Combo 3 unidades', preco: 36.00, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '300ml', quantidade: 3 },
-        { id: 'acai-500-1', nome: 'Batidinha de Açaí 500ml', descricao: '1 unidade (500ml)', preco: 22.00, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '500ml', quantidade: 1 },
-        { id: 'acai-500-2', nome: 'Batidinha de Açaí 500ml', descricao: 'Combo 2 unidades', preco: 39.90, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '500ml', quantidade: 2 },
-        { id: 'acai-500-3', nome: 'Batidinha de Açaí 500ml', descricao: 'Combo 3 unidades', preco: 57.00, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '500ml', quantidade: 3 },
-        
-        // 🛠 Monte Pastel - CORRIGIDO: min 1, max específico
-        { id: 'pastel2', nome: 'Pastel 2 Recheios', descricao: 'Escolha até 2 recheios (mínimo 1)', preco: 17.50, img: 'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg', categoria: '🛠 Monte Pastel', tipo: 'montar', minRech: 1, maxRech: 2 },
-        { id: 'pastel3', nome: 'Pastel 3 Recheios', descricao: 'Escolha até 3 recheios (mínimo 1)', preco: 19.50, img: 'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg', categoria: '🛠 Monte Pastel', tipo: 'montar', minRech: 1, maxRech: 3 },
-        { id: 'pastel4', nome: 'Pastel 4 Recheios', descricao: 'Escolha até 4 recheios (mínimo 1)', preco: 21.50, img: 'https://i.pinimg.com/736x/01/4e/04/014e04188feecfd5ea2ac209eb3ad09b.jpg', categoria: '🛠 Monte Pastel', tipo: 'montar', minRech: 1, maxRech: 4 },
-        
-        // 🌽 Monte Cuscuz - CORRIGIDO: min 1, max específico
-        { id: 'cuscuz2', nome: 'Cuscuz 2 Recheios', descricao: 'Escolha até 2 recheios (mínimo 1)', preco: 16.50, img: 'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg', categoria: '🌽 Monte Cuscuz', tipo: 'montar', minRech: 1, maxRech: 2 },
-        { id: 'cuscuz3', nome: 'Cuscuz 3 Recheios', descricao: 'Escolha até 3 recheios (mínimo 1)', preco: 18.50, img: 'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg', categoria: '🌽 Monte Cuscuz', tipo: 'montar', minRech: 1, maxRech: 3 },
-        { id: 'cuscuz4', nome: 'Cuscuz 4 Recheios', descricao: 'Escolha até 4 recheios (mínimo 1)', preco: 20.50, img: 'https://i.pinimg.com/736x/b7/a1/a8/b7a1a8f4f27068bf9ab780cf38434bb0.jpg', categoria: '🌽 Monte Cuscuz', tipo: 'montar', minRech: 1, maxRech: 4 },
-        
-        // 🫔 Monte Tapioca - CORRIGIDO: min 1, max específico
-        { id: 'tapioca2', nome: 'Tapioca 2 Recheios', descricao: 'Escolha até 2 recheios (mínimo 1)', preco: 17.00, img: 'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg', categoria: '🫔 Monte Tapioca', tipo: 'montar', minRech: 1, maxRech: 2 },
-        { id: 'tapioca3', nome: 'Tapioca 3 Recheios', descricao: 'Escolha até 3 recheios (mínimo 1)', preco: 19.00, img: 'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg', categoria: '🫔 Monte Tapioca', tipo: 'montar', minRech: 1, maxRech: 3 },
-        { id: 'tapioca4', nome: 'Tapioca 4 Recheios', descricao: 'Escolha até 4 recheios (mínimo 1)', preco: 21.00, img: 'https://i.pinimg.com/736x/23/45/4a/23454a1e2d9d8885839c89a71cd90cbf.jpg', categoria: '🫔 Monte Tapioca', tipo: 'montar', minRech: 1, maxRech: 4 },
-        
-        // ✨ Novidades
-        { id: 'mini', nome: 'Mini Pastéis Pernambucanos', descricao: 'Porção com 6 unidades', preco: 16.50, img: 'https://i.ytimg.com/vi/03C8mGqozSw/hq720.jpg', categoria: '✨ Novidades', tipo: 'classico' }
-      ];
+        const recheiosDisponiveis = [
+          'Frango', 'Carne', 'Salsicha', 'Mussarela', 'Coalho', 'Milho', 'Azeitona',
+          'Cream Cheese', 'Requeijão', 'Cheddar', 'Catupiry', 'Alho Frito', 'Pimenta Calabresa', 'Pernil'
+        ];
 
-      // Estado
-      let carrinho = [];
-      let dadosCliente = {};
+        const acompanhamentos = [
+          { nome: 'Batata Ondulada P', preco: 12.50 },
+          { nome: 'Batata Ondulada M', preco: 16.50 },
+          { nome: 'Batata Palito P', preco: 10.00 },
+          { nome: 'Batata Palito M', preco: 14.00 },
+          { nome: 'Bolinhas Carne Sol P', preco: 12.00 },
+          { nome: 'Bolinhas Carne Sol M', preco: 21.00 },
+          { nome: 'Mini Pastéis Pernambucanos (6und)', preco: 9.50 }
+        ];
 
-      // Renderizar cardápio
-      const cardapioEl = document.getElementById('cardapio');
-      if (cardapioEl) {
-        const cats = [...new Set(produtosBase.map(p => p.categoria))];
-        cardapioEl.innerHTML = cats.map(cat => {
-          const prodCat = produtosBase.filter(p => p.categoria === cat);
-          return `
-            <div class="category">
-              <h2>${cat}</h2>
-              <div class="product-grid">
-                ${prodCat.map(p => `
-                  <div class="product-card" data-id="${p.id}">
-                    <img class="product-img" src="${p.img}" loading="lazy" onerror="this.src='https://via.placeholder.com/80x80?text=Produto'">
-                    <div class="product-info">
-                      <h3>${p.nome}</h3>
-                      ${p.descricao ? `<div class="product-desc">${p.descricao}</div>` : ''}
-                      <div class="product-footer">
-                        <span class="price">R$ ${p.preco.toFixed(2)}</span>
-                        <button class="add-btn" data-prod-id="${p.id}">+ adicionar</button>
-                      </div>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        }).join('');
-        console.log('Cardápio renderizado com', produtosBase.length, 'produtos');
-      }
+        const bebidas = [
+          { nome: 'Batidinha Uva 300ml', preco: 7.50 },
+          { nome: 'Batidinha Uva 500ml', preco: 12.50 },
+          { nome: 'Batidinha Abacaxi 300ml', preco: 7.50 },
+          { nome: 'Batidinha Abacaxi 500ml', preco: 12.50 },
+          { nome: 'Batidinha Maracujá 300ml', preco: 9.50 },
+          { nome: 'Batidinha Maracujá 500ml', preco: 14.50 },
+          { nome: 'Espanhola 300ml', preco: 7.50 },
+          { nome: 'Espanhola 500ml', preco: 12.50 },
+          { nome: 'Morancujá 300ml', preco: 9.50 },
+          { nome: 'Morancujá 500ml', preco: 14.50 }
+        ];
 
-      function fecharModal() {
-        document.getElementById('productModal').style.display = 'none';
-      }
-
-      function fecharCheckout() {
-        document.getElementById('checkoutModal').style.display = 'none';
-      }
-
-      function atualizarCarrinho() {
-        const cartItems = document.getElementById('cartItems');
-        const itemCount = document.getElementById('itemCount');
-        const subtotalEl = document.getElementById('subtotal');
-        const totalEl = document.getElementById('total');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-        
-        itemCount.textContent = carrinho.length;
-        
-        let subtotal = 0;
-        cartItems.innerHTML = carrinho.map((item, index) => {
-          let itemTotal = item.preco;
+        // Cardápio completo com as regras corretas
+        const produtosBase = [
+          { id: 'dueto', nome: 'Dueto Tradicional', preco: 22.50, img: 'https://i.pinimg.com/736x/c6/44/0a/c6440adee5ef7fa7d38f1e6e44f28be5.jpg', categoria: '🔥 Combos', tipo: 'dueto', recheiosObr: ['Frango','Carne','Mussarela','Coalho'] },
           
-          if (item.extras) {
-            item.extras.forEach(ext => {
-              itemTotal += ext.preco * ext.quantidade;
-            });
-          }
+          // 🥟 Clássicos
+          { id: 'caipira-especial', nome: 'Caipira Especial!', descricao: 'Frango e Milho', preco: 17.50, img: 'https://i.pinimg.com/736x/54/f3/3e/54f33e374276eb01904b8a7bfe94081e.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'queridinho', nome: 'O Queridinho!', descricao: 'Carne e Queijo', preco: 17.50, img: 'https://i.pinimg.com/736x/0e/ba/e1/0ebae10f386aaf02dda228b58951ce41.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'pastel-hotdog', nome: 'Pastel de Hotdog!', descricao: 'Salsicha, Carne e Cheddar', preco: 17.50, img: 'https://i.pinimg.com/736x/f6/ae/90/f6ae90345dc56319aa73d830743edb7f.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'frango-dourado', nome: 'Frango Dourado!', descricao: 'Frango e Queijo', preco: 18.00, img: 'https://i.pinimg.com/736x/90/7b/a5/907ba5cb7574a1ad9aa2eb0548c9eed4.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'mediterraneo', nome: 'Sabor Mediterrâneo', descricao: 'Carne e Azeitonas', preco: 18.00, img: 'https://i.pinimg.com/736x/8f/f6/b2/8ff6b260aa8709cce002ec39f97a464c.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'super-cremoso', nome: 'Super Cremoso', descricao: 'Frango e Requeijão', preco: 18.50, img: 'https://i.pinimg.com/736x/66/20/80/662080576d5755f1fb79d243117a37d8.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'frango-classico', nome: 'Frango Clássico', descricao: 'Frango, Catupiry e Milho', preco: 18.50, img: 'https://i.pinimg.com/736x/f4/29/44/f42944f3d798cf35a1e4fb028e62813a.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'cheddar-melt', nome: 'Cheddar Melt', descricao: 'Carne e Cheddar', preco: 18.50, img: 'https://i.pinimg.com/736x/3b/ee/28/3bee28d4d4e562a48782b3c1371d4009.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'trio-imperial', nome: 'Trio Imperial 3 Queijos', descricao: 'Mussarela, Coalho e Requeijão', preco: 18.50, img: 'https://i.pinimg.com/736x/25/44/bb/2544bb486fc56f83130814b41c27b0a9.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'pernil-cremoso', nome: 'Pernil Cremoso', descricao: 'Pernil, Catupiry e Milho', preco: 19.50, img: 'https://i.pinimg.com/736x/ee/65/0e/ee650e334bd5020ba51dfa1b32043d60.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'pernil-especial', nome: 'Pernil Especial', descricao: 'Pernil, Coalho e Requeijão', preco: 20.00, img: 'https://i.pinimg.com/736x/de/29/bf/de29bf0cfd6c1b1b2a52e37ea4e05c07.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'frango-gourmet', nome: 'Frango Gourmet', descricao: 'Cream Cheese e Azeitona', preco: 20.00, img: 'https://i.pinimg.com/736x/fb/c8/f4/fbc8f415a71bfb628aed9f182affe245.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
+          { id: 'carne-completa', nome: 'Carne Completa', descricao: 'Queijo, Milho e Azeitona', preco: 20.00, img: 'https://i.pinimg.com/736x/e8/ed/20/e8ed20d0214d3033fdf86b708e2ac5fd.jpg', categoria: '🥟 Clássicos', tipo: 'classico' },
           
-          subtotal += itemTotal;
-          
-          return `
-            <div class="cart-item">
-              <div class="cart-item-info">
-                <strong>${item.nome}</strong>
-                ${item.recheios ? `<br><small>Recheios: ${item.recheios.join(', ')}</small>` : ''}
-                ${item.extras ? `<br><small>Extras: ${item.extras.map(e => `${e.nome} (${e.quantidade}x)`).join(', ')}</small>` : ''}
-                <br><small>R$ ${itemTotal.toFixed(2)}</small>
-              </div>
-              <div class="cart-item-actions">
-                <button onclick="removerItem(${index})">🗑️</button>
-              </div>
-            </div>
-          `;
-        }).join('');
-        
-        subtotalEl.textContent = subtotal.toFixed(2);
-        totalEl.textContent = subtotal.toFixed(2);
-        checkoutBtn.disabled = carrinho.length === 0;
-      }
-
-      window.removerItem = (index) => {
-        carrinho.splice(index, 1);
-        atualizarCarrinho();
-      };
-
-      window.fecharModal = fecharModal;
-      window.fecharCheckout = fecharCheckout;
-
-      // Função para controlar seleção de recheios em tempo real
-      function setupRecheioValidation(maxRech) {
-        const checkboxes = document.querySelectorAll('.recheio-check');
-        const counterDiv = document.createElement('div');
-        counterDiv.className = 'recheio-counter';
-        counterDiv.textContent = `0/${maxRech} recheios selecionados`;
-        
-        const recheioGroup = document.querySelector('.recheio-group');
-        if (recheioGroup) {
-          recheioGroup.insertBefore(counterDiv, recheioGroup.querySelector('h4').nextSibling);
-        }
-        
-        function updateCounter() {
-          const checked = document.querySelectorAll('.recheio-check:checked').length;
-          counterDiv.textContent = `${checked}/${maxRech} recheios selecionados`;
-          
-          // Desabilitar checkboxes não selecionados quando atingir o máximo
-          if (checked >= maxRech) {
-            checkboxes.forEach(cb => {
-              if (!cb.checked) {
-                cb.disabled = true;
-                cb.closest('.recheio-option').classList.add('disabled');
-              }
-            });
-          } else {
-            checkboxes.forEach(cb => {
-              cb.disabled = false;
-              cb.closest('.recheio-option').classList.remove('disabled');
-            });
-          }
-        }
-        
-        checkboxes.forEach(cb => {
-          cb.addEventListener('change', updateCounter);
-        });
-        
-        updateCounter();
-      }
-
-      function abrirModalProduto(prod) {
-        const modalDiv = document.getElementById('modalDynamicContent');
-        const modal = document.getElementById('productModal');
-        
-        let html = `<div class="modal-header"><h2>${prod.nome}</h2><span class="close-modal" onclick="fecharModal()">&times;</span></div>`;
-        
-        if (prod.tipo === 'acai') {
-          html += `
-            <div class="info-box">
-              <p>${prod.tamanho}</p>
-              <p class="price-highlight">${prod.quantidade} unidade${prod.quantidade > 1 ? 's' : ''}</p>
-              <p class="price-highlight">Preço: R$ ${prod.preco.toFixed(2)}</p>
-            </div>
-          `;
-        }
-        
-        if (prod.tipo === 'dueto') {
-          html += `
-            <div class="recheio-group">
-              <h4>Escolha o Recheio do 1° Pastel!</h4>
-              ${prod.recheiosObr.map(r => `<label class="recheio-option"><input type="radio" name="recheio1" value="${r}" required> ${r}</label>`).join('')}
-            </div>
-            <div class="recheio-group">
-              <h4>Escolha o Recheio do 2° Pastel!</h4>
-              ${prod.recheiosObr.map(r => `<label class="recheio-option"><input type="radio" name="recheio2" value="${r}" required> ${r}</label>`).join('')}
-            </div>
-          `;
-        } else if (prod.tipo === 'montar') {
-          html += `<div class="recheio-group" data-max="${prod.maxRech}"><h4>Selecione os recheios (mínimo ${prod.minRech} • máximo ${prod.maxRech})</h4>`;
-          recheiosDisponiveis.forEach(r => {
-            html += `<label class="recheio-option"><input type="checkbox" class="recheio-check" value="${r}"> ${r}</label>`;
-          });
-          html += `</div>`;
-        }
-        
-        html += `
-          <div class="extras-section">
-            <h4>Acompanhamentos</h4>
-            ${acompanhamentos.map((ext, idx) => `
-              <div class="extra-item">
-                <span>${ext.nome} - R$ ${ext.preco.toFixed(2)}</span>
-                <div class="extra-qtd">
-                  <button class="dec-extra" data-index="${idx}" data-tipo="acomp">-</button>
-                  <span id="qtd-acomp-${idx}">0</span>
-                  <button class="inc-extra" data-index="${idx}" data-tipo="acomp">+</button>
-                </div>
-              </div>
-            `).join('')}
-            
-            <h4 style="margin-top: 16px;">Bebidas</h4>
-            ${bebidas.map((ext, idx) => `
-              <div class="extra-item">
-                <span>${ext.nome} - R$ ${ext.preco.toFixed(2)}</span>
-                <div class="extra-qtd">
-                  <button class="dec-extra" data-index="${idx}" data-tipo="bebida">-</button>
-                  <span id="qtd-bebida-${idx}">0</span>
-                  <button class="inc-extra" data-index="${idx}" data-tipo="bebida">+</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-          
-          <div class="modal-footer">
-            <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
-            <button class="btn-primary" id="adicionarAoCarrinho">Adicionar · R$ ${prod.preco.toFixed(2)}</button>
-          </div>
-        `;
-        
-        modalDiv.innerHTML = html;
-        modal.style.display = 'flex';
-        
-        // Configurar validação de recheios em tempo real para produtos do tipo 'montar'
-        if (prod.tipo === 'montar') {
-          setupRecheioValidation(prod.maxRech);
-        }
-        
-        // Eventos extras
-        document.querySelectorAll('.inc-extra').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const index = e.target.dataset.index;
-            const tipo = e.target.dataset.tipo;
-            const span = document.getElementById(`qtd-${tipo}-${index}`);
-            if (span) span.textContent = parseInt(span.textContent) + 1;
-          });
-        });
-        
-        document.querySelectorAll('.dec-extra').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const index = e.target.dataset.index;
-            const tipo = e.target.dataset.tipo;
-            const span = document.getElementById(`qtd-${tipo}-${index}`);
-            if (span) {
-              const valor = parseInt(span.textContent);
-              if (valor > 0) span.textContent = valor - 1;
-            }
-          });
-        });
-        
-        document.getElementById('adicionarAoCarrinho').addEventListener('click', () => {
-          adicionarAoCarrinho(prod);
-        });
-      }
-
-      function adicionarAoCarrinho(prod) {
-        let recheios = [];
-        
-        if (prod.tipo === 'dueto') {
-          const recheio1 = document.querySelector('input[name="recheio1"]:checked')?.value;
-          const recheio2 = document.querySelector('input[name="recheio2"]:checked')?.value;
-          if (recheio1 && recheio2) {
-            recheios = [recheio1, recheio2];
-          } else {
-            alert('Selecione ambos os recheios!');
-            return;
-          }
-        } else if (prod.tipo === 'montar') {
-          const checks = document.querySelectorAll('.recheio-check:checked');
-          recheios = Array.from(checks).map(c => c.value);
-          
-          // Validação rigorosa
-          if (recheios.length < prod.minRech) {
-            alert(`Selecione pelo menos ${prod.minRech} recheio${prod.minRech > 1 ? 's' : ''}!`);
-            return;
-          }
-          if (recheios.length > prod.maxRech) {
-            alert(`Selecione no máximo ${prod.maxRech} recheios!`);
-            return;
-          }
-        }
-        
-        const extras = [];
-        
-        acompanhamentos.forEach((ext, idx) => {
-          const qtd = parseInt(document.getElementById(`qtd-acomp-${idx}`)?.textContent || '0');
-          if (qtd > 0) {
-            extras.push({
-              nome: ext.nome,
-              preco: ext.preco,
-              quantidade: qtd
-            });
-          }
-        });
-        
-        bebidas.forEach((ext, idx) => {
-          const qtd = parseInt(document.getElementById(`qtd-bebida-${idx}`)?.textContent || '0');
-          if (qtd > 0) {
-            extras.push({
-              nome: ext.nome,
-              preco: ext.preco,
-              quantidade: qtd
-            });
-          }
-        });
-        
-        const itemCarrinho = {
-          id: prod.id + Date.now(),
-          nome: prod.nome,
-          preco: prod.preco,
-          quantidade: 1,
-          recheios: recheios.length > 0 ? recheios : null,
-          extras: extras.length > 0 ? extras : null
-        };
-        
-        carrinho.push(itemCarrinho);
-        atualizarCarrinho();
-        fecharModal();
-        document.getElementById('cartDrawer').classList.remove('collapsed');
-      }
-
-      function enviarParaWhatsApp(nome, logradouro, numero, complemento, referencia, pagamento, troco, observacoes, total) {
-        let enderecoCompleto = `${logradouro}, ${numero}`;
-        if (complemento) enderecoCompleto += ` - ${complemento}`;
-
-        let mensagem = `NOVO PEDIDO!\n`;
-        mensagem += `Cliente: ${nome}\n`;
-        mensagem += `Endereço: ${enderecoCompleto}\n`;
-        mensagem += `Ponto de Referência: ${referencia || 'Não informado'}\n`;
-        
-        let formaPagamento = pagamento === 'dinheiro' ? 'Dinheiro' : 
-                            pagamento === 'cartao' ? 'Cartão' : 'PIX';
-        if (pagamento === 'dinheiro' && troco) {
-          formaPagamento += ` (Troco para R$ ${troco})`;
-        }
-        mensagem += `Forma de Pagamento: ${formaPagamento}\n`;
-        mensagem += `ITENS:\n`;
-        
-        carrinho.forEach(item => {
-          mensagem += `° 1x ${item.nome}, R$ ${item.preco.toFixed(2)}\n`;
-          if (item.recheios?.length) {
-            mensagem += `   Recheios: ${item.recheios.join(', ')}\n`;
-          }
-          if (item.extras?.length) {
-            item.extras.forEach(ext => {
-              mensagem += `   + ${ext.quantidade}x ${ext.nome} - R$ ${(ext.preco * ext.quantidade).toFixed(2)}\n`;
-            });
-          }
-        });
-        
-        mensagem += `TOTAL: R$ ${total.toFixed(2)}`;
-        if (observacoes) mensagem += `\n\nObservações: ${observacoes}`;
-
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`, '_blank');
-        carrinho = [];
-        atualizarCarrinho();
-      }
-
-      function abrirModalCheckout() {
-        const checkoutForm = document.getElementById('checkoutForm');
-        const modal = document.getElementById('checkoutModal');
-        
-        checkoutForm.innerHTML = `
-          <h2 style="margin-bottom: 20px;">Finalizar Pedido</h2>
-          <div class="form-group">
-            <input type="text" placeholder="Nome completo" id="nomeCliente" required value="${dadosCliente.nome || ''}">
-          </div>
-          <div class="form-group">
-            <input type="text" placeholder="Rua/Logradouro" id="logradouro" required value="${dadosCliente.logradouro || ''}">
-          </div>
-          <div class="endereco-row">
-            <div class="form-group">
-              <input type="text" placeholder="Número" id="numero" required value="${dadosCliente.numero || ''}">
-            </div>
-            <div class="form-group">
-              <input type="text" placeholder="Complemento" id="complemento" value="${dadosCliente.complemento || ''}">
-            </div>
-          </div>
-          <div class="form-group">
-            <input type="text" placeholder="Ponto de referência" id="referencia" value="${dadosCliente.referencia || ''}">
-          </div>
-          <div class="form-group">
-            <select id="pagamento">
-              <option value="dinheiro" ${dadosCliente.pagamento === 'dinheiro' ? 'selected' : ''}>Dinheiro</option>
-              <option value="cartao" ${dadosCliente.pagamento === 'cartao' ? 'selected' : ''}>Cartão de Crédito/Débito</option>
-              <option value="pix" ${dadosCliente.pagamento === 'pix' ? 'selected' : ''}>PIX</option>
-            </select>
-          </div>
-          <div id="trocoField" class="form-group" style="display: ${dadosCliente.pagamento === 'dinheiro' ? 'block' : 'none'};">
-            <input type="text" placeholder="Precisa de troco para quanto?" id="troco" value="${dadosCliente.troco || ''}">
-          </div>
-          <div class="form-group">
-            <textarea placeholder="Observações (opcional)" id="observacoes" rows="3">${dadosCliente.observacoes || ''}</textarea>
-          </div>
-          <div style="display: flex; gap: 12px;">
-            <button class="btn-secondary" onclick="fecharCheckout()">Cancelar</button>
-            <button class="btn-primary" onclick="processarCheckout()">Confirmar Pedido</button>
-          </div>
-        `;
-        
-        modal.style.display = 'flex';
-        
-        document.getElementById('pagamento').addEventListener('change', (e) => {
-          const trocoField = document.getElementById('trocoField');
-          trocoField.style.display = e.target.value === 'dinheiro' ? 'block' : 'none';
-        });
-      }
-
-      window.processarCheckout = () => {
-        const nome = document.getElementById('nomeCliente')?.value;
-        const logradouro = document.getElementById('logradouro')?.value;
-        const numero = document.getElementById('numero')?.value;
-        const complemento = document.getElementById('complemento')?.value || '';
-        const referencia = document.getElementById('referencia')?.value || '';
-        const pagamento = document.getElementById('pagamento')?.value;
-        const troco = document.getElementById('troco')?.value || '';
-        const observacoes = document.getElementById('observacoes')?.value || '';
-
-        if (!nome || !logradouro || !numero) {
-          alert('Por favor, preencha todos os campos obrigatórios!');
-          return;
-        }
-
-        dadosCliente = { nome, logradouro, numero, complemento, referencia, pagamento, troco, observacoes };
-
-        const total = carrinho.reduce((acc, item) => {
-          let itemTotal = item.preco;
-          if (item.extras) {
-            item.extras.forEach(ext => itemTotal += ext.preco * ext.quantidade);
-          }
-          return acc + itemTotal;
-        }, 0);
-
-        if (pagamento === 'pix') {
-          fecharCheckout();
-          document.getElementById('pixModal').style.display = 'flex';
-        } else {
-          enviarParaWhatsApp(nome, logradouro, numero, complemento, referencia, pagamento, troco, observacoes, total);
-          fecharCheckout();
-        }
-      };
-
-      // Event listeners
-      document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-btn')) {
-          const prodId = e.target.dataset.prodId;
-          const produto = produtosBase.find(p => p.id === prodId);
-          if (produto) abrirModalProduto(produto);
-        }
-      });
-
-      document.getElementById('cartHandle').addEventListener('click', () => {
-        const drawer = document.getElementById('cartDrawer');
-        drawer.classList.toggle('collapsed');
-        const toggle = document.getElementById('drawerToggle');
-        toggle.textContent = drawer.classList.contains('collapsed') ? '▲' : '▼';
-      });
-
-      document.getElementById('checkoutBtn').addEventListener('click', abrirModalCheckout);
-
-      // PIX
-      document.getElementById('copyPixBtn').addEventListener('click', () => {
-        const pixCode = document.getElementById('pixCode').textContent;
-        navigator.clipboard.writeText(pixCode).then(() => {
-          const toast = document.getElementById('toast');
-          toast.textContent = 'Código copiado!';
-          toast.style.opacity = '1';
-          setTimeout(() => toast.style.opacity = '0', 2000);
-        });
-      });
-
-      document.getElementById('confirmPixBtn').addEventListener('click', () => {
-        enviarParaWhatsApp(
-          dadosCliente.nome,
-          dadosCliente.logradouro,
-          dadosCliente.numero,
-          dadosCliente.complemento,
-          dadosCliente.referencia,
-          dadosCliente.pagamento,
-          dadosCliente.troco,
-          dadosCliente.observacoes,
-          parseFloat(document.getElementById('total').textContent)
-        );
-        document.getElementById('pixModal').style.display = 'none';
-        
-        const toast = document.getElementById('toast');
-        toast.textContent = 'Pedido enviado com sucesso!';
-        toast.style.opacity = '1';
-        setTimeout(() => toast.style.opacity = '0', 3000);
-      });
-
-      // Fechar modais
-      document.getElementById('productModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('productModal')) fecharModal();
-      });
-
-      document.getElementById('pixModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('pixModal')) {
-          document.getElementById('pixModal').style.display = 'none';
-        }
-      });
-
-      document.getElementById('checkoutModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('checkoutModal')) fecharCheckout();
-      });
-    })();
-  </script>
-</body>
-</html>
+          // 🍧 Batidinhas de Açaí Gourmet
+          { id: 'acai-300-1', nome: 'Batidinha de Açaí 300ml', descricao: '1 unidade (300ml)', preco: 14.90, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '300ml', quantidade: 1 },
+          { id: 'acai-300-2', nome: 'Batidinha de Açaí 300ml', descricao: 'Combo 2 unidades', preco: 26.00, img: 'https://i.pinimg.com/736x/cf/3e/ce/cf3eced59ad15ee6fc1ffb3ebe057cd6.jpg', categoria: '🍧 Batidinhas de Açaí Gourmet', tipo: 'acai', tamanho: '300ml', quantidade: 2 },
+          { id: 'acai-300-3', nome: 'Batidinha de Açaí 300ml', descricao: 'Combo 3 unidades', preco: 36.0
